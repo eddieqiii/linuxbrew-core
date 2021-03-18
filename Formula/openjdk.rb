@@ -78,6 +78,8 @@ class Openjdk < Formula
       )
     end
 
+    is_wsl = `uname -r`.include?("Microsoft")
+
     boot_jdk_dir = Pathname.pwd/"boot-jdk"
     resource("boot-jdk").stage boot_jdk_dir
     boot_jdk = OS.mac? ? boot_jdk_dir/"Contents/Home" : boot_jdk_dir
@@ -143,6 +145,16 @@ class Openjdk < Formula
       args << "--with-x=#{HOMEBREW_PREFIX}"
       args << "--with-cups=#{HOMEBREW_PREFIX}"
       args << "--with-fontconfig=#{HOMEBREW_PREFIX}"
+    end
+
+    if is_wsl
+      if Hardware::CPU.arm?
+        args << "--host=aarch64-linux-gnu"
+        args << "--build=aarch64-linux-gnu"
+      else
+        args << "--host=x86_64-linux-gnu"
+        args << "--build=x86_64-linux-gnu"
+      end
     end
 
     chmod 0755, "configure"
