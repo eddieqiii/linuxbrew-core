@@ -72,7 +72,6 @@ class Openjdk < Formula
     on_macos do
       boot_jdk /= "Contents/Home"
     end
-    is_wsl = `uname -r`.include?("Microsoft")
     java_options = ENV.delete("_JAVA_OPTIONS")
 
     args = %W[
@@ -129,16 +128,8 @@ class Openjdk < Formula
       args << "--with-x=#{HOMEBREW_PREFIX}"
       args << "--with-cups=#{HOMEBREW_PREFIX}"
       args << "--with-fontconfig=#{HOMEBREW_PREFIX}"
-    end
-
-    if is_wsl
-      if Hardware::CPU.arm?
-        args << "--host=aarch64-linux-gnu"
-        args << "--build=aarch64-linux-gnu"
-      else
-        args << "--host=x86_64-linux-gnu"
-        args << "--build=x86_64-linux-gnu"
-      end
+      args << "--host=x86_64-linux-gnu"
+      args << "--build=x86_64-linux-gnu"
     end
 
     chmod 0755, "configure"
