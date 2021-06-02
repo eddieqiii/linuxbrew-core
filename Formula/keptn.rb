@@ -1,23 +1,28 @@
 class Keptn < Formula
   desc "Is the CLI for keptn.sh a message-driven control-plane for application delivery"
   homepage "https://keptn.sh"
-  url "https://github.com/keptn/keptn/archive/0.8.0.tar.gz"
-  sha256 "91fb9dee635f446c8a3adf8cb1cf1a3c80ade96230a4e994247aed42f176f489"
+  url "https://github.com/keptn/keptn/archive/0.8.3.tar.gz"
+  sha256 "aadd069ca5a47d5c7291d5d6df84a83c8e2cb7021bc4159bf9860372ebb02f77"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "5a6cff0dfb605514ab2530bf6b1e95ecfbfc598ce3a843263e75bb33df806346"
-    sha256 cellar: :any_skip_relocation, catalina:     "5093a00ef3fb4ef279966d85a52e1640392c228332429e6169cdd0e7adf76342"
-    sha256 cellar: :any_skip_relocation, mojave:       "6c8bdf7816c311f7170d901c7e52a286ec9cc25047749cc93fde21777d4bfb9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "6d652322b26ee9da93113d2533a884961b21b0697334134127b50377df464e51"
+    sha256 cellar: :any_skip_relocation, big_sur:      "9c08935654a5ba37098d6bbe74ae148824cdcc21889f22f171e6b9c4a44a4ffe"
+    sha256 cellar: :any_skip_relocation, catalina:     "59a1ffc854e5420805254a0b2fbc47139d2b8ffb7cae810a86c53982a43d8cef"
+    sha256 cellar: :any_skip_relocation, mojave:       "ae383c334b33874359c6bc054b2e132da3e3e97b0d2d17b935cfed145cfbdc34"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "888b798e0233dd93d80c3c33c436edd4385615d113dd247cd5fb66b619dfd054"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GO111MODULE"] = "auto"
+    ldflags = %W[
+      -s -w
+      -X main.Version=#{version}
+      -X main.KubeServerVersionConstraints=""
+    ].join(" ")
+
     cd buildpath/"cli" do
-      system "go", "build", *std_go_args, "-ldflags", "-s -w -X main.Version=#{version} -X main.KubeServerVersionConstraints=\"\""
+      system "go", "build", *std_go_args(ldflags: ldflags)
     end
   end
 
@@ -38,7 +43,7 @@ class Keptn < Formula
       Timeout.timeout(5) do
         assert_match "Warning: could not open KUBECONFIG file", r.gets.chomp
         Process.wait pid
-        assert_equal 0, $CHILD_STATUS.exitstatus
+        assert_equal 1, $CHILD_STATUS.exitstatus
       end
     rescue Timeout::Error
       puts "process not finished in time, killing it"

@@ -22,9 +22,8 @@ class PcscLite < Formula
 
   on_linux do
     depends_on "pkg-config" => :build
+    depends_on "libusb"
   end
-
-  depends_on "libusb" unless OS.mac?
 
   def install
     args = %W[--disable-dependency-tracking
@@ -32,7 +31,10 @@ class PcscLite < Formula
               --prefix=#{prefix}
               --sysconfdir=#{etc}
               --disable-libsystemd]
-    args << "--disable-libudev" unless OS.mac?
+
+    on_linux do
+      args << "--disable-udev"
+    end
 
     system "./configure", *args
     system "make", "install"

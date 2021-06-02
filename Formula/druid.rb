@@ -1,9 +1,9 @@
 class Druid < Formula
   desc "High-performance, column-oriented, distributed data store"
   homepage "https://druid.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=druid/0.20.1/apache-druid-0.20.1-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/druid/0.20.1/apache-druid-0.20.1-bin.tar.gz"
-  sha256 "9ed9f0b4090043ed7daf73d8a1a9bfa068be7a418967d88df78ad94209b835f4"
+  url "https://www.apache.org/dyn/closer.lua?path=druid/0.21.0/apache-druid-0.21.0-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/druid/0.21.0/apache-druid-0.21.0-bin.tar.gz"
+  sha256 "3e886e51834b03876ad088a5212747ed7f671d50f651413dd9cee11bd4129a69"
   license "Apache-2.0"
 
   livecheck do
@@ -11,9 +11,8 @@ class Druid < Formula
     regex(/href=.*?druid[._-]v?(\d+(?:\.\d+)+)-bin\.t/i)
   end
 
-  bottle :unneeded
-
   depends_on "zookeeper" => :test
+  depends_on arch: :x86_64
   depends_on "openjdk@8"
 
   resource "mysql-metadata-storage" do
@@ -81,6 +80,8 @@ class Druid < Formula
       assert_match "version", output
     ensure
       system bin/"druid-broker.sh", "stop"
+      # force zookeeper stop since it is sometimes still alive after druid-broker.sh finishes
+      system Formula["zookeeper"].opt_bin/"zkServer", "stop"
       Process.wait pid
     end
   end

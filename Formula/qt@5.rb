@@ -14,7 +14,6 @@ class QtAT5 < Formula
     sha256 cellar: :any,                 big_sur:       "e7b8af5d4a61e1ab8ec6b564ed998adca00096b0d9253ab1869ffceae386e90e"
     sha256 cellar: :any,                 catalina:      "bb2f387b24ff94be3bd555be8201ac8b458bf2927e912cf3d5543fb0057e826d"
     sha256 cellar: :any,                 mojave:        "b683d62158780905d1bcf43f4159169db3cd4ca196dd4e12d3fd261dc4825d6f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "64bc8e93a572f89d45428587165c3837a4f17449ed2f072eeac84c411504b717"
   end
 
   keg_only :versioned_formula

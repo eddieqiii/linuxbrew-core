@@ -5,13 +5,11 @@ class Subversion < Formula
   mirror "https://archive.apache.org/dist/subversion/subversion-1.14.1.tar.bz2"
   sha256 "2c5da93c255d2e5569fa91d92457fdb65396b0666fad4fd59b22e154d986e1a9"
   license "Apache-2.0"
+  revision 2
 
   bottle do
-    sha256 arm64_big_sur: "ca05380632bac6c53ae282050a0ce9a3034ffbb5719684f2d96cc43fbfe1e130"
-    sha256 big_sur:       "b98befd5c5b05ab4381e055a967cb6df55a59174cca11ce6ff9cbe4a3bd35e59"
-    sha256 catalina:      "3cfd3fc3886817d9accd3f118083b95e1c6832eee4f20fa1b73b28a2e2262600"
-    sha256 mojave:        "5de933ae5c71c09e2aae3607dfc84a47c85a67532e2e35b1b09c06e27046e0ba"
-    sha256 x86_64_linux:  "ce0b10e67bb137e2a0130da2a6a60bf2886c905c37654bd99d49776fdebeffc4"
+    rebuild 1
+    sha256 x86_64_linux: "4e3a790a714ff384eab404ff230a02c08e1df7dda9f321759cbf64b929fee968"
   end
 
   head do
@@ -22,8 +20,7 @@ class Subversion < Formula
     depends_on "gettext" => :build
   end
 
-  # Do not build java bindings on ARM as openjdk is not available
-  depends_on "openjdk" => :build if Hardware::CPU.intel?
+  depends_on "openjdk" => :build
   depends_on "pkg-config" => :build
   depends_on "python@3.9" => :build
   depends_on "scons" => :build # For Serf
@@ -32,11 +29,10 @@ class Subversion < Formula
   depends_on "apr-util"
 
   # build against Homebrew versions of
-  # gettext, lz4, sqlite and utf8proc for consistency
+  # gettext, lz4 and utf8proc for consistency
   depends_on "gettext"
   depends_on "lz4"
   depends_on "openssl@1.1" # For Serf
-  depends_on "sqlite"
   depends_on "utf8proc"
 
   depends_on "libtool" unless OS.mac?
@@ -45,6 +41,7 @@ class Subversion < Formula
   uses_from_macos "krb5"
   uses_from_macos "perl"
   uses_from_macos "ruby"
+  uses_from_macos "sqlite"
   uses_from_macos "zlib"
 
   resource "py3c" do
@@ -100,11 +97,12 @@ class Subversion < Formula
     # svn can't find libserf-1.so.1 at runtime without this
     ENV.append "LDFLAGS", "-Wl,-rpath=#{serf_prefix}/lib" unless OS.mac?
 
-    # Use existing system zlib
+    # Use existing system zlib and sqlite
     # Use dep-provided other libraries
     # Don't mess with Apache modules (since we're not sudo)
     zlib = OS.mac? ? "#{MacOS.sdk_path_if_needed}/usr" : Formula["zlib"].opt_prefix
     ruby = OS.mac? ? "/usr/bin/ruby" : "#{Formula["ruby"].opt_bin}/ruby"
+    sqlite = OS.mac? ? "#{MacOS.sdk_path_if_needed}/usr" : Formula["sqlite"].opt_prefix
     args = %W[
       --prefix=#{prefix}
       --disable-debug
@@ -114,22 +112,21 @@ class Subversion < Formula
       --with-apr-util=#{Formula["apr-util"].opt_prefix}
       --with-apr=#{Formula["apr"].opt_prefix}
       --with-apxs=no
+      --with-jdk=#{Formula["openjdk"].opt_prefix}
       --with-ruby-sitedir=#{lib}/ruby
       --with-py3c=#{py3c_prefix}
       --with-serf=#{serf_prefix}
-      --with-sqlite=#{Formula["sqlite"].opt_prefix}
+      --with-sqlite=#{sqlite}
       --with-swig=#{Formula["swig"].opt_prefix}
       --with-zlib=#{zlib}
       --without-apache-libexecdir
       --without-berkeley-db
       --without-gpg-agent
+      --enable-javahl
       --without-jikes
       PYTHON=#{Formula["python@3.9"].opt_bin}/python3
       RUBY=#{ruby}
     ]
-
-    # Do not build java bindings on ARM as openjdk is not available
-    args << "--with-jdk=#{Formula["openjdk"].opt_prefix}" << "--enable-javahl" if Hardware::CPU.intel?
 
     inreplace "Makefile.in",
               "toolsdir = @bindir@/svn-tools",
@@ -149,13 +146,13 @@ class Subversion < Formula
     system "make", "install-swig-py"
     (lib/"python3.9/site-packages").install_symlink Dir["#{lib}/svn-python/*"]
 
-    if Hardware::CPU.intel?
-      # Java and Perl support don't build correctly in parallel:
-      # https://github.com/Homebrew/homebrew/issues/20415
-      ENV.deparallelize
-      system "make", "javahl"
-      system "make", "install-javahl"
+    # Java and Perl support don't build correctly in parallel:
+    # https://github.com/Homebrew/homebrew/issues/20415
+    ENV.deparallelize
+    system "make", "javahl"
+    system "make", "install-javahl"
 
+    if Hardware::CPU.intel?
       perl_archlib = Utils.safe_popen_read("perl", "-MConfig", "-e", "print $Config{archlib}")
       perl_core = Pathname.new(perl_archlib)/"CORE"
       perl_extern_h = perl_core/"EXTERN.h"

@@ -1,8 +1,8 @@
 class Protobuf < Formula
   desc "Protocol buffers (Google's data interchange format)"
   homepage "https://github.com/protocolbuffers/protobuf/"
-  url "https://github.com/protocolbuffers/protobuf/releases/download/v3.15.6/protobuf-all-3.15.6.tar.gz"
-  sha256 "a96d66a29df73991ece4d82f04abf242d28f4cdacd7eb0ddf47f75a344a290af"
+  url "https://github.com/protocolbuffers/protobuf/releases/download/v3.17.1/protobuf-all-3.17.1.tar.gz"
+  sha256 "7dd46c0fef046c056adc7a1bf7dfd063f19cbcb206133441ca315ab73572d8a8"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,11 +11,11 @@ class Protobuf < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "9796999e817e40e4fffeb8db15a5a33f636f04513e4bc70d4f4a09aa5a30951b"
-    sha256 cellar: :any,                 big_sur:       "4af36392a6b3285041622528744eec0957774bd3b12232a570dc063f7d0f3c42"
-    sha256 cellar: :any,                 catalina:      "c67ec46a5a2bd323a92aff5ba016b36d69b85f59cf80286322e76d5e624ff1b1"
-    sha256 cellar: :any,                 mojave:        "5ba63d697ceb2452575f19d86220aa09c157059a89b1a2b9c9018a471f07cf6a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "455a1e6cb8c742b474dcfedac179f094f4fcbc11ac90333688f950804cbf3ab8"
+    sha256 cellar: :any,                 arm64_big_sur: "8f4c051499f9b36cc77c81020b81a04ceb659664d9a91bd568df261adf993862"
+    sha256 cellar: :any,                 big_sur:       "19460dee81320b5bab161eaaa66af0b9667cb9361fb62b75c3b914f1c09a0208"
+    sha256 cellar: :any,                 catalina:      "2c46097731cc4074dbf64e18fb986f4f90eaa72c2e762ea8323a27403acb9e5f"
+    sha256 cellar: :any,                 mojave:        "fc3a0cd08f3a038d821c010b8eea8de3183aa1e4715449c82a3c861a2a4638aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11812ef0bb6d897612abfeb6310d6caab51466c078846b4b6e98d943b704d902"
   end
 
   head do
@@ -27,11 +27,7 @@ class Protobuf < Formula
   end
 
   depends_on "python@3.9" => [:build, :test]
-
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-1.15.0.tar.gz"
-    sha256 "30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"
-  end
+  depends_on "six"
 
   def install
     # Don't build in debug mode. See:
@@ -44,7 +40,7 @@ class Protobuf < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--with-zlib"
     system "make"
-    system "make", "check" if OS.mac?
+    system "make", "check"
     system "make", "install"
 
     # Install editor support and examples
@@ -54,18 +50,10 @@ class Protobuf < Formula
     ENV.append_to_cflags "-I#{include}"
     ENV.append_to_cflags "-L#{lib}"
 
-    resource("six").stage do
-      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(libexec)
-    end
     chdir "python" do
-      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(libexec),
+      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix),
                         "--cpp_implementation"
     end
-
-    version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    site_packages = "lib/python#{version}/site-packages"
-    pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
-    (prefix/site_packages/"homebrew-protobuf.pth").write pth_contents
   end
 
   test do

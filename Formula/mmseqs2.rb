@@ -20,10 +20,12 @@ class Mmseqs2 < Formula
   depends_on "libomp"
   depends_on "wget"
 
-  depends_on "gawk" unless OS.mac?
-
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "gawk"
+  end
 
   resource "documentation" do
     url "https://github.com/soedinglab/MMseqs2.wiki.git",
@@ -44,7 +46,7 @@ class Mmseqs2 < Formula
       "-DHAVE_SSE4_1=1"
     end
 
-    if OS.mac?
+    on_macos do
       libomp = Formula["libomp"]
       args << "-DOpenMP_C_FLAGS=-Xpreprocessor\ -fopenmp\ -I#{libomp.opt_include}"
       args << "-DOpenMP_C_LIB_NAMES=omp"

@@ -1,17 +1,17 @@
 class CargoWatch < Formula
   desc "Watches over your Cargo project's source"
   homepage "https://github.com/passcod/cargo-watch"
-  url "https://github.com/passcod/cargo-watch/archive/v7.5.1.tar.gz"
-  sha256 "8421f4344dd11c1756e4041a678d5de32dae92eb01887d6ed147f5afc1e22675"
+  url "https://github.com/passcod/cargo-watch/archive/v7.7.2.tar.gz"
+  sha256 "395d0ce648010394bc769f93eac521fe3dbf25c317c2c54c9b623b0f23027aac"
   license "CC0-1.0"
   head "https://github.com/passcod/cargo-watch.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f2678878106d0e49efc89fe54bc067baccfae665aebd315445fd2b209c92c340"
-    sha256 cellar: :any_skip_relocation, big_sur:       "9cb2093218ac5a1bdd37be8bca0e0d088d0634082f1140d8129a190d6fadb987"
-    sha256 cellar: :any_skip_relocation, catalina:      "37410c79c87cf264f8fcaf7dc91aed79cc75a4c14217faf14e9a12b119c55bdb"
-    sha256 cellar: :any_skip_relocation, mojave:        "4ed92b4233b11e2860096fde5f81ab350e76d535bf20ef2afbae3546edf8872d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e41f535086a9d9ac0fa3546314a571204290dc676715de173c0ebd1128e26f2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "a41457079f156fbf5a53d6037c6cdf92c6c644d00392a923f85d16bbd7b769f8"
+    sha256 cellar: :any_skip_relocation, big_sur:       "789c2ef8304a9e8149bf19fe19e596452680fdb765f89f47e6e2d4f7f4d773ac"
+    sha256 cellar: :any_skip_relocation, catalina:      "2b4795d6ccfd29eec17e9199867683dc77977b43e7178936fbf205e123be68d3"
+    sha256 cellar: :any_skip_relocation, mojave:        "ecaaebdc7c44594390ae2bc9067f96e691357d5bd96ec17cfa2db248b22cf0a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "45fd103b7e25b8e51a265415ad82004c098234a317b4e03f468df57dd1eb7fe1"
   end
 
   depends_on "rust" => :build
@@ -22,7 +22,7 @@ class CargoWatch < Formula
 
   test do
     output = shell_output("#{bin}/cargo-watch -x build 2>&1", 1)
-    assert_match "error: Not a Cargo project, aborting.", output
+    assert_match "error: failed to start `cargo metadata`", output
 
     assert_equal "cargo-watch #{version}", shell_output("#{bin}/cargo-watch --version").strip
   end

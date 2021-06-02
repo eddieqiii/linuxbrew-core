@@ -4,6 +4,7 @@ class Cpl < Formula
   url "ftp://ftp.eso.org/pub/dfs/pipelines/libraries/cpl/cpl-7.1.3.tar.gz"
   sha256 "04109613819b97273045102bd7acf52d13ee7f9217779f17ae2a170c491965c5"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "https://www.eso.org/sci/software/cpl/download.html"
@@ -11,11 +12,11 @@ class Cpl < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "fcc333aeb18c1c3ae29de030f7eca67b72f5dd688d2fd5d609208722dc669bb7"
-    sha256 cellar: :any,                 big_sur:       "fdfd479b8c8f52b085f4b04b65dc4c8a2117598180dc6ff4d5b335910d9ac614"
-    sha256 cellar: :any,                 catalina:      "7fbc74cf613b6247bcbba46ffced1b1436ab7fbee5a53e5c7493eb5b4f9b29cd"
-    sha256 cellar: :any,                 mojave:        "70f2086f3529c963bbbf9b09069ff29c39d244e49c85decbcea8b6d99642315e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9f7569d423a5e24fd06429d0032596d1965e9099fceb0a471ac7e7a05e6ef801"
+    sha256 cellar: :any,                 arm64_big_sur: "f6509e4835df16a6e1e6b1c1b6106d6e051ee68d218e2c0de1dfaf6de861a6d8"
+    sha256 cellar: :any,                 big_sur:       "e7c7251df2f10b6c835b71e9ade9f13c785e93dbf4a394336155ac33eff4eb5c"
+    sha256 cellar: :any,                 catalina:      "a65a33c7ea760f22e9754185fb4626c61d6797eb048517bda1c45114dacce152"
+    sha256 cellar: :any,                 mojave:        "c387e361d054fd4e735ecb36b6007619f993d005344edd435c40db47407a1287"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8555de1fcdc3cae1148dc3ca44c137456f59b322aa5aeadcb92ad9c773f91d16"
   end
 
   depends_on "cfitsio"

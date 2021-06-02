@@ -12,7 +12,6 @@ class Snappystream < Formula
     sha256 cellar: :any_skip_relocation, big_sur:       "0259933ab01a0edf8162f901820728e9f36e0244e6dc34aa8de64caf95247bcb"
     sha256 cellar: :any_skip_relocation, catalina:      "083a4297326a9171920d68c6f0d93891d1cef8971546efd0293360b8dfc4e564"
     sha256 cellar: :any_skip_relocation, mojave:        "f768ccd06fd8d1cceb9905d71d7be38b55c3d2797df8d58a4f5528f22144db6d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9658faf555cc952243c70912d5eec36b95222e3432c3a23b013009c71e564cae"
   end
 
   depends_on "cmake" => :build

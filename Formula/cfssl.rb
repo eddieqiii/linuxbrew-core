@@ -4,26 +4,25 @@ class Cfssl < Formula
   url "https://github.com/cloudflare/cfssl/archive/v1.5.0.tar.gz"
   sha256 "5267164b18aa99a844e05adceaf4f62d1b96dcd326a9132098d65c515c180a91"
   license "BSD-2-Clause"
+  revision 1
   head "https://github.com/cloudflare/cfssl.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fba750edd7173d33b8ae318b9fc4ec45509e3064dcb9f4d81f0dc2b5bd5ad08e"
-    sha256 cellar: :any_skip_relocation, big_sur:       "0c28baffc2249f7f5ca27dff92318106267840a7ace3237e5de88cdaf30ee758"
-    sha256 cellar: :any_skip_relocation, catalina:      "eba10fa745e0b84e9ecf812313125f3ce6178b9c4053ba1d5ce81214f34316f7"
-    sha256 cellar: :any_skip_relocation, mojave:        "cb0a2266d3f11b5d4462c824dbc9bbc7f0893bf24f4eb92025809d2ce36f3549"
-    sha256 cellar: :any_skip_relocation, high_sierra:   "37abc780b685c1aeee3771b5a66771bea66fdb9b49c7aea80d9a0b96a479a10c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "51e7a484354d5452351cbbd5219534123ae86e0f63b3292411402f9e7cd7e8fd"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "871db96ebb99fe15d2fa4879ede55acc81c6412b421969435e298c4b56de6bd7"
+    sha256 cellar: :any_skip_relocation, big_sur:       "5461bace7b3ba595fca81cd7d2bacb35fe349e1915d04dcfcb18c47e2e6d7c77"
+    sha256 cellar: :any_skip_relocation, catalina:      "8da797d63b4ee6f985b0bf1e2b4a44a08fcc4d5c1c4266fca178891c40cec83a"
+    sha256 cellar: :any_skip_relocation, mojave:        "9a0553b89f1058f0ede9aef4667fa1527e230a27c0d6e26af01f0b63c9f71409"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5cd6f4b229a4314194d0b422ba946e6651e6b201ccf8a831a778c59117c80626"
   end
 
   depends_on "go" => :build
   depends_on "libtool"
 
   def install
-    ldflags = ["-s", "-w",
-               "-X github.com/cloudflare/cfssl/cli/version.version=#{version}"]
+    ldflags = "-s -w -X github.com/cloudflare/cfssl/cli/version.version=#{version}"
 
-    system "go", "build", "-o", "#{bin}/cfssl", "-ldflags", ldflags, "cmd/cfssl/cfssl.go"
-    system "go", "build", "-o", "#{bin}/cfssljson", "-ldflags", ldflags, "cmd/cfssljson/cfssljson.go"
+    system "go", "build", *std_go_args(ldflags: ldflags), "-o", "#{bin}/cfssl", "cmd/cfssl/cfssl.go"
+    system "go", "build", *std_go_args(ldflags: ldflags), "-o", "#{bin}/cfssljson", "cmd/cfssljson/cfssljson.go"
     system "go", "build", "-o", "#{bin}/cfsslmkbundle", "cmd/mkbundle/mkbundle.go"
   end
 
@@ -60,5 +59,7 @@ class Cfssl < Formula
     assert_match(/.*-----END CERTIFICATE-----$/, response["cert"])
     assert_match(/^-----BEGIN RSA PRIVATE KEY-----.*/, response["key"])
     assert_match(/.*-----END RSA PRIVATE KEY-----$/, response["key"])
+
+    assert_match(/^Version:\s+#{version}/, shell_output("#{bin}/cfssl version"))
   end
 end

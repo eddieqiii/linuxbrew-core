@@ -1,9 +1,9 @@
 class Logtalk < Formula
   desc "Declarative object-oriented logic programming language"
   homepage "https://logtalk.org/"
-  url "https://github.com/LogtalkDotOrg/logtalk3/archive/lgt3440stable.tar.gz"
-  version "3.44.0"
-  sha256 "429088a4fea3fae3832946f12bdff5e24a1d99a55f07b1669ea99b54096a93fa"
+  url "https://github.com/LogtalkDotOrg/logtalk3/archive/lgt3470stable.tar.gz"
+  version "3.47.0"
+  sha256 "d98be342be120e6c6078571842551bf3db580bad37400dc64d8d530a1b2287f9"
   license "Apache-2.0"
 
   livecheck do
@@ -12,10 +12,10 @@ class Logtalk < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "7f92e746a72fb33582555a78a128db9d48dd74bfd1e28d119b9d3a834dddbd6c"
-    sha256 cellar: :any_skip_relocation, catalina:     "e1c9def39f7585aaa0047fc8a0550a02820b796ba6691a437487f589ca56573c"
-    sha256 cellar: :any_skip_relocation, mojave:       "da60c7e264ea48b3990ab4dcc0cbd3c9cc33e7c37b076671f8da7f071e96ee90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "01c1f093e393e5e5ec9ab6ee3895595adc33d77dd176d00892b27f27b90c3d5b"
+    sha256 cellar: :any_skip_relocation, big_sur:      "48b5790a26bdee8b3d4f271b4c02308958a75f65db13002b36252d16f2094aaf"
+    sha256 cellar: :any_skip_relocation, catalina:     "fd1de67e21bae7559a5a1dba61363c72df72eb264b6153275a2bc89e16f381a2"
+    sha256 cellar: :any_skip_relocation, mojave:       "56f471841043c825f486a6394254c946a4b4e9a589d0212869f3b276d7bd3d5b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "8383a470bd0546000c604c4e8b99ee7b89e8b4d4f50a94202f01d5dc1ed7e503"
   end
 
   depends_on "gnu-prolog"

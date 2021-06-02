@@ -1,9 +1,10 @@
 class Libedit < Formula
   desc "BSD-style licensed readline alternative"
   homepage "https://thrysoee.dk/editline/"
-  url "https://thrysoee.dk/editline/libedit-20210216-3.1.tar.gz"
-  version "20210216-3.1"
-  sha256 "2283f741d2aab935c8c52c04b57bf952d02c2c02e651172f8ac811f77b1fc77a"
+  url "https://thrysoee.dk/editline/libedit-20210419-3.1.tar.gz"
+  version "20210419-3.1"
+  sha256 "571ebe44b74860823e24a08cf04086ff104fd7dfa1020abf26c52543134f5602"
+  license "BSD-3-Clause"
 
   livecheck do
     url :homepage
@@ -11,11 +12,11 @@ class Libedit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "4d147b3faf124f55ff09117d8882ba96b605c29939c238083c13ad750d2749f2"
-    sha256 cellar: :any,                 big_sur:       "c56ab224f48f895bcd3220fbb6c0b05d625d5e720785abab4c10f28ff8af1837"
-    sha256 cellar: :any,                 catalina:      "6991169e0e1908adbcbdc1a578a27a47f237f9a1497bac29cfffa65055b0c9c7"
-    sha256 cellar: :any,                 mojave:        "a5ba27ac97b4033f4277624712038bdae55865258b74bc2302c3c810218204a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "713fc214775aff0f86bcc4a8c99d77d99e1cf6ffc1d175114060144b55e58e06"
+    sha256 cellar: :any,                 arm64_big_sur: "04ed7ad171dc9522e9a9b0d163e816f9de98837ffd71ac800906ecbc23ad6398"
+    sha256 cellar: :any,                 big_sur:       "f648687d7d1328cd16d926425956bfb6617ba0212d7705d1a75e75c572cdac26"
+    sha256 cellar: :any,                 catalina:      "5e65d63c667262319f8bca0613d42189a3cece68e753c9cbe44b17c8f3719d19"
+    sha256 cellar: :any,                 mojave:        "432a7d0cfb00ded9d02e2da8861a5d69294c2c9b98e89e849b9a9d86310239f9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "80b7ec53c208ab5b6c0a1308aafa7f31e3f44f216ef9ab8fbd01d90d8661054d"
   end
 
   keg_only :provided_by_macos
@@ -28,11 +29,9 @@ class Libedit < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
 
-    unless OS.mac?
-      # Conflicts with ncurses.
+    on_linux do
+      # Conflicts with readline.
       mv man3/"history.3", man3/"history_libedit.3"
-      # Symlink libedit.so.0 to libedit.so.2 for binary compatibility with Debian/Ubuntu.
-      ln_s lib/"libedit.so.0", lib/"libedit.so.2"
     end
   end
 

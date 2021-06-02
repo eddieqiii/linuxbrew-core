@@ -4,18 +4,20 @@ class Libebml < Formula
   url "https://dl.matroska.org/downloads/libebml/libebml-1.4.2.tar.xz"
   sha256 "41c7237ce05828fb220f62086018b080af4db4bb142f31bec0022c925889b9f2"
   license "LGPL-2.1-or-later"
-  revision 1 unless OS.mac?
+  revision 2 unless OS.mac?
   head "https://github.com/Matroska-Org/libebml.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "fce6d01b12243501223e4e9294528b8eab1818815b18e4ffe777fd14cec0e525"
-    sha256 cellar: :any,                 big_sur:       "de4edaae6d3f42a388be996f448b582262e39e923acc9ccef881a20ffa817d38"
-    sha256 cellar: :any,                 catalina:      "20a71bb0c2babdc04f179dc77c7a03c2f2f2031e7d8d87fbf9d3c41ee831addc"
-    sha256 cellar: :any,                 mojave:        "c3c91dc9f86978012a06f299115bc088e5ea0af6aec2e915d0f8338c4c0edd03"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6be2199cf8e4c02b7d8cb0ecc4e51f4498da77b58a7bccc3aa4e356e454d7be5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1fc990bad774ee2d7ce5d0794effee2529fbd31932854f2a6aa444d8634ce821"
   end
 
   depends_on "cmake" => :build
+
+  on_linux do
+    depends_on "gcc" => :build
+  end
+
+  fails_with gcc: "5"
 
   def install
     mkdir "build" do

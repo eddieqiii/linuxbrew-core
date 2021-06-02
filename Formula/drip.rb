@@ -12,7 +12,6 @@ class Drip < Formula
     sha256 cellar: :any_skip_relocation, sierra:       "5d84f90eae53dbd9055e429d42981933cf5f3a2f213862ba7892643c5289e9df"
     sha256 cellar: :any_skip_relocation, el_capitan:   "69a071055da45949c56df74c4959336f9511f863f447aed941a66547169f2c88"
     sha256 cellar: :any_skip_relocation, yosemite:     "14711be9325c0b2df465197156b4b78bed673bf441011d0ce29d48a0c2ee0045"
-    sha256 cellar: :any_skip_relocation, mavericks:    "69207c24aa1f8e6ba406e6cc3f811cd7000ee14c713cc32b49d72f2c76a702bc"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "048944c8240d219b4777e4f35bb7d456062042385e6b2a375f2d00d1b9d517f9"
   end
 

@@ -26,7 +26,9 @@ class Libusb < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "systemd" if OS.linux? # for libudev
+  on_linux do
+    depends_on "systemd"
+  end
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
@@ -40,8 +42,8 @@ class Libusb < Formula
   test do
     cp_r (pkgshare/"examples"), testpath
     cd "examples" do
-      system ENV.cc, "-L#{lib}", "-I#{include}/libusb-1.0",
-             "listdevs.c", "-o", "test", "-lusb-1.0"
+      system ENV.cc, "listdevs.c", "-L#{lib}", "-I#{include}/libusb-1.0",
+             "-lusb-1.0", "-o", "test"
       system "./test"
     end
   end

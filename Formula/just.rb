@@ -1,22 +1,27 @@
 class Just < Formula
   desc "Handy way to save and run project-specific commands"
   homepage "https://github.com/casey/just"
-  url "https://github.com/casey/just/archive/v0.8.4.tar.gz"
-  sha256 "7aee472e4b70e62e89d7d5185493a3c680aeae4cc323c842e4c5b9b8af47040a"
+  url "https://github.com/casey/just/archive/v0.9.3.tar.gz"
+  sha256 "bb3e99a2427357c63b568c8e64de76c2962b9c7282d1a5f3b7348deef49e21d9"
   license "CC0-1.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f2ba1e974312ef1b70483c1d74bdf8f3c669e70872908b7014082b8959c4724a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "d72a96af3be4416741b7bed8a806ce6ee7b36355b355d663062d9fe32aa814d4"
-    sha256 cellar: :any_skip_relocation, catalina:      "1d43b3fb6efcba5944483ba89d9b3b19af9b1745d1e7d5dcf2d047aa869a156d"
-    sha256 cellar: :any_skip_relocation, mojave:        "5101411c95e187d0a1184029f5b11f45119e8438d68fb62c15c3303e75e9287e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "46823d3a088058705f67a17695c6e1ac5a3dce445de00c5a30d1d57ccb4b0e08"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5d8599a36a989fc060da5c98569946b127f530c3b3ee78133e1598915d5a3e21"
+    sha256 cellar: :any_skip_relocation, big_sur:       "57bff9eff00971dc329bc4dbe61b1da77ddadd017c1de0c3cbba28f5f99c5754"
+    sha256 cellar: :any_skip_relocation, catalina:      "b125c993c7fdb3e7ffa1415f09f191a625a395d70ff6a5584eff139f76128c96"
+    sha256 cellar: :any_skip_relocation, mojave:        "1fb9c2d34c7905ac05ee397e8a396a391ba03cba86a2d96201375b8da4e3657c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff31dfbaf5592e7837afaaaf84bdb733f45fc2ad786832f828b94075c7b31c89"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
+
+    man1.install "man/just.1"
+    bash_completion.install "completions/just.bash" => "just"
+    fish_completion.install "completions/just.fish"
+    zsh_completion.install "completions/just.zsh" => "_just"
   end
 
   test do
@@ -24,7 +29,7 @@ class Just < Formula
       default:
         touch it-worked
     EOS
-    system "#{bin}/just"
+    system bin/"just"
     assert_predicate testpath/"it-worked", :exist?
   end
 end

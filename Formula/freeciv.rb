@@ -1,9 +1,10 @@
 class Freeciv < Formula
   desc "Free and Open Source empire-building strategy game"
   homepage "http://freeciv.org"
-  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%202.6/2.6.3/freeciv-2.6.3.tar.bz2"
-  sha256 "77432e027557a9eb407dac730ae9810ee172abe37111deb017fe72b8183ff8d1"
+  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%202.6/2.6.4/freeciv-2.6.4.tar.bz2"
+  sha256 "40db957766acbd49c5af15afd1711da996b6681be7abee3352c5f2539c10c1ce"
   license "GPL-2.0-or-later"
+  revision 2
 
   livecheck do
     url :stable
@@ -11,10 +12,10 @@ class Freeciv < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "b32f1d068dac64d037bb4784d1bfe2f3d88801d45395647b46e83e9352428e97"
-    sha256 big_sur:       "57f0a07826b7fa224a79eda88041375d21fcd2787ab57bca311542da278da5a6"
-    sha256 catalina:      "c46864366282e6b626a787e45453f539c3604c334a84326a0c8cc4ab2511e7dd"
-    sha256 mojave:        "287706ed5964b4959c16017e641afe30e0348fd4840e9516525bceeb49ffa8d4"
+    sha256 arm64_big_sur: "46ece65b979e2c82edc4b0a4f2ab74ca181974ac6b9935f0ead45b489f9663cf"
+    sha256 big_sur:       "df2c2a53344210424d78c3e1690c1151317b35a652ea38c061e74beb836729e2"
+    sha256 catalina:      "d844fedced4938a09144ea7ee5ff9f18f389cc48fc6a4faba997dd3d45c854ce"
+    sha256 mojave:        "e2f6896da8457c49e3b00433d05a9dce1eaf41d8c2a3de23b027b0224869db0f"
   end
 
   head do
@@ -27,6 +28,7 @@ class Freeciv < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "adwaita-icon-theme"
   depends_on "atk"
   depends_on "cairo"
   depends_on "freetype"
@@ -57,6 +59,7 @@ class Freeciv < Formula
       --disable-sdltest
       --disable-sdl2test
       --disable-sdl2framework
+      --enable-client=gtk3.22
       --enable-fcdb=sqlite3
       --prefix=#{prefix}
       --with-readline=#{Formula["readline"].opt_prefix}

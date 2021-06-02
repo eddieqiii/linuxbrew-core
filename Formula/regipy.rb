@@ -3,16 +3,17 @@ class Regipy < Formula
 
   desc "Offline registry hive parsing tool"
   homepage "https://github.com/mkorman90/regipy"
-  url "https://files.pythonhosted.org/packages/03/b5/03caa8175206dc694899eeec28727c33eb92c9b794c06f9057b4516b1523/regipy-1.8.4.tar.gz"
-  sha256 "6f5827feb645df1149f0b599dabf04483a029816d3e38f7412fcb95669929949"
+  url "https://files.pythonhosted.org/packages/45/e2/84730bc78f86a961e852203507acc808e335e8fbaf98ed868ed89b5f2bbd/regipy-1.9.0.tar.gz"
+  sha256 "b3e669d67214570429617f2eaef4411114d11500f92e6cbadff3135b9ddddde9"
   license "MIT"
   head "https://github.com/mkorman90/regipy.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "415bf3b75846272cc9be5ef274011a856034ee3b18d59d1caa83004dee1f9d15"
-    sha256 cellar: :any_skip_relocation, big_sur:       "d1c9374687f816372106f322889d0e38061a1983f8f7cc178aeee3ddcf5bf860"
-    sha256 cellar: :any_skip_relocation, catalina:      "576e7a172f16b5a674d6414e3497d765d710923798d2e87ae0a836efccc90b02"
-    sha256 cellar: :any_skip_relocation, mojave:        "0cd5b15c766615ca3f3e9d17f69004ab0d9ff9093be4762dd4181df2d4b9b6fa"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1cff55c51704cf0c431dcd1f73a9070a84e3ccbef9e1acce4063430b38af0186"
+    sha256 cellar: :any_skip_relocation, big_sur:       "f5db25db31fade41d191ab90c6d32f0f957b7df7dff2d037fe8af0174092e88a"
+    sha256 cellar: :any_skip_relocation, catalina:      "3356c4b5f74b617ebd64a91ce72fe6d02434cf68e82d41d328cc3f3bdd34f1ea"
+    sha256 cellar: :any_skip_relocation, mojave:        "1918914d8139c75785e9e30a0b905118d6d0255862a360a7117f3bc4c0bcf1b6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0e8b1c4887487fc015373570bf9ba5797e20ccf1dc25a646da3b01335be96fd9"
   end
 
   depends_on "python-tabulate"
@@ -29,8 +30,8 @@ class Regipy < Formula
   end
 
   resource "construct" do
-    url "https://files.pythonhosted.org/packages/13/92/517dd8f4b4f79d75a15b1c9c68e510cb323da0ff098f7ed62d2fdda525db/construct-2.10.61.tar.gz"
-    sha256 "d75384a04cb36ae5417dd34ce230c392e6085d872ab8a99ebd756c34bac0dff5"
+    url "https://files.pythonhosted.org/packages/39/2b/c68eaf8294f01ea534f39b8b4ec1d7308b5195e08570c276b104bccd24ff/construct-2.10.67.tar.gz"
+    sha256 "730235fedf4f2fee5cfadda1d14b83ef1bf23790fb1cc579073e10f70a050883"
   end
 
   resource "inflection" do

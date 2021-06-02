@@ -80,6 +80,15 @@ class Suricata < Formula
       args << "--with-libpcap-libraries=#{Formula["libpcap"].opt_lib}"
     end
 
+    on_macos do
+      args << "--enable-ipfw"
+    end
+
+    on_linux do
+      args << "--with-libpcap-includes=#{Formula["libpcap"].opt_include}"
+      args << "--with-libpcap-libraries=#{Formula["libpcap"].opt_lib}"
+    end
+
     system "./configure", *args
     system "make", "install-full"
 

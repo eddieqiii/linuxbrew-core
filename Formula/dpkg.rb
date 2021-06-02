@@ -1,12 +1,11 @@
 class Dpkg < Formula
   desc "Debian package management system"
   homepage "https://wiki.debian.org/Teams/Dpkg"
-  # Please always keep the Homebrew mirror as the primary URL as the
+  # Please use a mirror as the primary URL as the
   # dpkg site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/dpkg-1.20.7.1.tar.xz"
-  mirror "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.7.1.tar.xz"
-  sha256 "0aad2de687f797ef8ebdabc7bafd16dc1497f1ce23bd9146f9aa73f396a5636f"
+  url "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.9.tar.xz"
+  sha256 "5ce242830f213b5620f08e6c4183adb1ef4dc9da28d31988a27c87c71fe534ce"
   license "GPL-2.0-only"
 
   livecheck do
@@ -15,19 +14,19 @@ class Dpkg < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 big_sur:      "d0c2d11dbc25d90112003e893d7ecd64cf32844e909cce3acc06e4ac5fa67142"
-    sha256 catalina:     "e17f3fe5bb1e8791707fffbf6e7adf86dd4c0835fb01ae7c127ffc1997288055"
-    sha256 mojave:       "86ea4117acc21ff9e0d64ca131d4e84f9113e385ed12156a81368e48888f6da5"
-    sha256 x86_64_linux: "5d5dae9c08f190297c3c0ddb76c0c29b597c334fe1e45d0d444ae7a37a70b32c"
+    sha256 arm64_big_sur: "050cebde8ca0b1874974c4f6a03be2144055ef85485aa4da30017f8c645d440b"
+    sha256 big_sur:       "36fe071803813a6afff6cd69bbba249cd0321e3204302a1aee25f8f4873c934c"
+    sha256 catalina:      "15bb579c5dc9c7d36879fa5a07fe682f7064cef68ecd45f46cbe3aec0120c837"
+    sha256 mojave:        "422227f7e36fcdc361f8ba3fc5ba6c19603bd25ec3933cf6b5cef0eb5ccec523"
+    sha256 x86_64_linux:  "9e532542fd248b6a4862446584e2b0262a3aa5353f458f553ac4f26be78f7c8d"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "po4a" => :build
   depends_on "gettext"
   depends_on "gnu-tar"
   depends_on "gpatch"
   depends_on "perl"
-  depends_on "po4a"
   depends_on "xz" # For LZMA
 
   uses_from_macos "bzip2"

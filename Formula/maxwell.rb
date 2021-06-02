@@ -1,8 +1,8 @@
 class Maxwell < Formula
   desc "Reads MySQL binlogs and writes row updates as JSON to Kafka"
   homepage "https://maxwells-daemon.io/"
-  url "https://github.com/zendesk/maxwell/releases/download/v1.31.0/maxwell-1.31.0.tar.gz"
-  sha256 "e57a9523ae9625df2b07dff5cf7dca7548d66037bbbf4bf3f9a9c2a01d98d3e4"
+  url "https://github.com/zendesk/maxwell/releases/download/v1.33.0/maxwell-1.33.0.tar.gz"
+  sha256 "319421729120c02266f7e83e6f9ad1910da182bbc5f4304766e53edb2b67e336"
   license "Apache-2.0"
 
   livecheck do
@@ -25,14 +25,18 @@ class Maxwell < Formula
   end
 
   test do
+    log = testpath/"maxwell.log"
+
     fork do
+      $stdout.reopen(log)
+      $stderr.reopen(log)
       # Tell Maxwell to connect to a bogus host name so we don't actually connect to a local instance
       # The '.invalid' TLD is reserved as never to be installed as a valid TLD.
-      exec "#{bin}/maxwell --host not.real.invalid > #{testpath}/maxwell.log 2>&1"
+      exec "#{bin}/maxwell --host not.real.invalid"
     end
     sleep 15
 
     # Validate that we actually got in to Maxwell far enough to attempt to connect.
-    assert_match "ERROR Maxwell - SQLException: Communications link failure", IO.read("#{testpath}/maxwell.log")
+    assert_match "ERROR Maxwell - SQLException: Communications link failure", log.read
   end
 end

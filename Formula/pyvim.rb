@@ -54,7 +54,9 @@ class Pyvim < Formula
   end
 
   test do
-    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    on_linux do
+      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    end
 
     # Need a pty due to https://github.com/jonathanslenders/pyvim/issues/101
     require "pty"

@@ -1,11 +1,11 @@
 class Netcdf < Formula
   desc "Libraries and data formats for array-oriented scientific data"
   homepage "https://www.unidata.ucar.edu/software/netcdf"
-  url "https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.4.tar.gz"
-  mirror "https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-c-4.7.4.tar.gz"
-  sha256 "0e476f00aeed95af8771ff2727b7a15b2de353fb7bb3074a0d340b55c2bd4ea8"
+  url "https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.8.0.tar.gz"
+  mirror "https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-c-4.8.0.tar.gz"
+  sha256 "679635119a58165c79bb9736f7603e2c19792dd848f19195bf6881492246d6d5"
   license "BSD-3-Clause"
-  revision OS.mac? ? 2 : 3
+  revision 1
   head "https://github.com/Unidata/netcdf-c.git"
 
   livecheck do
@@ -14,11 +14,11 @@ class Netcdf < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "26eaaca9d9cf3bddea87d982c76c31df6df91b198d04ac62f0084141109457dd"
-    sha256 cellar: :any_skip_relocation, big_sur:       "55caff29df9b25ee906d2dcce6c78e02b6e9ac163b42e06f53c45aa0f6ade645"
-    sha256 cellar: :any_skip_relocation, catalina:      "b3aeca909a91b47e8e0d3fdc9d209dd13ecfb2b1879bab5ea49d3dcfd6404ddd"
-    sha256 cellar: :any_skip_relocation, mojave:        "9504a25d84dd6afb80553576474420cc074c64821aa346a58271dad26982b187"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91680c4afcb32d8c2afd67f50eb41a3a0a6adac7173aeb3c4f79b64a336ab453"
+    sha256                               arm64_big_sur: "870938057a2b09e0fa3aaaa39b74ad720e0ced7c001ecaaaf4eb99dea7d8f1f4"
+    sha256                               big_sur:       "5d17807efcdad51a3bba144e55b003db3c04468e7b6f940501bb92fcae8258dd"
+    sha256                               catalina:      "f913fd0f1c6b935c4bb072fded3439cf1d9f22af3acf68f209264be69b9bed09"
+    sha256                               mojave:        "7d0569b3e8c8d3bf5573874965407e3209bbd6e43f6ddf36fb51f935544c8274"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f58677b852a6b84cd3ba6dc36e1ab4b077605302ad59cbc160254e2b3e103476"
   end
 
   depends_on "cmake" => :build
@@ -33,20 +33,12 @@ class Netcdf < Formula
     sha256 "6a1189a181eed043b5859e15d5c080c30d0e107406fbb212c8fb9814e90f3445"
   end
 
-  resource "cxx-compat" do
-    url "https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx-4.2.tar.gz"
-    mirror "https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-cxx-4.2.tar.gz"
-    sha256 "95ed6ab49a0ee001255eac4e44aacb5ca4ea96ba850c08337a3e4c9a0872ccd1"
-  end
-
   resource "fortran" do
-    url "https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.5.2.tar.gz"
-    mirror "https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-fortran-4.5.2.tar.gz"
-    sha256 "b959937d7d9045184e9d2040a915d94a7f4d0185f4a9dceb8f08c94b0c3304aa"
+    # Source tarball at official domains are missing some configuration files
+    # Switch back at version bump
+    url "https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.5.3.tar.gz"
+    sha256 "c6da30c2fe7e4e614c1dff4124e857afbd45355c6798353eccfa60c0702b495a"
   end
-
-  # Fix multiple definition of `ocdebug'; CMakeFiles/ocprint.dir/ocprint.c.o:
-  patch :DATA unless OS.mac?
 
   def install
     ENV.deparallelize
@@ -57,6 +49,11 @@ class Netcdf < Formula
       args = common_args.dup
       args << "-DNC_EXTRA_DEPS=-lmpi" if Tab.for_name("hdf5").with? "mpi"
       args << "-DENABLE_TESTS=OFF" << "-DENABLE_NETCDF_4=ON" << "-DENABLE_DOXYGEN=OFF"
+
+      # Extra CMake flags for compatibility with hdf5 1.12
+      # Remove with the following PR lands in a release:
+      # https://github.com/Unidata/netcdf-c/pull/1973
+      args << "-DCMAKE_C_FLAGS='-I#{Formula["hdf5"].include} -DH5_USE_110_API'"
 
       system "cmake", "..", "-DBUILD_SHARED_LIBS=ON", *args
       system "make", "install"
@@ -100,17 +97,6 @@ class Netcdf < Formula
       end
     end
 
-    ENV.prepend "CPPFLAGS", "-I#{include}"
-    ENV.prepend "LDFLAGS", "-L#{lib}"
-    resource("cxx-compat").stage do
-      system "./configure", "--disable-dependency-tracking",
-                            "--enable-shared",
-                            "--enable-static",
-                            "--prefix=#{prefix}"
-      system "make"
-      system "make", "install"
-    end
-
     # Remove some shims path
     on_macos do
       inreplace [
@@ -133,15 +119,12 @@ class Netcdf < Formula
                 "/usr/bin/c++"
     end
 
-    if OS.mac?
+    on_macos do
       # SIP causes system Python not to play nicely with @rpath
       libnetcdf = (lib/"libnetcdf.dylib").readlink
-      %w[libnetcdf-cxx4.dylib libnetcdf_c++.dylib].each do |f|
-        macho = MachO.open("#{lib}/#{f}")
-        macho.change_dylib("@rpath/#{libnetcdf}",
-                           "#{lib}/#{libnetcdf}")
-        macho.write!
-      end
+      macho = MachO.open("#{lib}/libnetcdf-cxx4.dylib")
+      macho.change_dylib("@rpath/#{libnetcdf}", "#{lib}/#{libnetcdf}")
+      macho.write!
     end
   end
 
@@ -187,18 +170,3 @@ class Netcdf < Formula
     system "./testf"
   end
 end
-
-
-__END__
-diff -Naur netcdf-c-4.7.4-old/ncdump/ocprint.c netcdf-c-4.7.4/ncdump/ocprint.c
---- netcdf-c-4.7.4-old/ncdump/ocprint.c        2021-02-26 08:53:00.000000000 +0100
-+++ netcdf-c-4.7.4/ncdump/ocprint.c    2021-02-26 08:53:49.000000000 +0100
-@@ -56,7 +56,7 @@
- /*Mnemonic*/
- #define TOPLEVEL 1
-
--int ocdebug;
-+extern int ocdebug;
-
- static OCerror ocstat;
- static OClink glink;

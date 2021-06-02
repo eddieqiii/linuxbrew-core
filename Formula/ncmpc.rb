@@ -11,11 +11,8 @@ class Ncmpc < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "982287b4dcffb2e5534640b77f22b5f73865f8c0a521089252001557f3fe402a"
-    sha256 cellar: :any,                 big_sur:       "212ca11a9b74741334dca03a195c1d46898d6d7036708d48cf3ef704f29ddde6"
-    sha256 cellar: :any,                 catalina:      "6df55c912cf6f466378b548d9752793a9d2b6eb42c55c7cf2c1bc156fd29743c"
-    sha256 cellar: :any,                 mojave:        "972c8c9f233312353c16e416ecdd8c643fb5d805946c5ca7cdd1e9fae8c792a7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "33ee75db1594470e395df958f88901fe2fa8887e60e798305e6aaff871dd9947"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "9da923ffb4400c42a20a1540e0070d530b7870bd4c15491bb1dbd6e211b9645c"
   end
 
   depends_on "boost" => :build
@@ -25,13 +22,14 @@ class Ncmpc < Formula
   depends_on "gettext"
   depends_on "libmpdclient"
   depends_on "pcre"
+
   if OS.mac?
     depends_on "gcc" if DevelopmentTools.clang_build_version <= 800
   else
-    fails_with gcc: "5"
-    fails_with gcc: "6"
-    depends_on "gcc@7"
+    depends_on "gcc"
   end
+
+  fails_with gcc: "5"
 
   def install
     mkdir "build" do

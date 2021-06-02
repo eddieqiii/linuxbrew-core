@@ -13,6 +13,9 @@ class AwsOkta < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "58c9a49a4f7a27c1ef8b4a60999ce66bbff62817571db92ac14bb88a6725dda9"
   end
 
+  # See https://github.com/segmentio/aws-okta/issues/278
+  deprecate! date: "2020-01-20", because: :deprecated_upstream
+
   depends_on "go" => :build
   depends_on "govendor" => :build
 

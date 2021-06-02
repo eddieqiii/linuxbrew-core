@@ -5,13 +5,13 @@ class Gmt < Formula
   mirror "https://mirrors.ustc.edu.cn/gmt/gmt-6.1.1-src.tar.xz"
   sha256 "d476cba999340648146ef53ab4a3f64858cbd2f5511cdec9f7f06f3fb7896625"
   license "LGPL-3.0-or-later"
-  revision 3
+  revision 6
   head "https://github.com/GenericMappingTools/gmt.git"
 
   bottle do
-    sha256 big_sur:  "938fd4d45e539dad96b0f8f12cec5d2a791e55ced1c2e027bdb970aed2e44ecf"
-    sha256 catalina: "894136f2754d3677ef41ac95d9087771a98502c8988a6742ce6c16832b873a92"
-    sha256 mojave:   "5ec74190adc6306423223b377b20950c6343847c5620429b17aedf7dfdbe7327"
+    sha256 big_sur:  "c674e173823291de07b175b5ba711f8eddfdf206f5493d7ed7f3957c708c4987"
+    sha256 catalina: "1e13d3e9302d8a721482c9cb129230f49ebec3a7bcb58992b1fe83cf689de396"
+    sha256 mojave:   "cab74831f1b9511d15cee15e7198c7b0b249adc7a217737f178341fcd8006e36"
   end
 
   depends_on "cmake" => :build

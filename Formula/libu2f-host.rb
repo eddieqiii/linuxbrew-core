@@ -20,6 +20,9 @@ class Libu2fHost < Formula
     sha256 cellar: :any, x86_64_linux:  "eda5379b42069ef4fe89fd6428a84ae3f84fd1e62aa49c83022b4c2686358fb5"
   end
 
+  # See: https://github.com/Yubico/libu2f-host
+  deprecate! date: "2021-05-25", because: :repo_archived
+
   depends_on "pkg-config" => :build
   depends_on "hidapi"
   depends_on "json-c"

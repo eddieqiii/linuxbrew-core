@@ -1,17 +1,17 @@
 class Abseil < Formula
   desc "C++ Common Libraries"
   homepage "https://abseil.io"
-  url "https://github.com/abseil/abseil-cpp/archive/20200923.3.tar.gz"
-  sha256 "ebe2ad1480d27383e4bf4211e2ca2ef312d5e6a09eba869fd2e8a5c5d553ded2"
+  url "https://github.com/abseil/abseil-cpp/archive/20210324.1.tar.gz"
+  sha256 "441db7c09a0565376ecacf0085b2d4c2bbedde6115d7773551bc116212c2a8d6"
   license "Apache-2.0"
-  revision 2 unless OS.mac?
+  head "https://github.com/abseil/abseil-cpp.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "0b4448de8c7a176da27c895da37c7edbadabd304a2d5ddb76c7d134f7b130e4d"
-    sha256 cellar: :any_skip_relocation, big_sur:       "e16d12f4d5eb788fc774d1cc6d328a659bfc56f0cef74244396f2453890bb9ed"
-    sha256 cellar: :any_skip_relocation, catalina:      "648a6091da13e90637b3579249ae8821292ca96efb95cd1d4a5a649d553c6ef6"
-    sha256 cellar: :any_skip_relocation, mojave:        "0879e0af3745923b219e99af5355100a4a8e4c944167414e038633a6779736d0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "88064d579870c7f43f69af3a06111deb95f57777978768d9159977ca863d02e9"
+    sha256 cellar: :any,                 arm64_big_sur: "5f0df7a96ad8c9c18eaaceba9766f44cf3840998ff61e2d7ee500c8b977000dc"
+    sha256 cellar: :any,                 big_sur:       "347ae638cc4d1879185f873fb5277a25c57f1278f7a580110a64812c763a54d1"
+    sha256 cellar: :any,                 catalina:      "340c8877e8b1e194a119f7ef06bbddbdd1f1fa057131ef1fd62f1950f06ed33e"
+    sha256 cellar: :any,                 mojave:        "9d8dfb1629092f243180a93696aea57614c20387f8bf54ae0846e8a82c79a89c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "65152303221cb0eec075c463d06c526de7ba3982aa2cb40c01a41843905f01b0"
   end
 
   depends_on "cmake" => :build
@@ -20,7 +20,7 @@ class Abseil < Formula
     mkdir "build" do
       system "cmake", "..",
                       *std_cmake_args,
-                      "-DCMAKE_INSTALL_RPATH=#{lib}",
+                      "-DCMAKE_INSTALL_RPATH=#{rpath}",
                       "-DCMAKE_CXX_STANDARD=17",
                       "-DBUILD_SHARED_LIBS=ON"
       system "make"

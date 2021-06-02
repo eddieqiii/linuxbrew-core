@@ -6,7 +6,7 @@ class GccAT6 < Formula
   url "https://ftp.gnu.org/gnu/gcc/gcc-6.5.0/gcc-6.5.0.tar.xz"
   mirror "https://ftpmirror.gnu.org/gcc/gcc-6.5.0/gcc-6.5.0.tar.xz"
   sha256 "7ef1796ce497e89479183702635b14bb7a46b53249209a5e0f999bebf4740945"
-  revision 6
+  revision 7
 
   livecheck do
     url :stable
@@ -16,18 +16,15 @@ class GccAT6 < Formula
   # gcc is designed to be portable.
   # reminder: always add 'cellar :any'
   bottle do
-    sha256 big_sur:      "64a10f90cc5ba048b3355e28fca2159c506e0e24489810bcb9688ba26221c928"
-    sha256 catalina:     "d82b14c535897ff2f9371481733512dbafd9701f09855e3d1ed6bb9bb3357f7e"
-    sha256 mojave:       "1279be27b958b93146217adb2073596c9504f7c6a746eea421a63769a8a76c10"
-    sha256 x86_64_linux: "9d0339a2008c3435a1086aa5489f76ff7809aa1c836690d31b057bd310622e9b"
+    sha256 big_sur:      "9fae646d3b49a384c6c524620f128ee5d7ee06811d5b2c9e67a06baa6e45201b"
+    sha256 catalina:     "8b18ff45d42f712a6b384a75e0850b6c6a9a369cc186e8ec31e766742a86d4eb"
+    sha256 mojave:       "9bec2c923e6cdcefc18b4c716b1b2bd93ce18ea30e8327aff93c0aaa3465c8b5"
+    sha256 x86_64_linux: "d8cc9cd05c83e973dbceb2b776ce2105fccfd5cefc51bd69f13f166eefaa5cdb"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
   # out of the box on Xcode-only systems due to an incorrect sysroot.
-  pour_bottle? do
-    reason "The bottle needs the Xcode CLT to be installed."
-    satisfy { !OS.mac? || MacOS::CLT.installed? }
-  end
+  pour_bottle? only_if: :clt_installed
 
   depends_on arch: :x86_64
   depends_on "gmp"
@@ -35,8 +32,9 @@ class GccAT6 < Formula
   depends_on "libmpc"
   depends_on "mpfr"
 
-  unless OS.mac?
-    depends_on "zlib"
+  uses_from_macos "zlib"
+
+  on_linux do
     depends_on "binutils"
   end
 
@@ -46,7 +44,7 @@ class GccAT6 < Formula
   # Patch for Xcode bug, taken from https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89864#c43
   # This should be removed in the next release of GCC if fixed by apple; this is an xcode bug,
   # but this patch is a work around committed to GCC trunk
-  if OS.mac? && MacOS::Xcode.version >= "10.2"
+  if MacOS::Xcode.version >= "10.2"
     patch do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/91d57ebe88e17255965fa88b53541335ef16f64a/gcc%406/gcc6-xcode10.2.patch"
       sha256 "0f091e8b260bcfa36a537fad76823654be3ee8462512473e0b63ed83ead18085"
@@ -67,29 +65,11 @@ class GccAT6 < Formula
     # to prevent their build.
     ENV["gcc_cv_prog_makeinfo_modern"] = "no"
 
-    args = []
+    # Change the default directory name for 64-bit libraries to `lib`
+    # http://www.linuxfromscratch.org/lfs/view/development/chapter06/gcc.html
+    inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64=" unless OS.mac?
 
-    if OS.mac?
-      args += [
-        "--build=x86_64-apple-darwin#{OS.kernel_version}",
-        "--with-system-zlib",
-      ]
-
-      # The pre-Mavericks toolchain requires the older DWARF-2 debugging data
-      # format to avoid failure during the stage 3 comparison of object files.
-      # See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
-      args << "--with-dwarf2" if MacOS.version <= :mountain_lion
-    else
-      # Change the default directory name for 64-bit libraries to `lib`
-      # http://www.linuxfromscratch.org/lfs/view/development/chapter06/gcc.html
-      inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64="
-
-      # Set the search path for glibc libraries and objects, using the system's glibc
-      # Fix the error: ld: cannot find crti.o: No such file or directory
-      ENV.prepend_path "LIBRARY_PATH", Pathname.new(Utils.safe_popen_read(ENV.cc, "-print-file-name=crti.o")).parent
-    end
-
-    args += [
+    args = [
       "--prefix=#{prefix}",
       "--libdir=#{lib}/gcc/#{version_suffix}",
       "--enable-languages=#{languages.join(",")}",
@@ -111,13 +91,13 @@ class GccAT6 < Formula
       "--disable-nls",
     ]
 
-    # Fix Linux error: gnu/stubs-32.h: No such file or directory.
-    args << "--disable-multilib" unless OS.mac?
+    on_macos do
+      args << "--build=x86_64-apple-darwin#{OS.kernel_version}"
+      args << "--with-system-zlib"
 
-    # Xcode 10 dropped 32-bit support
-    args << "--disable-multilib" if OS.mac? && DevelopmentTools.clang_build_version >= 1000
+      # Xcode 10 dropped 32-bit support
+      args << "--disable-multilib" if DevelopmentTools.clang_build_version >= 1000
 
-    if OS.mac?
       # System headers may not be in /usr/include
       sdk = MacOS.sdk_path_if_needed
       if sdk
@@ -125,14 +105,14 @@ class GccAT6 < Formula
         args << "--with-sysroot=#{sdk}"
       end
 
-      # Avoid reference to sed shim
-      args << "SED=/usr/bin/sed"
+      # Ensure correct install names when linking against libgcc_s;
+      # see discussion in https://github.com/Homebrew/homebrew/pull/34303
+      inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
     end
 
-    # Ensure correct install names when linking against libgcc_s;
-    # see discussion in https://github.com/Homebrew/homebrew/pull/34303
-    if OS.mac?
-      inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
+    on_linux do
+      # Fix Linux error: gnu/stubs-32.h: No such file or directory.
+      args << "--disable-multilib"
     end
 
     mkdir "build" do

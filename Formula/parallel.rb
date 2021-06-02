@@ -1,9 +1,9 @@
 class Parallel < Formula
   desc "Shell command parallelization utility"
   homepage "https://savannah.gnu.org/projects/parallel/"
-  url "https://ftp.gnu.org/gnu/parallel/parallel-20201122.tar.bz2"
-  mirror "https://ftpmirror.gnu.org/parallel/parallel-20201122.tar.bz2"
-  sha256 "4da0bf42c466493b44dcbd8750e7bf99c31da4c701e8be272276c16ec4caff30"
+  url "https://ftp.gnu.org/gnu/parallel/parallel-20210422.tar.bz2"
+  mirror "https://ftpmirror.gnu.org/parallel/parallel-20210422.tar.bz2"
+  sha256 "be3e6a3b644467bef25905cb4fd917e67eef982ba4f6e258df25bb0235b59ee8"
   license "GPL-3.0-or-later"
   version_scheme 1
   head "https://git.savannah.gnu.org/git/parallel.git"
@@ -14,11 +14,11 @@ class Parallel < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3b32d60399915b57a64f80e020bbfdbfacce62cf9780f3799c8fc425f691dc96"
-    sha256 cellar: :any_skip_relocation, big_sur:       "144e116a689c4fea40febb62cf7ed46dba36eee17e3ead766f63ecd55392bd8b"
-    sha256 cellar: :any_skip_relocation, catalina:      "dc76d7573944f64ce047c3025320a12aef3c744d019449d62040d7121a476d23"
-    sha256 cellar: :any_skip_relocation, mojave:        "32f6187f65e0b9b6c706a5eb6c6e24c8097a3701f5d8f7cc885bf0be82478cf0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e24471e4cc77c1d865413664e28db8a052e0155fa9996e596c4a7257e521855"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "660d5f0736181ea16850569a26ddfab88af83d112e95db0f8f790655bb3cbf51"
+    sha256 cellar: :any_skip_relocation, big_sur:       "7a604a471b0f1e51112a7bdb3a3b6656948082c8ab41c5b5cb651c22e5b5e7eb"
+    sha256 cellar: :any_skip_relocation, catalina:      "7a604a471b0f1e51112a7bdb3a3b6656948082c8ab41c5b5cb651c22e5b5e7eb"
+    sha256 cellar: :any_skip_relocation, mojave:        "7a604a471b0f1e51112a7bdb3a3b6656948082c8ab41c5b5cb651c22e5b5e7eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "620c659892f66e00d66321096ca3bd694315a037a3660e5eed37372d65fb0999"
   end
 
   conflicts_with "moreutils", because: "both install a `parallel` executable"

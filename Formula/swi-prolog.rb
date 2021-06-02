@@ -12,10 +12,8 @@ class SwiProlog < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "3a899873b22a6e4e380498ec855d2c0c7919c848872087da676d385745e39179"
-    sha256 big_sur:       "1a5384ec31ca1088eff1e16d1977a4120f12e8c15e3703ef3c80c564848e2e5c"
-    sha256 catalina:      "06c31b007436027785e73cdbf16d82dd6356766b821580a4fceda8db5eb4c86c"
-    sha256 mojave:        "1deeaab4064bf3da632a28e539f46790252cfec839ae932bc729ecc239e347c3"
+    rebuild 1
+    sha256 x86_64_linux: "12ecb163975e72690071c6011e3c7e50b6460ddc493a8c6ae8900aa96969b985"
   end
 
   depends_on "cmake" => :build
@@ -32,12 +30,15 @@ class SwiProlog < Formula
 
   def install
     mkdir "build" do
+      cc_args = %w[
+        -DCMAKE_C_COMPILER=/usr/bin/gcc
+        -DCMAKE_CXX_COMPILER=/usr/bin/g++
+      ]
       system "cmake", "..", *std_cmake_args,
                       "-DSWIPL_PACKAGES_JAVA=OFF",
                       "-DSWIPL_PACKAGES_X=OFF",
                       "-DCMAKE_INSTALL_PREFIX=#{libexec}",
-                      *("-DCMAKE_C_COMPILER=/usr/bin/clang" if OS.mac?),
-                      *("-DCMAKE_CXX_COMPILER=/usr/bin/clang++" if OS.mac?)
+                      *cc_args
       system "make", "install"
     end
 

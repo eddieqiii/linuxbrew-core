@@ -1,16 +1,18 @@
 class MongoCxxDriver < Formula
   desc "C++ driver for MongoDB"
   homepage "https://github.com/mongodb/mongo-cxx-driver"
-  url "https://github.com/mongodb/mongo-cxx-driver/archive/r3.6.2.tar.gz"
-  sha256 "f50a1acb98a473f0850e2766dc7e84c05415dc63b1a2f851b77b12629ac14d62"
+  url "https://github.com/mongodb/mongo-cxx-driver/archive/r3.6.3.tar.gz"
+  sha256 "bdf6033ed23df0cdd8c6e1e45cf6dfa63c9806893718eadfa6574cb25b3183a8"
   license "Apache-2.0"
   head "https://github.com/mongodb/mongo-cxx-driver.git"
 
   bottle do
-    sha256 cellar: :any, big_sur:      "e68f3e5c87021c8537656445b3641966eb1b03b36870d7d63795f75692b443a9"
-    sha256 cellar: :any, catalina:     "c914c8eb18e5b84f6e1051abfd565db1824523b487463ed4c3b670014009a323"
-    sha256 cellar: :any, mojave:       "d257deef2474d068c1b7757aa9b2e7c1bb6259e15292c8b48e96487118a1c86a"
-    sha256 cellar: :any, x86_64_linux: "63619a9a0b10663fb72f1f90bf56f2645106acf9246259100d0a3dac5bb68894"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_big_sur: "2001fcc1bd799e85ab0c11413b4ab5f54085865dcd61ebabafc2a16420c180bb"
+    sha256 cellar: :any,                 big_sur:       "a9ad2cec34bdc0356cb820c59531505c9b9978451b73b16b13df602e34e630cb"
+    sha256 cellar: :any,                 catalina:      "cc4fa2875ee2ec4043742f3601246d3c301a4d0f745442d8c8728cd700c3f77b"
+    sha256 cellar: :any,                 mojave:        "09281cacfe2cf4c49e0f171ae2c6a7c571208f07afb599bf5290135819849852"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "293387e3b3c4f7534b46ddc0a095df3db9886033a99e3bbe45c58a43428c566b"
   end
 
   depends_on "cmake" => :build
@@ -26,7 +28,8 @@ class MongoCxxDriver < Formula
     system "cmake", ".", *std_cmake_args,
                         "-DBUILD_VERSION=#{version}",
                         "-DLIBBSON_DIR=#{mongo_c_prefix}",
-                        "-DLIBMONGOC_DIR=#{mongo_c_prefix}"
+                        "-DLIBMONGOC_DIR=#{mongo_c_prefix}",
+                        "-DCMAKE_INSTALL_RPATH=#{rpath}"
     system "make"
     system "make", "install"
   end

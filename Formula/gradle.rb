@@ -1,18 +1,25 @@
 class Gradle < Formula
   desc "Open-source build automation tool based on the Groovy and Kotlin DSL"
   homepage "https://www.gradle.org/"
-  url "https://services.gradle.org/distributions/gradle-6.8.3-all.zip"
-  sha256 "9af5c8e7e2cd1a3b0f694a4ac262b9f38c75262e74a9e8b5101af302a6beadd7"
+  url "https://services.gradle.org/distributions/gradle-7.0.2-all.zip"
+  sha256 "13bf8d3cf8eeeb5770d19741a59bde9bd966dd78d17f1bbad787a05ef19d1c2d"
   license "Apache-2.0"
+  revision 2
 
   livecheck do
     url "https://services.gradle.org/distributions/"
     regex(/href=.*?gradle[._-]v?(\d+(?:\.\d+)+)-all\.(?:[tz])/i)
   end
 
-  bottle :unneeded
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4b3b39dd6943031660b05d88972179aaf57d18227077c49b3590a5174501240f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e6fe8586f00011efce1876ac2e6a9f48a5bef1cd7f09d7c575eb83432ec678b2"
+    sha256 cellar: :any_skip_relocation, catalina:      "e6fe8586f00011efce1876ac2e6a9f48a5bef1cd7f09d7c575eb83432ec678b2"
+    sha256 cellar: :any_skip_relocation, mojave:        "e6fe8586f00011efce1876ac2e6a9f48a5bef1cd7f09d7c575eb83432ec678b2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f399dfd3046c04b1f5bf45b8c774dbdee0ea24f63e4d687de15ce6cb81b456cd"
+  end
 
-  # gradle currently does not support Java 16
+  # gradle currently does not support Java 17
   if Hardware::CPU.arm?
     depends_on "openjdk@11"
   else

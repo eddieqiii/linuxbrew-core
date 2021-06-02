@@ -1,16 +1,15 @@
 class QtMysql < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.0/6.0.2/submodules/qtbase-everywhere-src-6.0.2.tar.xz"
-  sha256 "991a0e4e123104e76563067fcfa58602050c03aba8c8bb0c6198347c707817f1"
+  url "https://download.qt.io/official_releases/qt/6.1/6.1.0/submodules/qtbase-everywhere-src-6.1.0.tar.xz"
+  sha256 "f7af3c87e96051d09b5abce6c88277c33031bef241ebfe1db4106d33ed0814c4"
   license all_of: ["LGPL-2.1-only", "LGPL-3.0-only"]
-  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "951d25dadcb1287dc662f7a1689e225fd1f9bbc767b50c147b7b5a8a8aaef442"
-    sha256 cellar: :any, big_sur:       "037e5083aee6127145237cc0efff87ac61c77b369632e3c69f1c81d134b92488"
-    sha256 cellar: :any, catalina:      "73316258ac4a78cba3219d5ea26bc8790744e1fa77b528cda8c9c9930703ed8c"
-    sha256 cellar: :any, mojave:        "420801ea0f6ed3e0d912c6d8389099ab9f41f06e8b88e684496b539b3f7e48ed"
+    sha256 cellar: :any, arm64_big_sur: "6cf3718c648e881d24d55d633c7b770577a30c22b255da6a00a3c8a69034350f"
+    sha256 cellar: :any, big_sur:       "2de417690dfc545e1e2d30cc35524904b3590ef8382eba37001169c525345d51"
+    sha256 cellar: :any, catalina:      "df9cc949aa2dc983875c7e0328bd4d2ac8e2f8a9963981a3f0d171042982f4dc"
+    sha256 cellar: :any, mojave:        "06ddc9b394420c72f78f892514c4b09cac27625a21828c467bd0dce707b1eb46"
   end
 
   depends_on "cmake" => [:build, :test]

@@ -1,16 +1,17 @@
 class Roswell < Formula
   desc "Lisp installer and launcher for major environments"
   homepage "https://github.com/roswell/roswell"
-  url "https://github.com/roswell/roswell/archive/v21.01.14.108.tar.gz"
-  sha256 "b35ff6f71c63efee86d93e59b4a4a726c955c66ccaa04929b4ea8b55fe4e3825"
+  url "https://github.com/roswell/roswell/archive/v21.05.14.109.tar.gz"
+  sha256 "bb8df0256ddea9f36387e058c5ef626f480b05fe2be6d94178b779c3de81c86d"
   license "MIT"
   head "https://github.com/roswell/roswell.git"
 
   bottle do
-    sha256 big_sur:      "b7db531bc082e7d5a718db112cad8342440da1191b3a2df6281366bcf96ba83f"
-    sha256 catalina:     "0ede39e73ddf6da472a7792ace6af330fe1365b29a0ee5d3795ff735821afe3d"
-    sha256 mojave:       "56d1d761a10659d41afd718cd4b37bca7ff80f26e8c62ef7f493d6f571e37606"
-    sha256 x86_64_linux: "58a3bde073ec3b05dd0944d6cf819260844051095f43b9729ceba5c707e973bf"
+    sha256 arm64_big_sur: "785be1d8190523c58b91aba74636b61e1dc395d00d993dc4b82e901d04017c10"
+    sha256 big_sur:       "9cc57eb8499901954640e50f20cf1935f206a6f415d1812d4c875eec1361cf9c"
+    sha256 catalina:      "274105c09c47e4aa6d586f970dd5f44da0e664db7f1c8a8f2b04691b2894c164"
+    sha256 mojave:        "2b7ec4f359c16791326ac1a8ef064ba40e6dc758ed0b6b9c277cc13c12c1a6cf"
+    sha256 x86_64_linux:  "df225d2a1ad9e5a4ed8cf2ab047f33c15e925781b28bf5e851d7e0f1463356e8"
   end
 
   depends_on "autoconf" => :build

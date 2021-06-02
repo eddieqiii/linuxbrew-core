@@ -1,8 +1,8 @@
 class TaskwarriorTui < Formula
   desc "Terminal user interface for taskwarrior"
   homepage "https://github.com/kdheepak/taskwarrior-tui"
-  url "https://github.com/kdheepak/taskwarrior-tui/archive/v0.11.1.tar.gz"
-  sha256 "51a50eb3799c38cd7310f63f282cb202344b6d2026ff139ec99c8f367ecc59ea"
+  url "https://github.com/kdheepak/taskwarrior-tui/archive/v0.13.24.tar.gz"
+  sha256 "2515daf92c28d8ccd86593049cba7bf59977f5df1daf814208d50aae7732be84"
   license "MIT"
   head "https://github.com/kdheepak/taskwarrior-tui.git"
 
@@ -12,11 +12,11 @@ class TaskwarriorTui < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "39568d3defbae06e56ff930f545f092b4b992d39fd2ff2c5ac57c13cb246d2dd"
-    sha256 cellar: :any_skip_relocation, big_sur:       "0fb691a64a7de4a821a425a71ac3236fdb37f8c747bdfc94eba769fd0b0ee405"
-    sha256 cellar: :any_skip_relocation, catalina:      "d4a9c65884a0cc1995264a736c6ae573405c3017aae18b2aa24dc4008a8a6d0c"
-    sha256 cellar: :any_skip_relocation, mojave:        "4841aedd659a1451330d676b582729ee0a0c8f5d7b8e44da07203b5cf620f4d0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "edca81bc5e13ba51ee73dbe9a4b0db705571371d473ca10df6fc00555279b061"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fcd1620f04b4544f35ae45bfce273773ce4c1f794f1ce563c9b0ebdcfc0da829"
+    sha256 cellar: :any_skip_relocation, big_sur:       "bb1328ddb4ba4ddacdb6612057fcfadbd2d356bba9dbac15d690c04d5dfbe9ff"
+    sha256 cellar: :any_skip_relocation, catalina:      "b49a3bfc861a9b3f81ab2c5694175657f36ae9b4d4cc5e838dc4f3ce1b2dfd1e"
+    sha256 cellar: :any_skip_relocation, mojave:        "f0f49cec64f7aa6f485cd15eb7f97288e874a86a3f319135a0b14ab2e4744e0e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bcc38937769b37f2b1a5906ea0da65c2460454831cc43b9eff36863e8ed7d803"
   end
 
   depends_on "pandoc" => :build unless Hardware::CPU.arm?
@@ -33,11 +33,14 @@ class TaskwarriorTui < Formula
       system "pandoc", *args, "docs/taskwarrior-tui.1.md", "-o", "taskwarrior-tui.1"
       man1.install "taskwarrior-tui.1"
     end
+    bash_completion.install "completions/taskwarrior-tui.bash"
+    fish_completion.install "completions/taskwarrior-tui.fish"
+    zsh_completion.install "completions/_taskwarrior-tui"
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/taskwarrior-tui --version")
     assert_match "The argument '--config <FILE>' requires a value but none was supplied",
-      shell_output("#{bin}/taskwarrior-tui --config 2>&1", 1)
+      shell_output("#{bin}/taskwarrior-tui --config 2>&1", 2)
   end
 end

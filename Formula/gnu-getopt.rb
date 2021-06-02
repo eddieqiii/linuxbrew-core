@@ -15,6 +15,10 @@ class GnuGetopt < Formula
 
   keg_only (OS.mac? ? :provided_by_macos : "this formula conflicts with util-linux")
 
+  on_linux do
+    keg_only "conflicts with util-linux"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",

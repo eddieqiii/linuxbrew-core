@@ -3,8 +3,8 @@ class SpatialiteGui < Formula
   homepage "https://www.gaia-gis.it/fossil/spatialite_gui/index"
   url "https://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
   sha256 "cb9cb1ede7f83a5fc5f52c83437e556ab9cb54d6ace3c545d31b317fd36f05e4"
-  license "GPL-3.0"
-  revision 6
+  license "GPL-3.0-or-later"
+  revision 7
 
   livecheck do
     url "https://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/"
@@ -12,11 +12,11 @@ class SpatialiteGui < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "2d788de8857d609356ce8b97b87b1838940757834aa1333e1281d5f13f23cb83"
-    sha256 cellar: :any, big_sur:       "3656d32601beec4051e857d755da2d83ebd136382ee32bda4492b04ee4eb7b42"
-    sha256 cellar: :any, catalina:      "fd3dd58b7818d298d1ee682270e124d25fd92bb7017a05d53dcf45ebf53f1e23"
-    sha256 cellar: :any, mojave:        "13c864fd247e27bc67c69047d7b175b1e6913cadff426ddf2267754ea1dee278"
-    sha256 cellar: :any, high_sierra:   "dc96081a458992e1fbefc8cb9c93d285596d1ad2844367fd84c0679bd4e175d3"
+    sha256 cellar: :any,                 arm64_big_sur: "6e880939c07f6356f06fd37a70cf9a4c477de68a07762d54924f251ac54ea709"
+    sha256 cellar: :any,                 big_sur:       "1fedda349efc168de375218da03c2d05183bd31b95abf6efebca12130d1a9640"
+    sha256 cellar: :any,                 catalina:      "42032690b1a1bcf02057adc37172864ce115055572a1e71619ecfb30554af8c8"
+    sha256 cellar: :any,                 mojave:        "976d73bc822ac303b02c8bb4ef0aac6fa41969ad7d4c975b4046fdeb0a25ccc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "89f10e5be8fa70a202775e73faae8971b0f447e81b4365e0da7a3c0acaadea61"
   end
 
   depends_on "pkg-config" => :build
@@ -24,7 +24,7 @@ class SpatialiteGui < Formula
   depends_on "geos"
   depends_on "libgaiagraphics"
   depends_on "libspatialite"
-  depends_on "proj"
+  depends_on "proj@7"
   depends_on "sqlite"
   depends_on "wxmac"
 
@@ -37,9 +37,12 @@ class SpatialiteGui < Formula
     # Link flags for sqlite don't seem to get passed to make, which
     # causes builds to fatally error out on linking.
     # https://github.com/Homebrew/homebrew/issues/44003
+    #
+    # spatialite-gui uses `proj` (instead of `proj@7`) if installed
     sqlite = Formula["sqlite"]
-    ENV.prepend "LDFLAGS", "-L#{sqlite.opt_lib} -lsqlite3"
-    ENV.prepend "CFLAGS", "-I#{sqlite.opt_include}"
+    proj = Formula["proj@7"]
+    ENV.prepend "LDFLAGS", "-L#{sqlite.opt_lib} -lsqlite3 -L#{proj.opt_lib}"
+    ENV.prepend "CFLAGS", "-I#{sqlite.opt_include} -I#{proj.opt_include}"
 
     # Use Proj 6.0.0 compatibility headers
     # https://www.gaia-gis.it/fossil/spatialite_gui/tktview?name=8349866db6

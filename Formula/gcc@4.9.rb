@@ -19,20 +19,21 @@ class GccAT49 < Formula
 
   # The bottles are built on systems with the CLT installed, and do not work
   # out of the box on Xcode-only systems due to an incorrect sysroot.
-  pour_bottle? do
-    reason "The bottle needs the Xcode CLT to be installed."
-    satisfy { !OS.mac? || MacOS::CLT.installed? }
-  end
+  pour_bottle? only_if: :clt_installed
+
+  # https://gcc.gnu.org/gcc-4.9/
+  deprecate! date: "2021-04-11", because: :deprecated_upstream
 
   depends_on maximum_macos: [:high_sierra, :build]
 
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "binutils"
+  end
+
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
-
-  unless OS.mac?
-    depends_on "binutils"
-    depends_on "zlib"
-  end
 
   resource "gmp" do
     url "https://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.bz2"
@@ -96,17 +97,10 @@ class GccAT49 < Formula
 
     version_suffix = version.major_minor.to_s
 
-    args = []
-    if OS.mac?
-      args += [
-        "--build=#{arch}-apple-darwin#{osmajor}",
-        "--with-system-zlib",
-      ]
-    else
-      # Change the default directory name for 64-bit libraries to `lib`
-      # http://www.linuxfromscratch.org/lfs/view/development/chapter06/gcc.html
-      inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64=."
-    end
+    # Change the default directory name for 64-bit libraries to `lib`
+    # http://www.linuxfromscratch.org/lfs/view/development/chapter06/gcc.html
+    inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64=." unless OS.mac?
+
     args = [
       "--prefix=#{prefix}",
       "--libdir=#{lib}/gcc/#{version_suffix}",
@@ -130,11 +124,12 @@ class GccAT49 < Formula
       # install-info is run.
       "MAKEINFO=missing",
       "--disable-nls",
+      "--enable-multilib",
     ]
 
-    if OS.mac?
+    on_macos do
       args << "--build=x86_64-apple-darwin#{OS.kernel_version}"
-      args << "--enable-multilib"
+      args << "--with-system-zlib"
 
       # System headers may not be in /usr/include
       sdk = MacOS.sdk_path_if_needed
@@ -143,17 +138,14 @@ class GccAT49 < Formula
         args << "--with-sysroot=#{sdk}"
       end
 
-      # Avoid reference to sed shim
-      args << "SED=/usr/bin/sed"
-    else
-      args << "--disable-multilib"
+      # Ensure correct install names when linking against libgcc_s;
+      # see discussion in https://github.com/Homebrew/homebrew/pull/34303
+      inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
     end
 
-    ENV["CPPFLAGS"] = "-I#{Formula["zlib"].include}" unless OS.mac?
-
-    # Ensure correct install names when linking against libgcc_s;
-    # see discussion in https://github.com/Homebrew/homebrew/pull/34303
-    inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
+    on_linux do
+      args << "--disable-multilib"
+    end
 
     mkdir "build" do
       system "../configure", *args

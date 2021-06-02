@@ -1,19 +1,17 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-3.0.0/apache-arrow-3.0.0.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-3.0.0/apache-arrow-3.0.0.tar.gz"
-  sha256 "73c2cc3be537aa1f3fd9490cfec185714168c9bfd599d23e287ab0cc0558e27a"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-4.0.1/apache-arrow-4.0.1.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-4.0.1/apache-arrow-4.0.1.tar.gz"
+  sha256 "75ccbfa276b925c6b1c978a920ff2f30c4b0d3fdf8b51777915b6f69a211896e"
   license "Apache-2.0"
-  revision 4
   head "https://github.com/apache/arrow.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "64f82d9bdc476fe3cc6a201de3983cd3c1177ac6fd038918ea36b1771d297120"
-    sha256 cellar: :any,                 big_sur:       "8261f65e35b902389be6a40ff3734cbec6afdfa06a5732292f75cc7e0b068f8a"
-    sha256 cellar: :any,                 catalina:      "ad81da9f96a7a6d5efa5c0eea5403c47eaec53fe54d1cb8e922a3d0ff7ceeb00"
-    sha256 cellar: :any,                 mojave:        "60c0e8f79baaa38228ba30bfae9ad6b98dc754633a949eda69d5a10fd61245ee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "877d8c7e071d898aaecbddf4e1ea96f5bb486bdcba4da301b141a6bab8bb2f7e"
+    sha256 cellar: :any, arm64_big_sur: "f77306ec4191f47b7cf263548239fdf6fe15f2fc01ea350993d3cffa92b9ad44"
+    sha256 cellar: :any, big_sur:       "4d18d3c43a2e0662857f9af6e8d16a4f947ef7c946d12472ae9a5c7363d506e5"
+    sha256 cellar: :any, catalina:      "9d11d0ba22679dc3c2569392be721a55d20825ae353bda4ef159be3c26f348ec"
+    sha256 cellar: :any, mojave:        "08f1ee827928e7c2da2fb0307d1e1e75f7c627715d794f2fc53da565c440577d"
   end
 
   depends_on "boost" => :build
@@ -32,13 +30,6 @@ class ApacheArrow < Formula
   depends_on "snappy"
   depends_on "thrift"
   depends_on "zstd"
-
-  # Remove in next version
-  # https://github.com/apache/arrow/pull/9542
-  patch do
-    url "https://github.com/apache/arrow/commit/06c795c948b594c16d3a48289519ce036a285aad.patch?full_index=1"
-    sha256 "732845543b67289d1d462ebf6e87117ac72104047c6747e189a76d09840bc23f"
-  end
 
   def install
     # link against system libc++ instead of llvm provided libc++
@@ -62,6 +53,8 @@ class ApacheArrow < Formula
       -DARROW_INSTALL_NAME_RPATH=OFF
       -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].bin/"python3"}
     ]
+
+    args << "-DARROW_MIMALLOC=ON" unless Hardware::CPU.arm?
 
     mkdir "build" do
       system "cmake", "../cpp", *std_cmake_args, *args

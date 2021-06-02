@@ -1,19 +1,19 @@
 class Pushpin < Formula
   desc "Reverse proxy for realtime web services"
   homepage "https://pushpin.org/"
-  url "https://dl.bintray.com/fanout/source/pushpin-1.31.0.tar.bz2"
-  sha256 "62504863297a8ec1833486affaff91fade7a970dd43b9c8c2add5944603481ac"
+  url "https://github.com/fanout/pushpin/releases/download/v1.32.1/pushpin-1.32.1.tar.bz2"
+  sha256 "f2f000a49b17ceb40a530a9445073a5e1ddd93df7bbf305e6781071c0e97f406"
   license "AGPL-3.0-or-later"
-  revision 1
   head "https://github.com/fanout/pushpin.git"
 
   bottle do
-    sha256 big_sur:  "f032a66f0bb002c59fe705e403f43bba0df830a395b1ea66a4d52b0b46812e54"
-    sha256 catalina: "99c79baa11d8b5ea76ef9f842676f081d30e923610398617ba4c5352e1bc65ea"
-    sha256 mojave:   "815a63479cf6b06aa797652e0a3e18e4326449171790cb110f40fde66755df60"
+    sha256 big_sur:  "26b58ffdd5b9c67a0ee96cde0e7cbbec603b67e152c4071e12c0e2ab53c0b591"
+    sha256 catalina: "62348eae5f8eabb64d52b63a495b2d2c23fb5153ab1f41a4f95b873b2099e871"
+    sha256 mojave:   "1f7c20feb121d725c3c21d0a65be1b40fd48b9b17287604f81373e88840af881"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "rust" => :build
   depends_on "condure"
   depends_on "mongrel2"
   depends_on "python@3.9"

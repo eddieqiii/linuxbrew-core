@@ -2,15 +2,14 @@ class Micropython < Formula
   desc "Python implementation for microcontrollers and constrained systems"
   homepage "https://www.micropython.org/"
   url "https://github.com/micropython/micropython.git",
-      tag:      "v1.14",
-      revision: "78b23c3a1f064dc19bbee68930ef3aba110c781c"
+      tag:      "v1.15",
+      revision: "321d1897c34f16243edf2c94913d7cf877a013d1"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 big_sur:      "ae273ed59589c3dadf5632aa03246b51960c2ff6d84b73ba34fdcafff79c8e7d"
-    sha256 cellar: :any,                 catalina:     "103263d0c625e3fa84337be724a25172c4d95b21bfdfb99b806b75c60ca86df9"
-    sha256 cellar: :any,                 mojave:       "503609fd1033dbdd0e48be4625cf17ccac547912b4f8b02eacff5aab6c43fde5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "9b619d30ba9c505a8bb3661c761ec4a1246d65d06ac3cc2f09584bbb83f76ea9"
+    sha256 cellar: :any, big_sur:  "7189071c553ab2ea57ae669e94eea6a24f3d2f942a95c37a2ffeece24f87b290"
+    sha256 cellar: :any, catalina: "85748d870424a6f6d30d2e921e613419f8d46320576d86ca6a563dbe3f8e69ca"
+    sha256 cellar: :any, mojave:   "00fe3b2e6e7373ee4528fa536c23352c85a4f8c135da0c7066fd3cabefcd711f"
   end
 
   depends_on "pkg-config" => :build
@@ -33,11 +32,17 @@ class Micropython < Formula
   end
 
   test do
+    lib_version = nil
+
+    on_linux do
+      lib_version = "6"
+    end
+
     # Test the FFI module
     (testpath/"ffi-hello.py").write <<~EOS
       import ffi
 
-      libc = ffi.open("libc.#{OS.mac? ? "dylib" : "so.6"}")
+      libc = ffi.open("#{shared_library("libc", lib_version)}")
       printf = libc.func("v", "printf", "s")
       printf("Hello!\\n")
     EOS

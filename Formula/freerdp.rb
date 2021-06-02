@@ -33,14 +33,12 @@ class Freerdp < Formula
   depends_on "libxv"
   depends_on "openssl@1.1"
 
+  uses_from_macos "cups"
+
   on_linux do
     depends_on "alsa-lib"
     depends_on "ffmpeg"
     depends_on "glib"
-  end
-
-  unless OS.mac?
-    depends_on "cups"
     depends_on "systemd"
     depends_on "wayland"
   end
@@ -55,8 +53,10 @@ class Freerdp < Formula
   end
 
   test do
-    # failed to open display
-    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    on_linux do
+      # failed to open display
+      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    end
 
     success = `#{bin}/xfreerdp --version` # not using system as expected non-zero exit code
     details = $CHILD_STATUS

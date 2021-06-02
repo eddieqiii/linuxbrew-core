@@ -2,25 +2,24 @@ class SqliteUtils < Formula
   include Language::Python::Virtualenv
   desc "CLI utility for manipulating SQLite databases"
   homepage "https://sqlite-utils.datasette.io/"
-  url "https://files.pythonhosted.org/packages/0d/7e/111bde53d3f4c4f03152963086a28aa11ea5536c6980f64b48eff43d7c7d/sqlite-utils-3.6.tar.gz"
-  sha256 "582a9bcf4b6cb32ee2efa4a0d8f79ec630e8965ca93c69ceaaa7d424e1c01560"
+  url "https://files.pythonhosted.org/packages/3a/40/9461a52974c5f5eb1ec5eb804ef3a84c5da878f443eea368c88b7c5c428f/sqlite-utils-3.7.tar.gz"
+  sha256 "86f7ef80ca52fbf8c5692bfbf41572cb07421e7030f96278b977a439d4d95b06"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e90efc9ccf7a756ae54730efb14f292cf560c0b19f7e0e9bd09adbdedd067faf"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b31059d3c5919e38195baab3580f5e867030e2f0defde97c9af88b8446d6cde0"
-    sha256 cellar: :any_skip_relocation, catalina:      "cdd58ddff8316de85d4b7b024444d13632279312e5fef6bc1121cd47a72a19b3"
-    sha256 cellar: :any_skip_relocation, mojave:        "af4e691a4c3fcf2687b1c587469b9e926507a760a8e716cc4712089eceb45a18"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6583388390067e940d26be5c14274c3ef21be2a19733b06068157b3bec71af66"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "7039347e1f69e054b19871ed46f361b5ee960ec854527d3133e2c2b50850dddb"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a4e75bc4e45a483b71cbed7a3f2f088a10aef5508873e6d7391aedca16bc25fc"
+    sha256 cellar: :any_skip_relocation, catalina:      "a4e75bc4e45a483b71cbed7a3f2f088a10aef5508873e6d7391aedca16bc25fc"
+    sha256 cellar: :any_skip_relocation, mojave:        "a4e75bc4e45a483b71cbed7a3f2f088a10aef5508873e6d7391aedca16bc25fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a22d8f20baec5c138250149019a7f4ecc6f9d818436e9991685995ec09a7d88"
   end
 
   depends_on "python-tabulate"
   depends_on "python@3.9"
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/27/6f/be940c8b1f1d69daceeb0032fee6c34d7bd70e3e649ccac0951500b4720e/click-7.1.2.tar.gz"
-    sha256 "d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"
+    url "https://files.pythonhosted.org/packages/21/83/308a74ca1104fe1e3197d31693a7a2db67c2d4e668f20f43a2fca491f9f7/click-8.0.1.tar.gz"
+    sha256 "8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"
   end
 
   resource "click-default-group" do

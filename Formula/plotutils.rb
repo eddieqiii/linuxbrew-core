@@ -4,6 +4,7 @@ class Plotutils < Formula
   url "https://ftp.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz"
   mirror "https://ftpmirror.gnu.org/plotutils/plotutils-2.6.tar.gz"
   sha256 "4f4222820f97ca08c7ea707e4c53e5a3556af4d8f1ab51e0da6ff1627ff433ab"
+  license "GPL-3.0-or-later"
   revision OS.mac? ? 1 : 5
 
   bottle do
@@ -17,19 +18,12 @@ class Plotutils < Formula
     sha256 cellar: :any, el_capitan:    "b734cdcbc7ce11c4a716bc96ee7671f3883a5d41dadceac28d994ad2c20292f9"
     sha256 cellar: :any, yosemite:      "fae89f252628820ac83a0896fa022b1c08cacca6e6234b2fb23c10554f424fd3"
     sha256 cellar: :any, x86_64_linux:  "ab12cbf3c92cb3b48d3da89bba5ef6d70db71ec779db0d6c743c5a9ea3d07da0"
-    sha256 cellar: :any, mavericks:     "e51b4b5c367e8f9ec533f54e20c9df0b887818ee35c4cde19ba8feb73d4d2ff2"
   end
 
   depends_on "libpng"
 
-  unless OS.mac?
-    depends_on "libice"
-    depends_on "libsm"
-    depends_on "libx11"
+  on_linux do
     depends_on "libxaw"
-    depends_on "libxext"
-    depends_on "libxmu"
-    depends_on "libxt"
   end
 
   def install

@@ -16,7 +16,6 @@ class Tcpdump < Formula
     sha256 cellar: :any, big_sur:       "2cb0b061f9e2dbe9d36ab328fbec36e0c948d7db076ae03e11046d4c78ed0ea3"
     sha256 cellar: :any, catalina:      "f39b833288b92843f5e8aabb519a7bf4368476297abfbc718b7438d7cdb9f190"
     sha256 cellar: :any, mojave:        "91d13cf3a6c5bf4eb37c04ab5efb30e006316c7e0a91e4d657ca9589d22a45e0"
-    sha256 cellar: :any, x86_64_linux:  "6df21623300ddbf70c2ee30d81193b9b2b123662a76fec3954fbbd52a4e3f9ca"
   end
 
   depends_on "libpcap"

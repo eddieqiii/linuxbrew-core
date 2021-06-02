@@ -2,16 +2,16 @@ class Aom < Formula
   desc "Codec library for encoding and decoding AV1 video streams"
   homepage "https://aomedia.googlesource.com/aom"
   url "https://aomedia.googlesource.com/aom.git",
-      tag:      "v2.0.2",
-      revision: "cb1d48da8da2061e72018761788a18b8fa8013bb"
+      tag:      "v3.1.0",
+      revision: "c0f14141bd71414b004dccd66d48b27570299fa3"
   license "BSD-2-Clause"
 
   bottle do
-    sha256                               arm64_big_sur: "f17ad0f61eef16b08826918342e88f7d180009b867467aba7307a6a495b20b59"
-    sha256                               big_sur:       "4ac5117ff5065d8ad5e185c98eba0b4909ea2201bd0f8b8844edf2987e85d8a6"
-    sha256                               catalina:      "0cad1d09aafe134daa8e24f5e346fd2766171f637b31894be22f9a80dcbbb770"
-    sha256                               mojave:        "1856596662ee2ad37056f4db3ac26e049be22801dade3b98f1bc4ef143a23908"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "086fa35d2d6fabcf3b557045cfbe0af4872ff90793addf80cefd6e5ecffa75e3"
+    sha256 cellar: :any,                 arm64_big_sur: "42d5b42cfd577ec6c05cc6db35241e129841ec848acb32dfab2b8e9106213f63"
+    sha256 cellar: :any,                 big_sur:       "b01451365abb2da2a9b17d2aff9fba994e90b37183a946c6bf70acd8f4fc6a2a"
+    sha256 cellar: :any,                 catalina:      "45c28e95a7e3753c21e8fcea18923c554ee62df7c9b44c93c077abfd65adf8c2"
+    sha256 cellar: :any,                 mojave:        "09ae7034b69c0c07696ebce9a8d04131b8395abb755a365240d1f92d60ceb2c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "08222752d5958176e9dad20f5af5962e5aaa7f5fcb39dd557f44be9497fae6de"
   end
 
   depends_on "cmake" => :build
@@ -24,7 +24,7 @@ class Aom < Formula
 
   def install
     mkdir "macbuild" do
-      args = std_cmake_args.concat(["-DCMAKE_INSTALL_RPATH=#{lib}",
+      args = std_cmake_args.concat(["-DCMAKE_INSTALL_RPATH=#{rpath}",
                                     "-DENABLE_DOCS=off",
                                     "-DENABLE_EXAMPLES=on",
                                     "-DENABLE_TESTDATA=off",

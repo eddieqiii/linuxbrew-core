@@ -26,7 +26,6 @@ class Libagg < Formula
     sha256 cellar: :any,                 el_capitan:    "5b9ab7a9ef2f4075bd55561f0fda99c7203a70020288747ebf90cfc1b2ee626b"
     sha256 cellar: :any,                 yosemite:      "9d3da78ab9824db755cbfeb9e6596527db1ace71525cb079465b1a9fb1c00417"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "7ab931688d5ebbd885e7bf8d4ee0cc76f40e9ee8383cafce66485d6f61abe7da"
-    sha256 cellar: :any,                 mavericks:     "9704ec5652775cbab7af51e48eb42b19cb55f7cdb5894e6e1abac3e478581e2a"
   end
 
   depends_on "autoconf" => :build

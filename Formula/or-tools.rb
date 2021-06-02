@@ -1,9 +1,10 @@
 class OrTools < Formula
   desc "Google's Operations Research tools"
   homepage "https://developers.google.com/optimization/"
-  url "https://github.com/google/or-tools/archive/v8.2.tar.gz"
-  sha256 "cf40715fa5cfeee88e2c8f5583465182c8dedf60b4eb7c4a967b32ff61ac4302"
+  url "https://github.com/google/or-tools/archive/v9.0.tar.gz"
+  sha256 "fa7700b614ea2a5b2b6e37b76874bd2c3f04a80f03cbbf7871a2d2d5cd3a6091"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/google/or-tools.git"
 
   livecheck do
@@ -12,10 +13,10 @@ class OrTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "54e3a32443a0b8802b76ce806d3203c5967cf153840413191abbc93ea22413db"
-    sha256 cellar: :any, big_sur:       "390ac146a2989012d3e0b52733de51f2f2f738923406ccfb11696d86b7bda6e3"
-    sha256 cellar: :any, catalina:      "c7c2951c6d072664e3e3974fee2a87f6354ad7c9765257999e5ae85d82f8594e"
-    sha256 cellar: :any, mojave:        "88c19f66797c8832956fd3c00e92692a131fd22c64925ddcc46894cba0fc2aae"
+    sha256 cellar: :any, arm64_big_sur: "fa99ea387b1e9766176238d65e64875c54a23307724d6986ce0e8a2dc7fc3c4a"
+    sha256 cellar: :any, big_sur:       "52b78960611d6f8ea7c07a8710ff6d1f9450dc2dfc33781c90cadb0941fb83b8"
+    sha256 cellar: :any, catalina:      "e8661f1a9b46f504ade5283727b8c603a2967a1cd76494b780974c0c74cf2ef0"
+    sha256 cellar: :any, mojave:        "e86c26bb7a8e5eb9d8b97d099fadf05065f5e21c112a6b0fc5e4d6896cf73a23"
   end
 
   depends_on "cmake" => :build

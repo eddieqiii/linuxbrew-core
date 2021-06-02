@@ -9,7 +9,7 @@ class Wxmac < Formula
 
   livecheck do
     url :stable
-    strategy :github_latest
+    regex(/^v?(\d+\.\d*[02468](?:\.\d+)*)$/i)
   end
 
   bottle do
@@ -27,9 +27,6 @@ class Wxmac < Formula
 
   on_linux do
     depends_on "pkg-config" => :build
-  end
-
-  unless OS.mac?
     depends_on "gtk+"
     depends_on "libsm"
     depends_on "mesa-glu"
@@ -59,6 +56,12 @@ class Wxmac < Formula
       # This is the default option, but be explicit
       "--disable-monolithic",
     ]
+
+    on_macos do
+      # Set with-macosx-version-min to avoid configure defaulting to 10.5
+      args << "--with-macosx-version-min=#{MacOS.version}"
+      args << "--with-osx_cocoa"
+    end
 
     system "./configure", *args
     system "make", "install"

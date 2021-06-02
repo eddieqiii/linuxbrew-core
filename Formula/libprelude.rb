@@ -54,7 +54,7 @@ class Libprelude < Formula
         }
       }
     EOS
-    system ENV.cc, "-L#{lib}", "test.c", "-lprelude", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-lprelude", "-o", "test"
     system "./test"
   end
 end

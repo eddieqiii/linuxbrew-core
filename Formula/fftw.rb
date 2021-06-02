@@ -4,7 +4,7 @@ class Fftw < Formula
   url "http://fftw.org/fftw-3.3.9.tar.gz"
   sha256 "bf2c7ce40b04ae811af714deb512510cc2c17b9ab9d6ddcf49fe4487eea7af3d"
   license all_of: ["GPL-2.0-or-later", "BSD-2-Clause"]
-  revision 1 unless OS.mac?
+  revision OS.mac? ? 1 : 2
 
   livecheck do
     url "http://fftw.org/"
@@ -12,11 +12,11 @@ class Fftw < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "06e4feb4413ac678d1dc9e8017fe86fd4a40ef114fca52d5145be2a4f182249b"
-    sha256 cellar: :any,                 big_sur:       "ef292d79d65468ae63a095477d2ab12e562b2f3920d75e820152a0fc93a9b6a1"
-    sha256 cellar: :any,                 catalina:      "cdf77b713ee891041ed9ea057bca05439b086a5d640fe95e6021326b4aebf95b"
-    sha256 cellar: :any,                 mojave:        "ad960c339268de67c1d6086b0d205336d1f61a86db8fd7528b98e0d8acf98df5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "521f9a9c9355a66cc68e8fbaf9e29e04bbaf58ec23fa09ee647050c321674dd7"
+    sha256                               arm64_big_sur: "f0bcc63e25061ac29e5d8f2700beab98e8bdf8e2bb428ceb8e77018e004d2473"
+    sha256 cellar: :any,                 big_sur:       "8ee0fe663966dcc2ba924768dc921536873b172b024302f1f06e663237d11a29"
+    sha256 cellar: :any,                 catalina:      "e5c826687292998daa2f2e76d13325fde551b54450846c3190efde540a02650e"
+    sha256 cellar: :any,                 mojave:        "17af7472492ccf0704b958db622505872d7bca0f2d2f05869d07f1b01557c0ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "525ccc854bdb048261d0fca7b3e0f5bc758e45e6373d7d591fd8f761ddc719be"
   end
 
   depends_on "open-mpi"

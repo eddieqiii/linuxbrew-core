@@ -1,8 +1,8 @@
 class Fastlane < Formula
   desc "Easiest way to build and release mobile apps"
   homepage "https://fastlane.tools"
-  url "https://github.com/fastlane/fastlane/archive/2.178.0.tar.gz"
-  sha256 "050afeea60f292d3bb83c56089f97d130ca0283fe87a7defb31595d9344557c6"
+  url "https://github.com/fastlane/fastlane/archive/2.184.1.tar.gz"
+  sha256 "2711ff7f067523a9d27771df620ff0cf02e4cb0931741c11537b223e387549c5"
   license "MIT"
   head "https://github.com/fastlane/fastlane.git"
 
@@ -12,11 +12,11 @@ class Fastlane < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "1a643aa7391ff8c1d9fa6b97bf545ff05af193c38a1b183626e44ca4ae9b5623"
-    sha256 cellar: :any,                 big_sur:       "124a505b804339f84a36ed6719055e0d44f00640f127dfca741dd1f264a8e0e1"
-    sha256 cellar: :any,                 catalina:      "f91683672542fc19c0942e64115380437232333a3473f77638941f6b20c24ec0"
-    sha256 cellar: :any,                 mojave:        "8ee527f7f51693df5312c93aebff9d63531b1a17be755a0012b9ea22fdd33cf0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "25b78c75741f57c45b4192daa3ec1ddbad229fe3015bd844703c317fcf4cf33a"
+    sha256 cellar: :any,                 arm64_big_sur: "30590f8618c9c2364cf99de64c8c90c9c70456b175be867628289daac539bc39"
+    sha256 cellar: :any,                 big_sur:       "341b394ee0cdaa5e5456b66fac2c5ecdcbc4d44933ba3d9fe3b1905a77d89c80"
+    sha256 cellar: :any,                 catalina:      "8c564ca18df06f2c39d06fcef454feb36e8f9dd3c7c7accdd94cad2f9601ef90"
+    sha256 cellar: :any,                 mojave:        "051e4be67cc5af26725c03a4fb1685c8a249bd7680b1ecaff77da6c46e3f8676"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f79b44ecc615ac360796a1d12c4af089d496e3de5084855b10f16a333d0f88f1"
   end
 
   depends_on "ruby@2.7"
@@ -28,14 +28,11 @@ class Fastlane < Formula
     system "gem", "build", "fastlane.gemspec"
     system "gem", "install", "fastlane-#{version}.gem", "--no-document"
 
-    (bin/"fastlane").write <<~EOS
-      #!/bin/bash
-      export PATH="#{Formula["ruby@2.7"].opt_bin}:#{libexec}/bin:$PATH"
-      export FASTLANE_INSTALLED_VIA_HOMEBREW="true"
-      GEM_HOME="#{libexec}" GEM_PATH="#{libexec}" \\
-        exec "#{libexec}/bin/fastlane" "$@"
-    EOS
-    chmod "+x", bin/"fastlane"
+    (bin/"fastlane").write_env_script libexec/"bin/fastlane",
+      PATH:                            "#{Formula["ruby@2.7"].opt_bin}:#{libexec}/bin:$PATH",
+      FASTLANE_INSTALLED_VIA_HOMEBREW: "true",
+      GEM_HOME:                        libexec.to_s,
+      GEM_PATH:                        libexec.to_s
   end
 
   test do

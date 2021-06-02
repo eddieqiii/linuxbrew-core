@@ -1,14 +1,15 @@
 class BaculaFd < Formula
   desc "Network backup solution"
   homepage "https://www.bacula.org/"
-  url "https://downloads.sourceforge.net/project/bacula/bacula/11.0.1/bacula-11.0.1.tar.gz"
-  sha256 "2ebd9cdb885953c03f09df31180eeb7ea81aebb821cf45c9fdcb3fcff85294f5"
+  url "https://downloads.sourceforge.net/project/bacula/bacula/11.0.3/bacula-11.0.3.tar.gz"
+  sha256 "01587734f7490fcb7737801b2e1fe1b1f94707bb3fb0b71b36713c7aab03923c"
 
   bottle do
-    sha256                               big_sur:      "1ad2a0eeb9c13b399ffcb571eedb60b2f93344a3fdd57f62df597348937ecfc7"
-    sha256                               catalina:     "4d94df8a15262db66b97b7cf230f6b99db3ee607fdb8b12451f1d3fc75f308e3"
-    sha256                               mojave:       "6579ca5a2472fb6171853ea3e9eec81481d3d9c36a0624a629199febf73cbadf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "b56be123afb02590c329b38bfc8ab3ca33506219d1c577cf0a558dd4469fe7e9"
+    sha256                               arm64_big_sur: "870ed54211752a2b5074b4541d7e20a07f7cfc5823b6b4ca02754714664a41a5"
+    sha256                               big_sur:       "97a132f840f80286105c4053a9278840c3b87759f9fda275d17b7e21b229b2ee"
+    sha256                               catalina:      "fe0716a5da8e44667f410c60b426fa3367b3086e1da3802120d46e0f2798de85"
+    sha256                               mojave:        "df8ff109522a1091ab1838926142023f5c0119475c8757d5134149442ee1b610"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "53c76197362e8421f3442a59bc99e18d5ed12867d46ae902c78d8ada466b00e0"
   end
 
   depends_on "openssl@1.1"
@@ -57,26 +58,9 @@ class BaculaFd < Formula
     (var/"run").mkpath
   end
 
-  plist_options startup: true, manual: "bacula-fd"
-
-  def plist
-    <<~EOS
-      <?xml version="0.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/bacula-fd</string>
-            <string>-f</string>
-          </array>
-        </dict>
-      </plist>
-    EOS
+  plist_options startup: true
+  service do
+    run [opt_bin/"bacula-fd", "-f"]
   end
 
   test do

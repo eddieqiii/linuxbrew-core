@@ -20,17 +20,18 @@ class Cmigemo < Formula
     sha256 cellar: :any, sierra:        "612544771bde1676044d35e8cb1f64134788580b76c59ced3b651e8996d46b51"
     sha256 cellar: :any, el_capitan:    "866dfa4f493c088c1b2eb3cff23ed04e33862f7bc5dcff0976ce5b7cb4835dd2"
     sha256 cellar: :any, yosemite:      "4ab378bb5f5d2462a6043d9226aade8b87974b52a7fec8a24e3814f93ac936f6"
-    sha256 cellar: :any, mavericks:     "f4b8738e34c2b8b7d8489c70a6e15e1634e9d2b0f20b2180be4dd6d43eca6c4a"
     sha256 cellar: :any, x86_64_linux:  "80f1d10147ee04054a1b6e3d24b18267640e1378c418bbec844cb4694f91b69c"
   end
 
   depends_on "nkf" => :build
 
   def install
-    ENV.deparallelize unless OS.mac?
     chmod 0755, "./configure"
     system "./configure", "--prefix=#{prefix}"
-    os = OS.mac? ? "osx" : "gcc"
+    os = "osx"
+    on_linux do
+      os = "gcc"
+    end
     system "make", os
     system "make", "#{os}-dict"
     system "make", "-C", "dict", "utf-8" if build.stable?

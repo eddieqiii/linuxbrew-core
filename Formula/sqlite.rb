@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2021/sqlite-autoconf-3340100.tar.gz"
-  version "3.34.1"
-  sha256 "2a3bca581117b3b88e5361d0ef3803ba6d8da604b1c1a47d902ef785c1b53e89"
+  url "https://sqlite.org/2021/sqlite-autoconf-3350500.tar.gz"
+  version "3.35.5"
+  sha256 "f52b72a5c319c3e516ed7a92e123139a6e87af08a2dc43d7757724f6132e6db0"
   license "blessing"
 
   livecheck do
@@ -12,11 +12,11 @@ class Sqlite < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "a44af603af9ebc26784983343b7659f4f767a4a270b34ceb5fd9527901d8f79a"
-    sha256 cellar: :any,                 big_sur:       "a536d0d39e6c2410249f6df211062a515063f15528032d18cc2635cc1db4e042"
-    sha256 cellar: :any,                 catalina:      "63b13860a58b273821c8af6bcd09ed1d38aa9c95f51192257b29f7512fb38859"
-    sha256 cellar: :any,                 mojave:        "345f9a6b2b4258a1b6791047c1afedec4dd5b47b717ca7af1f5c772be7b3e275"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a4ebdc5ebc30c2533003233585df072aa057f61daddab7080c9de1dfb42fec9a"
+    sha256 cellar: :any,                 arm64_big_sur: "85e058d256013feea4835f51d9054dd1b8eec435d66ed581c95d161b3152e3b0"
+    sha256 cellar: :any,                 big_sur:       "801e11dff40b2e7067b8e124d266f82050cbae434447d7fa1ad36888fd8ceec2"
+    sha256 cellar: :any,                 catalina:      "217e257590018c8e0b2e994f8f8c9fa548459f1532acecf0b229f9885bf0ce22"
+    sha256 cellar: :any,                 mojave:        "b25dc8abacbef73874c1ee995beff6a0612e2863523913ccb348eda918c3547e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9b1a4c7d1bcde097e2b645bd0c653290ac6202fad8cdb18420b867c465fa0a93"
   end
 
   keg_only :provided_by_macos

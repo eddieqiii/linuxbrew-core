@@ -10,7 +10,10 @@ class Yarn < Formula
     skip("1.x line is frozen and features/bugfixes only happen on 2.x")
   end
 
-  bottle :unneeded
+  bottle do
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "2e94245b589438a4f9dbce64edace8b237feb1ffadd0865bb21d6093a818d230"
+  end
 
   depends_on "node"
 
@@ -24,12 +27,16 @@ class Yarn < Formula
     (bin/"yarnpkg").write_env_script "#{libexec}/bin/yarn.js",
       PREFIX:            HOMEBREW_PREFIX,
       NPM_CONFIG_PYTHON: "/usr/bin/python"
+    inreplace "#{libexec}/lib/cli.js", "/usr/local", HOMEBREW_PREFIX
     inreplace "#{libexec}/package.json", '"installationMethod": "tar"', '"installationMethod": "homebrew"'
   end
 
   test do
     (testpath/"package.json").write('{"name": "test"}')
     system bin/"yarn", "add", "jquery"
-    system bin/"yarn", "add", "fsevents", "--build-from-source=true"
+    on_macos do
+      # macOS specific package
+      system bin/"yarn", "add", "fsevents", "--build-from-source=true"
+    end
   end
 end

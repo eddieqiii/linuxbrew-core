@@ -1,9 +1,9 @@
 class JettyRunner < Formula
   desc "Use Jetty without an installed distribution"
   homepage "https://www.eclipse.org/jetty/"
-  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-runner/9.4.38.v20210224/jetty-runner-9.4.38.v20210224.jar"
-  version "9.4.38.v20210224"
-  sha256 "03daee0ff6c3de949060d1f4198d01e89dc8f0222bb8a983b5eae7470e19b778"
+  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-runner/9.4.41.v20210516/jetty-runner-9.4.41.v20210516.jar"
+  version "9.4.41.v20210516"
+  sha256 "b37ed2e58c85e1e43d5afd81113afef071c07d11159e5183c21ee9709c6d7f9d"
   license any_of: ["Apache-2.0", "EPL-1.0"]
 
   livecheck do

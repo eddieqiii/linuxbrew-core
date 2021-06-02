@@ -1,16 +1,16 @@
 class Dssim < Formula
   desc "RGBA Structural Similarity Rust implementation"
   homepage "https://github.com/kornelski/dssim"
-  url "https://github.com/kornelski/dssim/archive/3.0.0.tar.gz"
-  sha256 "ad2498d4b73d3e5210491750b82cdee833ec25ddab38f76a6dc46b21e0e572fa"
+  url "https://github.com/kornelski/dssim/archive/3.0.2.tar.gz"
+  sha256 "5b1f3820709828310cd8d3145d7d45ccbc3db4cf8ab65e4c70ced4bcf17c8122"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b9a567ce8d4d748ff5f2267008c456f1dbe4493d5b19624ec711262d45236f52"
-    sha256 cellar: :any_skip_relocation, big_sur:       "919d94af16d5c1b81bf3368819ac71d73cb404fcef347fe90cdefcc1f5bd7f4f"
-    sha256 cellar: :any_skip_relocation, catalina:      "3bbf4c9dc9acf08ea2f16a2ba393fd2a0b90b6a675555cecb3095136b7361938"
-    sha256 cellar: :any_skip_relocation, mojave:        "3610c3253c0838fd558d6d8fdd95913d068458869f8600c88f60fb3021d980a0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "25fef7ab5535aa658be6af165fb485e969dc77028c301344b21a75cd0672ebe4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "454288860d0a84578dc831b45e2c2edc901a5f9e275d5ecf26d88eb90f3a3f61"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a1c5c83958163239faa9fc6be6df3b22b5b3f22e73d592550a0644673748bbaa"
+    sha256 cellar: :any_skip_relocation, catalina:      "79e984e37783117cbc3923f5f5dc98ec8f65d0f9c550e64ce32135f48cbc04bb"
+    sha256 cellar: :any_skip_relocation, mojave:        "78f969b1a8b31bd99305cc9b43e91e3e2e5c39f71ed4083fd7bfbcfcef36a00c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ed9396d267f1bd634cb25a83f4e435e27b13e4fd860635f16935296e08cb6276"
   end
 
   depends_on "nasm" => :build

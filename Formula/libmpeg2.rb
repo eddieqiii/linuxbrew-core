@@ -5,13 +5,14 @@ class Libmpeg2 < Formula
   sha256 "dee22e893cb5fc2b2b6ebd60b88478ab8556cb3b93f9a0d7ce8f3b61851871d4"
   license "GPL-2.0-or-later"
 
+  livecheck do
+    url "https://libmpeg2.sourceforge.io/downloads.html"
+    regex(/href=.*?libmpeg2[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    rebuild 2
-    sha256 cellar: :any, arm64_big_sur: "e2f1a24fdb40a15928f35ae84326fab5b8d1293ca2b378aee8e45aab9bb5766c"
-    sha256 cellar: :any, big_sur:       "9f2cfd80d47e975333747fdea41d336071282ae359e9a345835a70611467bd43"
-    sha256 cellar: :any, catalina:      "9a8c812495f38eb0d46bff246c632c5dfd97413b2bc949defd9c5d318b9da439"
-    sha256 cellar: :any, mojave:        "81161223100cfa38704d3194519be5651f4fcb47765b7e99f1d53ce05e433142"
-    sha256 cellar: :any, x86_64_linux:  "38ea8d58877cb8e7fa0e9465ec78aa10abf5159b349ae9c5c939fb7d3d292a6a"
+    rebuild 3
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1eb4e3c113049194258bad418e3f1f68b840b46f6acb11be780ffae8adf8fd26"
   end
 
   depends_on "autoconf" => :build
@@ -31,6 +32,6 @@ class Libmpeg2 < Formula
   end
 
   test do
-    system ENV.cc, "-I#{include}/mpeg2dec", "-L#{lib}", "-lmpeg2", pkgshare/"sample1.c"
+    system ENV.cc, "-I#{include}/mpeg2dec", pkgshare/"sample1.c", "-L#{lib}", "-lmpeg2"
   end
 end

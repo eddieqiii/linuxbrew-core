@@ -1,25 +1,39 @@
 class Driftctl < Formula
   desc "Detect, track and alert on infrastructure drift"
   homepage "https://driftctl.com"
-  url "https://github.com/cloudskiff/driftctl/archive/v0.6.0.tar.gz"
-  sha256 "33a28ce9630ba4fc80021c077086a91867f5af3578f70018b28621d4c7a67b11"
+  url "https://github.com/cloudskiff/driftctl/archive/v0.9.0.tar.gz"
+  sha256 "1c3ad6f50c452920ec867c7a2759a6d53720833aed89ba4290509fc7ddd44e73"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c3d0b4e12bb73c2ed504d81cfebd6cd32374388d5847a59a59367b1cd9701df5"
-    sha256 cellar: :any_skip_relocation, big_sur:       "7b2e9c5e7cf215752910878ab3aad22aa596dcbd2bd47c8b521395abae5814b9"
-    sha256 cellar: :any_skip_relocation, catalina:      "1ac34b52b8fff225f804473e5ddf57d7ef5177e72a942a8a0264984e3ea1f16c"
-    sha256 cellar: :any_skip_relocation, mojave:        "2479a4f61803209f070f6c5abd55ac5781aeb7e10d2e589aa5c4524cd1bd6bd2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "42fad07fecbf96460e5df29eb56f0623dec0c2fc09e01cf127709c8cdc868702"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "a984f3f3aad094c72199841bc67efab4159aa52fc7180deef09b0847b4b15c1c"
+    sha256 cellar: :any_skip_relocation, big_sur:       "d267df2d0dee7b07d02c6eb944259719a41c3792aac6450fee3349e90b4c7a1f"
+    sha256 cellar: :any_skip_relocation, catalina:      "d267df2d0dee7b07d02c6eb944259719a41c3792aac6450fee3349e90b4c7a1f"
+    sha256 cellar: :any_skip_relocation, mojave:        "d267df2d0dee7b07d02c6eb944259719a41c3792aac6450fee3349e90b4c7a1f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a5ff55c1f161d6d6eabd46bc51b5cd6775f69e79b9198689481effb0454dc3f"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags",
-             "-s -w -X github.com/cloudskiff/driftctl/build.env=release
-             -X github.com/cloudskiff/driftctl/pkg/version.version=v#{version}",
-             *std_go_args
+    ENV["CGO_ENABLED"] = "0"
+
+    ldflags = %W[
+      -s -w
+      -X github.com/cloudskiff/driftctl/build.env=release
+      -X github.com/cloudskiff/driftctl/pkg/version.version=v#{version}
+    ].join(" ")
+
+    system "go", "build", *std_go_args(ldflags: ldflags)
+
+    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "bash")
+    (bash_completion/"driftctl").write output
+
+    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "zsh")
+    (zsh_completion/"_driftctl").write output
+
+    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "fish")
+    (fish_completion/"driftctl.fish").write output
   end
 
   test do

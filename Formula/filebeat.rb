@@ -2,22 +2,23 @@ class Filebeat < Formula
   desc "File harvester to ship log files to Elasticsearch or Logstash"
   homepage "https://www.elastic.co/products/beats/filebeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.11.1",
-      revision: "9b2fecb327a29fe8d0477074d8a2e42a3fabbc4b"
+      tag:      "v7.13.0",
+      revision: "054e224d226b42a1dd7c72dcf48c3f18de452e22"
   # Outside of the "x-pack" folder, source code in a given file is licensed
   # under the Apache License Version 2.0
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "7d12f1ce91899083cde755fd701a1fc82efc0c80a4e0c1cbb0b9806d7fc5346f"
-    sha256 cellar: :any_skip_relocation, big_sur:       "7377ca46006bc3935675090510c588c367c5e6266ab0548fc81c357281764660"
-    sha256 cellar: :any_skip_relocation, catalina:      "5585c58d130f824cd2670cac74d590b68c7c692ff5be3bdd97ecd4676ac5f1e4"
-    sha256 cellar: :any_skip_relocation, mojave:        "37a8ad747d5c3b1799ab6ca24e9a36cfeb8dfbed4b8deceb83a64a759c18a80d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f49320143bd0f0b6072d2dca8caaccbbbf662dde4b7a3b6691d97bfea9fda5a2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b7cf720f9f5a23cef2affb330cb659237795f424793216455298caa9e1bbaa0b"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ae25594b662c98bfd614a0922416a7670e4db0e7b75f9155baed69361cec6088"
+    sha256 cellar: :any_skip_relocation, catalina:      "c2354483373237454c8935143c217de826179f6e1f80e8786fd0c4247887dd10"
+    sha256 cellar: :any_skip_relocation, mojave:        "de7b942df4f8b2d9f8c7da1115c138400ce80df1dd2d6e792d5b8d15ad22aa9d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7dd0657bc56db6ddd47c31c9391fda8812b48023b84bcee764d6dda08ff9cc20"
   end
 
   depends_on "go" => :build
+  depends_on "mage" => :build
   depends_on "python@3.9" => :build
 
   uses_from_macos "rsync" => :build
@@ -26,17 +27,12 @@ class Filebeat < Formula
     # remove non open source files
     rm_rf "x-pack"
 
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/elastic/beats").install Dir["{*,.git,.gitignore}"]
-    ENV.prepend_path "PATH", buildpath/"bin" # for mage (build tool)
-
-    cd "src/github.com/elastic/beats/filebeat" do
+    cd "filebeat" do
       # don't build docs because it would fail creating the combined OSS/x-pack
       # docs and we aren't installing them anyway
       inreplace "magefile.go", "mg.SerialDeps(Fields, Dashboards, Config, includeList, fieldDocs,",
                                "mg.SerialDeps(Fields, Dashboards, Config, includeList,"
 
-      system "make", "mage"
       # prevent downloading binary wheels during python setup
       system "make", "PIP_INSTALL_PARAMS=--no-binary :all", "python-env"
       system "mage", "-v", "build"
@@ -47,8 +43,6 @@ class Filebeat < Formula
       (libexec/"bin").install "filebeat"
       prefix.install "build/kibana"
     end
-
-    prefix.install_metafiles buildpath/"src/github.com/elastic/beats"
 
     (bin/"filebeat").write <<~EOS
       #!/bin/sh

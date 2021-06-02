@@ -5,6 +5,7 @@ class Dbus < Formula
   url "https://dbus.freedesktop.org/releases/dbus/dbus-1.12.20.tar.gz"
   mirror "https://deb.debian.org/debian/pool/main/d/dbus/dbus_1.12.20.orig.tar.gz"
   sha256 "f77620140ecb4cdc67f37fb444f8a6bea70b5b6461f12f1cbe2cec60fa7de5fe"
+  license any_of: ["AFL-2.1", "GPL-2.0-or-later"]
 
   livecheck do
     url "https://dbus.freedesktop.org/releases/dbus/"
@@ -29,15 +30,12 @@ class Dbus < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "xmlto" => :build if OS.mac?
+  depends_on "pkg-config" => :build
+  depends_on "xmlto" => :build
 
   uses_from_macos "expat"
 
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
-
-  if OS.mac?
+  on_macos do
     # Patch applies the config templating fixed in https://bugs.freedesktop.org/show_bug.cgi?id=94494
     # Homebrew pr/issue: 50219
     patch do
@@ -49,27 +47,27 @@ class Dbus < Formula
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"
-
-    if OS.mac?
-      # macOS doesn't include a pkg-config file for expat
-      ENV["EXPAT_CFLAGS"] = "-I#{MacOS.sdk_path}/usr/include"
-      ENV["EXPAT_LIBS"] = "-lexpat"
-    end
-
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
     system "./autogen.sh", "--no-configure" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--localstatedir=#{var}",
-                          "--sysconfdir=#{etc}",
-                          ("--enable-xml-docs" if OS.mac?),
-                          ("--disable-xml-docs" unless OS.mac?),
-                          "--disable-doxygen-docs",
-                          ("--enable-launchd" if OS.mac?),
-                          ("--with-launchd-agent-dir=#{prefix}" if OS.mac?),
-                          "--without-x",
-                          "--disable-tests"
+
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--localstatedir=#{var}",
+      "--sysconfdir=#{etc}",
+      "--enable-xml-docs",
+      "--disable-doxygen-docs",
+      "--without-x",
+      "--disable-tests",
+    ]
+
+    on_macos do
+      args << "--enable-launchd"
+      args << "--with-launchd-agent-dir=#{prefix}"
+    end
+
+    system "./configure", *args
     system "make", "install"
   end
 

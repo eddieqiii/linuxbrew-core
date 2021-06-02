@@ -1,16 +1,16 @@
 class TerraformDocs < Formula
   desc "Tool to generate documentation from Terraform modules"
   homepage "https://github.com/terraform-docs/terraform-docs"
-  url "https://github.com/terraform-docs/terraform-docs/archive/v0.11.2.tar.gz"
-  sha256 "0f409934c2e1a57bcebb5f3b2f4bd44c31981f55e861413924bd2605a03f4c5c"
+  url "https://github.com/terraform-docs/terraform-docs/archive/v0.14.0.tar.gz"
+  sha256 "d7cd702969fcb50594767fbda3a4bb5435736edf14cfcdfd82cf5fc40c16da3e"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "397b1e57c3f486b715067a4d033d1d4aed1a4087fd9125e640eb172fa9a911da"
-    sha256 cellar: :any_skip_relocation, big_sur:       "217078eb92ae040da5e32a587cf06f78390ce575a467bed0381748128c55a298"
-    sha256 cellar: :any_skip_relocation, catalina:      "2d461a60cca9cd8c10ca1b596b210cdaf2a5e4d9b808cff2cfedf262185d5457"
-    sha256 cellar: :any_skip_relocation, mojave:        "dbfa96439adb5d07f9b7e18b4ecd8d32c66d3c24e55500de086483ed2f3f9033"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "aa759e474ba1417103b0efd23750853540ee91730b27385e31dc7f01e6c87ca6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "a7a1a54abd1ff26f28e1c23675580bbefa727e40a992c60a45dc42f4804cce2b"
+    sha256 cellar: :any_skip_relocation, big_sur:       "c278017d514b3b46ad45ee63c0823ea7ef43fc41091b361302618ab75c0b9c07"
+    sha256 cellar: :any_skip_relocation, catalina:      "68f0e4331dc354e8089f9bc580692c1125ec725aa61afb669d95c12929ecaff7"
+    sha256 cellar: :any_skip_relocation, mojave:        "c7f0532f8b2f0fbe5d80ac61aacbe1c760c4d4b0e206f198363e0ad9192459a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3c68908017dbd874550039a8b0fb3a0a05e5bf4685360e23bea99d0d041966ae"
   end
 
   depends_on "go" => :build
@@ -18,7 +18,11 @@ class TerraformDocs < Formula
   def install
     system "make", "build"
     cpu = Hardware::CPU.arm? ? "arm64" : "amd64"
-    bin.install "bin/#{OS.mac? ? "darwin" : "linux"}-#{cpu}/terraform-docs"
+    os = "darwin"
+    on_linux do
+      os = "linux"
+    end
+    bin.install "bin/#{os}-#{cpu}/terraform-docs"
     prefix.install_metafiles
   end
 

@@ -1,10 +1,8 @@
 class Fltk < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "https://www.fltk.org/"
-  url "https://www.fltk.org/pub/fltk/1.3.5/fltk-1.3.5-source.tar.gz"
-  mirror "https://dl.bintray.com/homebrew/mirror/fltk-1.3.5.tar.gz"
-  sha256 "8729b2a055f38c1636ba20f749de0853384c1d3e9d1a6b8d4d1305143e115702"
-  revision 3 unless OS.mac?
+  url "https://www.fltk.org/pub/fltk/1.3.6/fltk-1.3.6-source.tar.gz"
+  sha256 "9aac75ef9e9b7bd7b5338a4c0d4dd536e6c22ea7b15ea622aa1d8f1fa30d37ab"
 
   livecheck do
     url "https://www.fltk.org/software.php"
@@ -12,25 +10,20 @@ class Fltk < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "b93b7b3bea5d4d231c4d4c6041d9184a7711a02426b91339480b268a3ffe2bf7"
-    sha256 big_sur:       "a4f58ab4ac8e0b54a89caccc30f6ff453d845621f3287218f4a4953ae3eca6da"
-    sha256 catalina:      "d0ff3728a8da506e399b094b0e2a94ffef5a32805308d73fd2fb5fd0e402c88b"
-    sha256 mojave:        "3ea6ccc2fec9151f3ed0f20761794b9fe0477d168dbc4e83ba88b3f3d16c530b"
-    sha256 high_sierra:   "6edac0b91f19783376ec95c84819405a6f029d7d2bf8ac636d421682fc064e34"
-    sha256 sierra:        "e2bd28a348c8fbf948f2400d3df29ba786a2ca9cc3f87b3727477fb49ebf57f0"
-    sha256 x86_64_linux:  "2e583dabf2f12f57e91742d0bb69914bc2f09ad1a75acd66d07afea418ab9107"
+    sha256 arm64_big_sur: "8a38a916979fe3cd382d683bcd0c0cea2322a1754024e6afe99c9c9591bb8724"
+    sha256 big_sur:       "ec58967d86a8068d770f5c1f8a5650ff7a4c334d952b51220564e1539b1c54de"
+    sha256 catalina:      "94960f1fd2d833812056ef8d8be09b563331277b6b30b49e527d2a28d1454fb8"
+    sha256 mojave:        "137faeafeb34fe3517d79aebb9c3fcfb2c959729e46d59d62be6203c2a520f39"
+    sha256 x86_64_linux:  "66e1a8e5c1a2d967eaad10c58d798c6b29a4f19246bdd12c4dc7e5671fbff00c"
   end
 
   depends_on "jpeg"
   depends_on "libpng"
 
-  unless OS.mac?
+  on_linux do
     depends_on "pkg-config" => :build
-    depends_on "libx11"
-    depends_on "libxext"
     depends_on "libxft"
     depends_on "libxt"
-    depends_on "mesa"
     depends_on "mesa-glu"
   end
 

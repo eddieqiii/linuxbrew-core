@@ -1,10 +1,9 @@
 class Hypre < Formula
   desc "Library featuring parallel multigrid methods for grid problems"
   homepage "https://computing.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods"
-  url "https://github.com/hypre-space/hypre/archive/v2.20.0.tar.gz"
-  sha256 "5be77b28ddf945c92cde4b52a272d16fb5e9a7dc05e714fc5765948cba802c01"
+  url "https://github.com/hypre-space/hypre/archive/v2.21.0.tar.gz"
+  sha256 "e380f914fe7efe22afc44cdf553255410dc8a02a15b2e5ebd279ba88817feaf5"
   license any_of: ["MIT", "Apache-2.0"]
-  revision 1 unless OS.mac?
   head "https://github.com/hypre-space/hypre.git"
 
   livecheck do
@@ -13,12 +12,11 @@ class Hypre < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ddd013fddcdc9ecd901dabe5ac558a457152e661e1f4a20310d24609be07d667"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5f2247c3fee3495c13111221ed6eb37b7b154ae40a301aded68028cf767ec757"
-    sha256 cellar: :any_skip_relocation, catalina:      "9d732247f823113d50fd5d5e144541ad92dfab1f8df05298426bea24743e693b"
-    sha256 cellar: :any_skip_relocation, mojave:        "ecba86de35962ede83358e77986f65ac66e3632c8b255b91fde2b986c10d8c80"
-    sha256 cellar: :any_skip_relocation, high_sierra:   "0c88309a25471939828ac8e9f8851b0a83bb9b2a11103837a12291a59351a520"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4e029e97a3d944397fcdf5d932253e49957791aada4fb02002da17e44ab0b54"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8028db25d1814a982533c6783d0b0fa3ea23405d2fefb9d52bdb128db5d9aae5"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ddc639498b314c72bbbc2ac61ccd7867c18544eb02188d45008a44a3815a4ee9"
+    sha256 cellar: :any_skip_relocation, catalina:      "fe07da5e7a7d25ff95c202743b647fed56fe3b9c88f44688c714dca8ea43c68f"
+    sha256 cellar: :any_skip_relocation, mojave:        "bd7f4929f31e0f01868989770ebdb93f8d6487e0c22215781f9a8729aa84ad06"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0e69ddaec7f7b46477876ccdafa047b0bcb2ec6eab64877a800bb488c0d4f4ae"
   end
 
   depends_on "gcc" # for gfortran

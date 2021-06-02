@@ -1,16 +1,15 @@
 class QtUnixodbc < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.0/6.0.2/submodules/qtbase-everywhere-src-6.0.2.tar.xz"
-  sha256 "991a0e4e123104e76563067fcfa58602050c03aba8c8bb0c6198347c707817f1"
+  url "https://download.qt.io/official_releases/qt/6.1/6.1.0/submodules/qtbase-everywhere-src-6.1.0.tar.xz"
+  sha256 "f7af3c87e96051d09b5abce6c88277c33031bef241ebfe1db4106d33ed0814c4"
   license all_of: ["GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
-  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "083b5e9c1bc16509b0bd051e178233cd15923e9b2dd016117c8bb1612b639150"
-    sha256 cellar: :any, big_sur:       "08ecf10f2b36819770a15afb27d9b98b7875e3515238eef5840cab591cb55547"
-    sha256 cellar: :any, catalina:      "140a967eb6e9e379be412bdabc32054d4e43851ba783fa336b27077e6becc9b9"
-    sha256 cellar: :any, mojave:        "8f4cee3c3e7a140d81f8238f9f0f5d241f498f620825d2f4110cd3ea26b32d00"
+    sha256 cellar: :any, arm64_big_sur: "7c264ca18dd834662088ebaa27d5cea2d8d7e338ec08ce0002f318f92b04967f"
+    sha256 cellar: :any, big_sur:       "53d69eb567bfb669c57548429462bdc8427504ebfede3b599ec71861560df0b3"
+    sha256 cellar: :any, catalina:      "79a107572a86335a8c31e0f06df657dbd2512513dbef1d3dc4817bd8e7cad5d9"
+    sha256 cellar: :any, mojave:        "7a73e8073474558381ac6bf0aae68f94588c18e5923df551033e5521b6e8e00f"
   end
 
   depends_on "cmake" => [:build, :test]

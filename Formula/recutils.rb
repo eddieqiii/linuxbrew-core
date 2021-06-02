@@ -4,7 +4,7 @@ class Recutils < Formula
   url "https://ftp.gnu.org/gnu/recutils/recutils-1.8.tar.gz"
   mirror "https://ftpmirror.gnu.org/gnu/recutils/recutils-1.8.tar.gz"
   sha256 "df8eae69593fdba53e264cbf4b2307dfb82120c09b6fab23e2dad51a89a5b193"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
 
   bottle do
     sha256 cellar: :any, arm64_big_sur: "0ce93377375f551690f93d4cd68d2042f72354596dcae615ee632e8794bd7744"
@@ -16,7 +16,9 @@ class Recutils < Formula
     sha256 cellar: :any, x86_64_linux:  "111ee4bf1d770f006189b126835f5b1767beccd98ac544303cb3a63017b5f0bb"
   end
 
-  depends_on "libgcrypt" unless OS.mac?
+  on_linux do
+    depends_on "libgcrypt"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

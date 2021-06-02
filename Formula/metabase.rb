@@ -1,13 +1,17 @@
 class Metabase < Formula
   desc "Business intelligence report server"
   homepage "https://www.metabase.com/"
-  url "https://downloads.metabase.com/v0.38.1/metabase.jar"
-  sha256 "11755348c00f43a83ebf4c6ed85cdadbe579f0f1a8306fe915a61ed0a9a69dec"
+  url "https://downloads.metabase.com/v0.39.3/metabase.jar"
+  sha256 "81b26d7d9eb1385962a02c2133a2f82e95adeaf425fd329c7f02f98b1161282e"
   license "AGPL-3.0-only"
 
   livecheck do
     url "https://www.metabase.com/start/oss/jar.html"
     regex(%r{href=.*?/v?(\d+(?:\.\d+)+)/metabase\.jar}i)
+  end
+
+  bottle do
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "4de6abaf418eafa0fc04377b65acac16f2a48ff34c974f3ba5fb054f57c491fc"
   end
 
   head do
@@ -17,8 +21,6 @@ class Metabase < Formula
     depends_on "node" => :build
     depends_on "yarn" => :build
   end
-
-  bottle :unneeded
 
   # metabase uses jdk.nashorn.api.scripting.JSObject
   # which is removed in Java 15

@@ -17,7 +17,7 @@ class GnuTime < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "413f9b0ff0050c2bdd9bd4cbbd581078e44f5f7aec43ac20958a89a1200d26fe"
   end
 
-  depends_on "ruby" => :test
+  uses_from_macos "ruby" => :test
 
   def install
     args = %W[

@@ -1,16 +1,21 @@
 class Kumactl < Formula
   desc "Kuma control plane command-line utility"
   homepage "https://kuma.io/"
-  url "https://github.com/kumahq/kuma/archive/1.1.1.tar.gz"
-  sha256 "7c8086807fcdfa33c95dc9fa4a4fbf8cbafd22b50d749d14d877a64299381914"
+  url "https://github.com/kumahq/kuma/archive/1.1.6.tar.gz"
+  sha256 "946bc6d06d1fc2a0ab4bca431496134c3dab050fb7a85d6073273f918aed899a"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9891ad7f0a45a1bc41de6833fe7b2912c5e70c602eecf78cc3c49908f6af2975"
-    sha256 cellar: :any_skip_relocation, big_sur:       "20629acfd92489281588abffe2de1e5c1c4750914a4468efa9c9a45240b338bf"
-    sha256 cellar: :any_skip_relocation, catalina:      "1cda3c8d8888ffc019a21cb1ff2dd8b87715e3448b362c3be02db5fca5f2e353"
-    sha256 cellar: :any_skip_relocation, mojave:        "cdc6f7768fae60ca5c0eb1728f57533d008e420f125b8f0edcb093eea0309822"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1096a3ab84f6a2052b048d9a670a3cbdf65cb0028f192aea1e9eb371f08ac1ea"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "16e1cd8d5a7ca22581cf369b433a34bde0340cbb8554ac4301ed91129349e190"
+    sha256 cellar: :any_skip_relocation, big_sur:       "5e7e70a13d8271439c0492e56745d319c1b39d49251b43975c859a20f8f57d0c"
+    sha256 cellar: :any_skip_relocation, catalina:      "bda6a4e45d7212b6b57e1cc37f29c72548168c23b4b350594c47c83b1812253e"
+    sha256 cellar: :any_skip_relocation, mojave:        "40472bc58519021c64769eea1bb8bbdb846e39b3e01192547d96d8f5adf8be6b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "271ac84bfab0df38dd56dc24549467cc3d085e4b24cc7df206651440f52417af"
   end
 
   depends_on "go" => :build

@@ -2,16 +2,16 @@ class KubeLinter < Formula
   desc "Static analysis tool for Kubernetes YAML files and Helm charts"
   homepage "https://github.com/stackrox/kube-linter"
   url "https://github.com/stackrox/kube-linter.git",
-      tag:      "0.1.6",
-      revision: "a64df58c92e9dcab418e2cc9f1e796eae70b97fa"
+      tag:      "0.2.2",
+      revision: "2d8dff014dda8cd6a7ea10bf665ec421c9350b5c"
   license "Apache-2.0"
   head "https://github.com/stackrox/kube-linter.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "5420d80aae62be7329f23944eddf424800abd9ffa88679628f664b672ba9d592"
-    sha256 cellar: :any_skip_relocation, catalina:     "93e1bcc15e05ef89f75b24be258a4e3a13dc06ac2967d0b02420d8f4ceb9d6cd"
-    sha256 cellar: :any_skip_relocation, mojave:       "9790cd431046ab7e4464a627d8e51462313b15d59389cb7fb4e937293f2833ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "c5b16ec4f66e3b8fd3f2cbdc9064f463410b3a00ffe1d189fd2a0904fe2dbac0"
+    sha256 cellar: :any_skip_relocation, big_sur:      "831b22931fea72de98b288d96f2ff9c13ad078a88ab2600748434dbd7b8dfd65"
+    sha256 cellar: :any_skip_relocation, catalina:     "3d1f9812399cfa72f61cb2c6b3177a739a246e6408ccf47a4455864ef1685cf8"
+    sha256 cellar: :any_skip_relocation, mojave:       "ae7e49df2df920ae83c66326429d06c4f748c0d3f6ee61f5d3d70e9006d6051f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "c4558fb675050ccc2a91b575a29ee5946e57e4e1122c281894898dd06e9030da"
   end
 
   depends_on "go" => :build

@@ -1,16 +1,16 @@
 class Gdu < Formula
   desc "Disk usage analyzer with console interface written in Go"
   homepage "https://github.com/dundee/gdu"
-  url "https://github.com/dundee/gdu/archive/v4.8.0.tar.gz"
-  sha256 "6f6bbffbce4b32c128fe35da50f59fffc3332c6b7fb11d16f06ab2a9cf167cee"
+  url "https://github.com/dundee/gdu/archive/v5.0.0.tar.gz"
+  sha256 "62312ff82192ffd593af0f40ebe729d9e18b63e4a034a61f2574ec9e96d3f04f"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "98fd1f752a783237c9987a011c4296bd49d60f0e9ca4c01fa54f4e17e6a01ff1"
-    sha256 cellar: :any_skip_relocation, big_sur:       "07c3aa2b6500b8d7548f365d509e89c183636675cf0974f2d1482d40654ca024"
-    sha256 cellar: :any_skip_relocation, catalina:      "d9bf872ee85e2b00fc2fdccdf24c47a5095d3e93b7613a0c233dddbe55a56ff3"
-    sha256 cellar: :any_skip_relocation, mojave:        "d32bb6a39405edae8e243350622c42af5d9d99112790377e30238f0978c1dd0e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "88211afe5510ef08f8ea7bcb49926f599bc67560a0c14b21b7640c0c7aa16c31"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "69cc2511e3f49853bb2aba0a596aadc3ab17ebc1b6b5bfe27b178bea37c44f80"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0f895e32585e6462f92bddf5affe12e956451b4eed762c8a589be5ea5b9ad973"
+    sha256 cellar: :any_skip_relocation, catalina:      "7e10e04f9d5bee8781d252555c2b79fc550e219881576d8747f082e817bd67b0"
+    sha256 cellar: :any_skip_relocation, mojave:        "bc39cc6b9cf1c88d2fef6ae96dad5775bc21ba500c8ae338f598b816f6f113a0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b815d6afc5c9ab6886350dcb80f8c439305eec2027cf2fb338bc8f84d6a7e74e"
   end
 
   depends_on "go" => :build
@@ -18,17 +18,19 @@ class Gdu < Formula
   conflicts_with "coreutils", because: "both install `gdu` binaries"
 
   def install
-    time = Time.new
+    ENV["TZ"] = "UTC"
+    time = Time.at(ENV["SOURCE_DATE_EPOCH"].to_i)
     user = Utils.safe_popen_read("id", "-u", "-n")
+    major = version.major
 
     ldflags = %W[
       -s -w
-      -X 'github.com/dundee/gdu/v4/build.Version=v#{version}'
-      -X 'github.com/dundee/gdu/v4/build.Time=#{time}'
-      -X 'github.com/dundee/gdu/v4/build.User=#{user}'
+      -X "github.com/dundee/gdu/v#{major}/build.Version=v#{version}"
+      -X "github.com/dundee/gdu/v#{major}/build.Time=#{time}"
+      -X "github.com/dundee/gdu/v#{major}/build.User=#{user}"
     ]
 
-    system "go", "build", *std_go_args, "-ldflags", ldflags.join(" ")
+    system "go", "build", *std_go_args(ldflags: ldflags.join(" ")), "github.com/dundee/gdu/v#{major}/cmd/gdu"
   end
 
   test do

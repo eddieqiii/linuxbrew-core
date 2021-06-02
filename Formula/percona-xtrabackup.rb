@@ -1,8 +1,9 @@
 class PerconaXtrabackup < Formula
   desc "Open source hot backup tool for InnoDB and XtraDB databases"
   homepage "https://www.percona.com/software/mysql-database/percona-xtrabackup"
-  url "https://www.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.22-15/source/tarball/percona-xtrabackup-8.0.22-15.tar.gz"
-  sha256 "064fe405f8c1f94edd9300756bdf979eae0a41c5cad15762caabfe24f5332eac"
+  url "https://www.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.23-16/source/tarball/percona-xtrabackup-8.0.23-16.tar.gz"
+  sha256 "ca834acf940a79981366eb874d1b71df794e237c8936da86d03415771604be7e"
+  revision 1
 
   livecheck do
     url "https://www.percona.com/downloads/Percona-XtraBackup-LATEST/"
@@ -10,10 +11,10 @@ class PerconaXtrabackup < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "8b66f0ee901d903d322b9e95243f0a8ddca7357b4d4882d36be54019117cb0d1"
-    sha256 big_sur:       "e5cfb19cf48aea96afc5dbaf68f80d2004df87be382acb33deeaeacaa1318ea1"
-    sha256 catalina:      "4cbadb373a159de39d5f3a2d23397488602b915d5b2b9e68bf48afe5381ff6c0"
-    sha256 mojave:        "92e81f48bdf16cdc9d30f58265d67a9b5814ad29da723dc8dc3ae1c37f66b92d"
+    sha256 arm64_big_sur: "f37f29f4e54c87c68809b3b21caf3764ed97180c729fa8a7e116275e8a0b492d"
+    sha256 big_sur:       "a2fde831a45845367f31dd064937839776364c9e363f729652d0e9acce70153a"
+    sha256 catalina:      "a5523f5a64e0a226c255dfd1c7d94deac6612f21fe05976295225752dba3da3f"
+    sha256 mojave:        "f233229c815dda2cc223de08a68c3932afb6ed289b1da7ceaa0262673552332e"
   end
 
   depends_on "cmake" => :build
@@ -47,7 +48,7 @@ class PerconaXtrabackup < Formula
 
   # https://github.com/percona/percona-xtrabackup/blob/percona-xtrabackup-#{version}/cmake/boost.cmake
   resource "boost" do
-    url "https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.tar.bz2"
+    url "https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.bz2"
     sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
   end
 

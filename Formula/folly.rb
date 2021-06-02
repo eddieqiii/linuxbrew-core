@@ -1,16 +1,17 @@
 class Folly < Formula
   desc "Collection of reusable C++ library artifacts developed at Facebook"
   homepage "https://github.com/facebook/folly"
-  url "https://github.com/facebook/folly/archive/v2021.02.15.00.tar.gz"
-  sha256 "0e40e7fd536700ef149ddffb72fa17f92f139738d057c2a6d0a6e5736fa76de0"
+  url "https://github.com/facebook/folly/archive/v2021.05.24.00.tar.gz"
+  sha256 "5c0f64ed80ca8230bb313b9fd31afc833f16827526fbc3673cb3b97572170317"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/facebook/folly.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "48edebb074efad18d47bcf56870d0d132fed7ee4b8b5827c21207860cb0ca71f"
-    sha256 cellar: :any, big_sur:       "5343dff8c01227ffd3f1cebc96d345457b7e70e4d0b4e67697bc9474543243e9"
-    sha256 cellar: :any, catalina:      "7d591f9a7831526787f7ad9bf77eb47970badcefa677c6d400c668bbddb75a04"
-    sha256 cellar: :any, mojave:        "551b9de753352206ed30c3495b5b233bded2f1f16d2d19a487645748a8604f58"
+    sha256 cellar: :any, arm64_big_sur: "d1487ba120a5067bbce69df368c78e72665ade12d04f6a590dc8ef9c34761ef9"
+    sha256 cellar: :any, big_sur:       "2e350bdbd43caefed31a47c1b0c7c357a413e9122992d91d21592d60f15e1ce1"
+    sha256 cellar: :any, catalina:      "34cbf1c0d69d660e5f1b7a4bbf1d8de0f112bba7d9089572bf18845ca17bee68"
+    sha256 cellar: :any, mojave:        "a3ee5a3f766949c8a982f6919648c990f988c5eeee7bfb2559fc7baf2475d40c"
   end
 
   depends_on "cmake" => :build
@@ -22,23 +23,35 @@ class Folly < Formula
   depends_on "glog"
   depends_on "libevent"
   depends_on "lz4"
-  # https://github.com/facebook/folly/issues/966
-  depends_on macos: :high_sierra if OS.mac?
   depends_on "openssl@1.1"
   depends_on "snappy"
   depends_on "xz"
   depends_on "zstd"
-  unless OS.mac?
-    depends_on "jemalloc"
-    depends_on "python@3.9"
+
+  on_macos do
+    depends_on "llvm" if DevelopmentTools.clang_build_version <= 1100
+  end
+
+  fails_with :clang do
+    build 1100
+    # https://github.com/facebook/folly/issues/1545
+    cause <<-EOS
+      Undefined symbols for architecture x86_64:
+        "std::__1::__fs::filesystem::path::lexically_normal() const"
+    EOS
   end
 
   def install
-    mkdir "_build" do
-      args = std_cmake_args
-      args << "-DFOLLY_USE_JEMALLOC=#{OS.mac? ? "OFF" : "ON"}"
+    on_macos do
+      ENV.llvm_clang if DevelopmentTools.clang_build_version <= 1100
+    end
 
-      system "cmake", "..", *args, "-DBUILD_SHARED_LIBS=ON", ("-DCMAKE_POSITION_INDEPENDENT_CODE=ON" unless OS.mac?)
+    mkdir "_build" do
+      args = std_cmake_args + %w[
+        -DFOLLY_USE_JEMALLOC=OFF
+      ]
+
+      system "cmake", "..", *args, "-DBUILD_SHARED_LIBS=ON"
       system "make"
       system "make", "install"
 
@@ -50,6 +63,9 @@ class Folly < Formula
   end
 
   test do
+    # Force use of Clang rather than LLVM Clang
+    on_macos { ENV.clang }
+
     (testpath/"test.cc").write <<~EOS
       #include <folly/FBVector.h>
       int main() {

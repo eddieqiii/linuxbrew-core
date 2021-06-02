@@ -2,8 +2,8 @@ class GitlabRunner < Formula
   desc "Official GitLab CI runner"
   homepage "https://gitlab.com/gitlab-org/gitlab-runner"
   url "https://gitlab.com/gitlab-org/gitlab-runner.git",
-      tag:      "v13.9.0",
-      revision: "2ebc4dc45bd6065afa304a5bfdb846334981529e"
+      tag:      "v13.12.0",
+      revision: "7a6612da06043f908b740629bbe3f0d9c59a5dad"
   license "MIT"
   head "https://gitlab.com/gitlab-org/gitlab-runner.git"
 
@@ -13,31 +13,26 @@ class GitlabRunner < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f33d6880cae9fbed3b58162ccf1016ac1a5759412fd108fc5c4f544a45dfca66"
-    sha256 cellar: :any_skip_relocation, big_sur:       "572eb3014382b91d4475fc8ef88aa359d8f24d66c290b2a74e084be4ae8826d2"
-    sha256 cellar: :any_skip_relocation, catalina:      "539d16ba765ed9a15cbd9575cfc00e59fa63394514b9d7d12458c6363cff5478"
-    sha256 cellar: :any_skip_relocation, mojave:        "b584ec47826383ebf7d7743409fe222c990d5613a6dbd0bb600047d5886ca335"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2326b7491c36cf680a2f1d32ff096f07cbc577014ed302bc5a1d8b3e37ba8408"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "dabcbd0806e9f9ded128e461240e28ae5a33fd4ae4ea9e0ec58eda669ba8a8ac"
+    sha256 cellar: :any_skip_relocation, big_sur:       "8713cc4d2e3e99189d9f0c36c7083772c149060002dee8e3f550afae3d2b8d44"
+    sha256 cellar: :any_skip_relocation, catalina:      "65fa61b110abf9e37dd30d9cfd561f75409ef19b3939ec1ebcd293cfa1c34cbe"
+    sha256 cellar: :any_skip_relocation, mojave:        "e1a302677e341ffd22b7ee09041f4598e9d1821c64ea1eb99d5d403590749516"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dfae106815622f88b34d27159dddb33e9219419f42f30a86eee081001e5ae402"
   end
 
   depends_on "go" => :build
 
   def install
-    dir = buildpath/"src/gitlab.com/gitlab-org/gitlab-runner"
-    dir.install buildpath.children
+    proj = "gitlab.com/gitlab-org/gitlab-runner"
+    ldflags = [
+      "-X #{proj}/common.NAME=gitlab-runner",
+      "-X #{proj}/common.VERSION=#{version}",
+      "-X #{proj}/common.REVISION=#{Utils.git_short_head(length: 8)}",
+      "-X #{proj}/common.BRANCH=#{version.major}-#{version.minor}-stable",
+      "-X #{proj}/common.BUILT=#{Time.new.strftime("%Y-%m-%dT%H:%M:%S%:z")}",
+    ]
 
-    cd dir do
-      proj = "gitlab.com/gitlab-org/gitlab-runner"
-      system "go", "build", "-ldflags", <<~EOS
-        -X #{proj}/common.NAME=gitlab-runner
-        -X #{proj}/common.VERSION=#{version}
-        -X #{proj}/common.REVISION=#{Utils.git_short_head(length: 8)}
-        -X #{proj}/common.BRANCH=#{version.major}-#{version.minor}-stable
-        -X #{proj}/common.BUILT=#{Time.new.strftime("%Y-%m-%dT%H:%M:%S%:z")}
-      EOS
-
-      bin.install "gitlab-runner"
-    end
+    system "go", "build", *std_go_args(ldflags: ldflags.join(" "))
   end
 
   plist_options manual: "gitlab-runner start"
@@ -52,6 +47,9 @@ class GitlabRunner < Formula
           <key>KeepAlive</key><true/>
           <key>RunAtLoad</key><true/>
           <key>Disabled</key><false/>
+          <key>LegacyTimers</key><true/>
+          <key>ProcessType</key>
+          <string>Interactive</string>
           <key>Label</key>
           <string>#{plist_name}</string>
           <key>ProgramArguments</key>

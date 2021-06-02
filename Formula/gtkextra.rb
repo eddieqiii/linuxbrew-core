@@ -3,6 +3,7 @@ class Gtkextra < Formula
   homepage "https://gtkextra.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/gtkextra/3.3/gtkextra-3.3.4.tar.gz"
   sha256 "651b738a78edbd5d6ccb64f5a256c39ec35fbbed898e54a3ab7e6cf8fd82f1d6"
+  license "GPL-2.0-or-later"
   revision 3
 
   bottle do
@@ -46,7 +47,12 @@ class Gtkextra < Formula
     libpng = Formula["libpng"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
-    backend = OS.mac? ? "quartz" : "x11"
+
+    backend = "quartz"
+    on_linux do
+      backend = "x11"
+    end
+
     flags = %W[
       -I#{atk.opt_include}/atk-1.0
       -I#{cairo.opt_include}/cairo
@@ -84,7 +90,9 @@ class Gtkextra < Formula
       -lpango-1.0
       -lpangocairo-1.0
     ]
-    flags << "-lintl" if OS.mac?
+    on_macos do
+      flags << "-lintl"
+    end
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

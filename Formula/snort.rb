@@ -1,9 +1,9 @@
 class Snort < Formula
   desc "Flexible Network Intrusion Detection System"
   homepage "https://www.snort.org"
-  url "https://www.snort.org/downloads/snort/snort-2.9.17.tar.gz"
-  mirror "https://fossies.org/linux/misc/snort-2.9.17.tar.gz"
-  sha256 "c3b234c3922a09b0368b847ddb8d1fa371b741f032f42aa9ab53d67b428dc648"
+  url "https://www.snort.org/downloads/snort/snort-2.9.17.1.tar.gz"
+  mirror "https://fossies.org/linux/misc/snort-2.9.17.1.tar.gz"
+  sha256 "303d3d5dc5affecfeaad3a331d3163f901d48d960fdd6598cb55c6d1591eed82"
   license "GPL-2.0-only"
 
   livecheck do
@@ -12,10 +12,9 @@ class Snort < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:      "2f7c1e51120e447ac63e19b0f6629e1603c64e223caba26002d7b954cacf6906"
-    sha256 cellar: :any, catalina:     "928d091a72cfe6f943b8f9f13e905f988d7ca89189206066c8d0165b2d71ca15"
-    sha256 cellar: :any, mojave:       "2a337db5b70c66b8538b54fab50562467ad6b247e2f1bd818871f2cc647b29e1"
-    sha256 cellar: :any, x86_64_linux: "edb689076c5e819461df51036b5d41563b6a0f24857f12ce07ca2ce7b1c59e59"
+    sha256 cellar: :any, big_sur:  "b37d8c8359f6a93a00db53db85c4d9dc7d064e508b8d18e7aa9e52d1e564085a"
+    sha256 cellar: :any, catalina: "63ce2a1835beb2c93172672f4c470a7517d040cc31f7075ddb2bee2ca7028355"
+    sha256 cellar: :any, mojave:   "56916b49728b2c9d449b31137bea8daf76e5a300d9197f108f3354a42229d512"
   end
 
   depends_on "pkg-config" => :build

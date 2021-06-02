@@ -1,8 +1,8 @@
 class Syncthing < Formula
   desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
-  url "https://github.com/syncthing/syncthing/archive/v1.14.0.tar.gz"
-  sha256 "ab34f328fdca5a1a334af844787e72e6a80988830a5223d82a915efe038433ec"
+  url "https://github.com/syncthing/syncthing/archive/v1.16.1.tar.gz"
+  sha256 "9994380a94b298e8266fdd40238bcff3ade2c21752b9cff98ec4218fe84731ad"
   license "MPL-2.0"
   head "https://github.com/syncthing/syncthing.git", branch: "main"
 
@@ -12,11 +12,11 @@ class Syncthing < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "68c432762e6c944436156a4a6e5030d0c4404129df1336732772b8517a6fb0bf"
-    sha256 cellar: :any_skip_relocation, big_sur:       "3669bca08e3a6166bfd443ace1954ddc0b3fcba29154a9cab9e5bc927a762274"
-    sha256 cellar: :any_skip_relocation, catalina:      "dea720b306548ac56883f8403bb1773974bf62107ee8431d390290073e122fe9"
-    sha256 cellar: :any_skip_relocation, mojave:        "a5634372c54dac12632134c75b1fa83f9a2f59f1dfc3c9d4b78f09552c05e87f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0fd8e6fb8a64619d64679b9e29081361af05844c80c8053d9f6e520651bcc8dc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "10fa5cbf6529e66f968a05cf2f995b84699543931253c93765d1c0929be893e4"
+    sha256 cellar: :any_skip_relocation, big_sur:       "d490fceea832b3d4118d9e06cb07f3a58dc64101529b7eb2e1a402717b1aec05"
+    sha256 cellar: :any_skip_relocation, catalina:      "90a742a70741bdf8b3778457a55e7b736b7ffeb3dee27323a6818a5f8e789067"
+    sha256 cellar: :any_skip_relocation, mojave:        "9b900b1009798d10672dd5607d890bedf57c9d67ab9987500050fd1924747847"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "56663d562cacec1e577d2d32614a834cac715ef0ad04e679c04de9276ba5eb2a"
   end
 
   depends_on "go" => :build

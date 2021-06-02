@@ -16,7 +16,6 @@ class Jbigkit < Formula
     sha256 cellar: :any_skip_relocation, sierra:        "831dd1ec7e8013ddc6c23641a21292eae26f397e8b61d95382a6240f18fc5602"
     sha256 cellar: :any_skip_relocation, el_capitan:    "bdec08cd92dd59183b698c6bbd9072881fdfce64b4ecb6182e405e0f2ad26c00"
     sha256 cellar: :any_skip_relocation, yosemite:      "764396342e87b84253aa06f5046f90c778cacca998ce970900cb2fdf1cfdc3fa"
-    sha256 cellar: :any_skip_relocation, mavericks:     "0ce925915b984307d2e679622138143c5cc5baf832b0a16003fa1e6111a5df9f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7b87245e8682383dc10c4730d5248fabfab9c7ae5b76662da50a24785c0a710"
   end
 

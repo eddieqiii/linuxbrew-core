@@ -1,17 +1,17 @@
 class Gnumeric < Formula
   desc "GNOME Spreadsheet Application"
   homepage "https://projects.gnome.org/gnumeric/"
-  url "https://download.gnome.org/sources/gnumeric/1.12/gnumeric-1.12.48.tar.xz"
-  sha256 "57cce33a41d34db81292e9eebae8b5046f30e5d919d848256fbb75bfc132a590"
+  url "https://download.gnome.org/sources/gnumeric/1.12/gnumeric-1.12.49.tar.xz"
+  sha256 "91c072ec95c32e00b156ffe8015c93b32b8edf368f9041436193cfa32e84ed57"
   license any_of: ["GPL-3.0-only", "GPL-2.0-only"]
+  revision 1
 
   bottle do
-    sha256 arm64_big_sur: "7d95883c243750094676ada23339c1f39d6b1472b8fcecf87d0793df8c30499b"
-    sha256 big_sur:       "c744003a24dd677bedcc09d1f9064a553da3e2539bfbe14173bf6110fb231419"
-    sha256 catalina:      "d9edd4ae0d044bfe837cc94adfb5f2cc812ae5706b0e7f8a96a0c7b2f9dae63b"
-    sha256 mojave:        "43780a97ecfad5fc206241cebbb2d3f16ced32b36a2f095ea047ab6c27dee1c0"
-    sha256 high_sierra:   "67df679b5fe937f17c339812cf1e06aa7b5d5971f6ebfc5c6772b59952745fb7"
-    sha256 x86_64_linux:  "a6e4bc5168ea438bde0c69c9899bfed858419c186852e6b9fea68ac58fddf2e6"
+    sha256 arm64_big_sur: "2017f502250fc654acf20956ffa1894c8dd04fdaba9759eb0862c05a2047df3c"
+    sha256 big_sur:       "72d9127c0c9ab4e661d42b4c885b85de3469a06bbf1cc8012cb198c9b338cca5"
+    sha256 catalina:      "fdbffb8faa080825c809e8384ebbd7e8624b46de1fbd677dcf4dd5bddd377cec"
+    sha256 mojave:        "29408d0f90f55698c76afe425564151764faf3670c298ec7415e86f9ed0a3752"
+    sha256 x86_64_linux:  "e5d8345be95cf3166c0a4471612f85485d91173b7697f37333ff9770b8627089"
   end
 
   depends_on "intltool" => :build

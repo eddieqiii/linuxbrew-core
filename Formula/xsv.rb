@@ -23,6 +23,6 @@ class Xsv < Formula
 
   test do
     (testpath/"test.csv").write("first header,second header")
-    system "#{bin}/xsv", "stats", "test.csv"
+    system bin/"xsv", "stats", "test.csv"
   end
 end

@@ -1,16 +1,17 @@
 class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
-  url "https://github.com/dprint/dprint/archive/0.11.1.tar.gz"
-  sha256 "3344ea1f035f38ab8b608e7ff69c6bfa64534cae200b810e4946e6d558c64aeb"
+  url "https://github.com/dprint/dprint/archive/0.14.1.tar.gz"
+  sha256 "b45593a237f0428c9999faf0b5e06973336b9065ac1e263c7a816342c7eabf7d"
   license "MIT"
   head "https://github.com/dprint/dprint.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "390eda4604117de7d389484949424a130c3f417c2cbff2b5d59b06033eb7222c"
-    sha256 cellar: :any_skip_relocation, catalina:     "d87537fa6beaec8ba177aba620213b7504b689a6b6d2b0fe7a5b3c7c6861dae6"
-    sha256 cellar: :any_skip_relocation, mojave:       "568b92a212191f284669aeab7ea1bed50c0beea6cd20860d0db0832d5dfb7913"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "4d646c026b1dde9d50a4351fbf5663017ac6fab711ba56af426b36b23a067757"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5d4cc3fd88ae59c2b965e3fed8a7313a3d0de350172fbb0e13af517c0f2582d8"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ef7c046d03912ece2ea33bab7ba26db5531d2b0ed22ae0274f2722b4ed06231d"
+    sha256 cellar: :any_skip_relocation, catalina:      "9a9c3ce28c4192c7656412e00525214e67bd3cb763b3fadf374abd1ebd79602a"
+    sha256 cellar: :any_skip_relocation, mojave:        "3bf6876fd10bf5a1c5d149dafaff8b5646bcfb2fec8ed9c7da0eb6125b7474ea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "49d01fce3b2be182bcdb086ddd64ae994e5bd373be4e30a7aa0dc8398be5076c"
   end
 
   depends_on "rust" => :build
@@ -22,7 +23,7 @@ class Dprint < Formula
   end
 
   test do
-    (testpath/".dprintrc.json").write <<~EOS
+    (testpath/"dprint.json").write <<~EOS
       {
         "$schema": "https://dprint.dev/schemas/v0.json",
         "projectType": "openSource",
@@ -42,7 +43,7 @@ class Dprint < Formula
           "**/target"
         ],
         "plugins": [
-          "https://plugins.dprint.dev/typescript-0.34.0.wasm",
+          "https://plugins.dprint.dev/typescript-0.44.1.wasm",
           "https://plugins.dprint.dev/json-0.7.2.wasm",
           "https://plugins.dprint.dev/markdown-0.4.3.wasm",
           "https://plugins.dprint.dev/rustfmt-0.3.0.wasm"

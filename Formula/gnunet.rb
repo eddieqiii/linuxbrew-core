@@ -1,18 +1,14 @@
 class Gnunet < Formula
   desc "Framework for distributed, secure and privacy-preserving applications"
   homepage "https://gnunet.org/"
-  url "https://ftp.gnu.org/gnu/gnunet/gnunet-0.13.3.tar.gz"
-  mirror "https://ftpmirror.gnu.org/gnunet/gnunet-0.13.3.tar.gz"
-  sha256 "318e06c4134d1a8ce3b4385d82b11316eaaeb9a4dbc5d4b646453dfc53199296"
+  url "https://ftp.gnu.org/gnu/gnunet/gnunet-0.14.1.tar.gz"
+  mirror "https://ftpmirror.gnu.org/gnunet/gnunet-0.14.1.tar.gz"
+  sha256 "4a3205c570c30756f1a8b1ad0f1a63d078a92f0fac8e543471d54f4552da18c2"
   license "AGPL-3.0-or-later"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "d2e622cc444972bf0fd15a30922f7f853c066eac83c94b18415fa1547fe1aa2c"
-    sha256 cellar: :any,                 big_sur:       "8f3629373c78f67c8995c3aeb9ec4d27f7576b5f28c1d5b9daac3c8d2ef1796c"
-    sha256 cellar: :any,                 catalina:      "dce4848ff96012a2169bd768d4112dce18dd658f45fa1ab2dfafb4de6886c5fe"
-    sha256 cellar: :any,                 mojave:        "cd3507df5abe3ac3832e61caffc487860e98f05b4a16bb629565c1e84d785c7d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c2e3f4ef816945c253ccf1d35cadc26b6b5036a733ad5e0bfb057dd1b0c91b1e"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "42fb8e4b25df8f32e358d4f422f91b6673c78bac23a6dcac719cbac480e21d56"
   end
 
   depends_on "pkg-config" => :build
@@ -29,6 +25,7 @@ class Gnunet < Formula
   depends_on "unbound"
 
   uses_from_macos "curl"
+  uses_from_macos "sqlite"
 
   def install
     system "./configure", "--prefix=#{prefix}"

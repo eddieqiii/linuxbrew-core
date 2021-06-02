@@ -209,8 +209,6 @@ class Buku < Formula
   test do
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["XDG_DATA_HOME"] = "#{testpath}/.local/share"
-    ENV["PYTHONIOENCODING"] = "utf-8" unless OS.mac?
-    expect = OS.mac? ? "/usr/bin/expect" : "#{Formula["expect"].opt_bin}/expect"
 
     expect = "/usr/bin/expect"
     on_linux do
@@ -293,9 +291,11 @@ class Buku < Formula
 
     port = free_port
     fork do
-      exec "#{bin}/bukuserver run --host 127.0.0.1 --port #{port} 2>&1 >/dev/null"
+      $stdout.reopen("/dev/null")
+      $stderr.reopen("/dev/null")
+      exec "#{bin}/bukuserver run --host 127.0.0.1 --port #{port}"
     end
-    sleep 5
+    sleep 10
 
     result = shell_output("curl -s 127.0.0.1:#{port}/api/bookmarks")
     assert_match "https://github.com/Homebrew/brew", result

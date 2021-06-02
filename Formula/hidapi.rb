@@ -19,9 +19,9 @@ class Hidapi < Formula
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
 
-  unless OS.mac?
-    depends_on "systemd" # for libudev
+  on_linux do
     depends_on "libusb"
+    depends_on "systemd" # for libudev
   end
 
   def install

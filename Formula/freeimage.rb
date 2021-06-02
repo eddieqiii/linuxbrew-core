@@ -17,11 +17,12 @@ class Freeimage < Formula
   end
 
   patch do
-    if OS.mac?
+    on_macos do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/4dcf528/freeimage/3.17.0.patch"
       sha256 "8ef390fece4d2166d58e739df76b5e7996c879efbff777a8a94bcd1dd9a313e2"
-    else
-      url "https://gist.githubusercontent.com/davydden/5a4f348108d3c9110299/raw/3396840ff71c639d848ce552de9124462777ab97/freeimage.patch"
+    end
+    on_linux do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/master/freeimage/3.17.0-linux.patch"
       sha256 "537a4045d31a3ce1c3bab2736d17b979543758cf2081e97fff4d72786f1830dc"
     end
   end

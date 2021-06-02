@@ -2,17 +2,18 @@ class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.16.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.16.tar.xz"
-  sha256 "1c16cefaf88ded4c92eed6a8a41eb682bb2ef42429deb55f1c4ba159053fb98b"
+  url "https://www.php.net/distributions/php-7.4.19.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.19.tar.xz"
+  sha256 "6c17172c4a411ccb694d9752de899bb63c72a0a3ebe5089116bc13658a1467b2"
   license "PHP-3.01"
+  revision 1
 
   bottle do
-    sha256 arm64_big_sur: "3d8f32719809271463e0fa2a6df17cf0f7366fad12a872a9f85e74e29a71470d"
-    sha256 big_sur:       "9fe2442ca2be2fd0b4af1876dc83176fe9b575dbf66528fa9fdbbd57bfeb38d3"
-    sha256 catalina:      "96b0767f4d6c2c4757d1d2fa47d42009be1664d0d2df3c38bbbc0132790eb97c"
-    sha256 mojave:        "e17c40aa2b61bf892245cdb6db158be9bd151cef06d86c44b75bb9159b597662"
-    sha256 x86_64_linux:  "f3f647ed2a715ef7fbff407ea867fb2942ae9a3749491acf329ed3fb2acee974"
+    sha256 arm64_big_sur: "cf8a5b7e38d111b262a9f67f0731ec8e562abb3dede3d5b367d5c33d5699165a"
+    sha256 big_sur:       "e9533d8355dd33f2c8431eded1a7c8c0711ef31ba6f23c3a137ebd746ef29ad1"
+    sha256 catalina:      "2f74b884afbb639639b1716426db1e48f662118fd90b4ac8fecc2867d242afee"
+    sha256 mojave:        "5736e0f9dc341e7cd169a485c2d146edc6641af33ffe624cd7a9166da0deb2b1"
+    sha256 x86_64_linux:  "54e6e8d485932d34878d7648410e8da28ff5d014506bbe73b201b0579fb4df11"
   end
 
   keg_only :versioned_formula
@@ -359,7 +360,7 @@ class PhpAT74 < Formula
     system "#{bin}/phpdbg", "-V"
     system "#{bin}/php-cgi", "-m"
     # Prevent SNMP extension to be added
-    assert_no_match(/^snmp$/, shell_output("#{bin}/php -m"),
+    refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
     begin
       port = free_port
@@ -432,7 +433,7 @@ class PhpAT74 < Formula
       Process.wait(pid)
 
       fpm_pid = fork do
-        exec sbin/"php-fpm", "--allow-to-run-as-root", "-y", "fpm.conf"
+        exec sbin/"php-fpm", "-y", "fpm.conf"
       end
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"

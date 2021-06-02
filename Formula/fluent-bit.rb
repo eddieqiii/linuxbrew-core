@@ -1,8 +1,8 @@
 class FluentBit < Formula
   desc "Data Collector for IoT"
   homepage "https://github.com/fluent/fluent-bit"
-  url "https://github.com/fluent/fluent-bit/archive/v1.7.2.tar.gz"
-  sha256 "732c293b588d8c1ff7cc4bffb0b671247f9b743adc28562cf39a485f590cbf3c"
+  url "https://github.com/fluent/fluent-bit/archive/v1.7.7.tar.gz"
+  sha256 "ddfc4df39a1da01c5e7503db59340c3b287741b5d0cb710f94f5f7551f41c888"
   license "Apache-2.0"
   head "https://github.com/fluent/fluent-bit.git"
 
@@ -12,31 +12,36 @@ class FluentBit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 big_sur:      "603cb62859535f526ebc25bd79feeec2dffd80c4034bf5233b37ef4154446a69"
-    sha256 cellar: :any,                 catalina:     "3eef292b1db3805d2dae6a9190147682f9e6428f7e136cbff6623edb746df367"
-    sha256 cellar: :any,                 mojave:       "8f16be3826e994e684094d549a5142f328daa422c2d0da50e36085e32da9f029"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "338348f8c5c0c3227a47dc8e4c7d68890c2e8725e2a8949fbb301e8b8f562a4e"
+    sha256 cellar: :any, arm64_big_sur: "8d62f2a8db886c176949b5fdbdc7ad8385aed48a095405b59138c66152ec6780"
+    sha256 cellar: :any, big_sur:       "ff69f5d8efe970c1b9667b42a91f052392333910babb7071e2a74e1b198bb67f"
+    sha256 cellar: :any, catalina:      "0345803f857a8c16c6d7305736f1b597b9c149805366482f3b897cb56c9b4b6d"
+    sha256 cellar: :any, mojave:        "0b6088ab0b5f33be13c2d3af5dfa35cbdd187372821da9a08e0366e6ed8b5035"
   end
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "flex" => :build
 
-  unless OS.mac?
+  on_linux do
     depends_on "openssl@1.1"
+  end
 
-    # Don't install service files
-    patch :DATA
+  # Apply https://github.com/fluent/fluent-bit/pull/3564 to build on M1
+  patch do
+    url "https://github.com/fluent/fluent-bit/commit/fcdf304e5abc3e3b66b1acac76dbaf23b2d22579.patch?full_index=1"
+    sha256 "80d1b0b6916ff1e0c157e6824afa769f08e28e764f65bfd28df0900d6f9bda1e"
   end
 
   def install
-    # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
-    # is not set then it's forced to 10.4, which breaks compile on Mojave.
-    # fluent-bit builds against a vendored Luajit.
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+    chdir "build" do
+      # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
+      # is not set then it's forced to 10.4, which breaks compile on Mojave.
+      # fluent-bit builds against a vendored Luajit.
+      ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
 
-    system "cmake", ".", "-DWITH_IN_MEM=OFF", *std_cmake_args
-    system "make", "install"
+      system "cmake", "..", "-DWITH_IN_MEM=OFF", *std_cmake_args
+      system "make", "install"
+    end
   end
 
   test do
@@ -44,36 +49,3 @@ class FluentBit < Formula
     assert_equal "Fluent Bit v#{version}", output
   end
 end
-__END__
-diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 54b3b291..72fd1088 100644
---- a/src/CMakeLists.txt
-+++ b/src/CMakeLists.txt
-@@ -316,27 +316,6 @@ if(FLB_BINARY)
-     ENABLE_EXPORTS ON)
-   install(TARGETS fluent-bit-bin RUNTIME DESTINATION ${FLB_INSTALL_BINDIR})
-
--  # Detect init system, install upstart, systemd or init.d script
--  if(IS_DIRECTORY /lib/systemd/system)
--    set(FLB_SYSTEMD_SCRIPT "${PROJECT_SOURCE_DIR}/init/${FLB_OUT_NAME}.service")
--    configure_file(
--      "${PROJECT_SOURCE_DIR}/init/systemd.in"
--      ${FLB_SYSTEMD_SCRIPT}
--      )
--    install(FILES ${FLB_SYSTEMD_SCRIPT} DESTINATION /lib/systemd/system)
--    install(DIRECTORY DESTINATION ${FLB_INSTALL_CONFDIR})
--  elseif(IS_DIRECTORY /usr/share/upstart)
--    set(FLB_UPSTART_SCRIPT "${PROJECT_SOURCE_DIR}/init/${FLB_OUT_NAME}.conf")
--    configure_file(
--      "${PROJECT_SOURCE_DIR}/init/upstart.in"
--      ${FLB_UPSTART_SCRIPT}
--      )
--    install(FILES ${FLB_UPSTART_SCRIPT} DESTINATION /etc/init)
--    install(DIRECTORY DESTINATION ${FLB_INSTALL_CONFDIR})
--  else()
--    # FIXME: should we support Sysv init script ?
--  endif()
--
-   install(FILES
-     "${PROJECT_SOURCE_DIR}/conf/fluent-bit.conf"
-     DESTINATION ${FLB_INSTALL_CONFDIR}

@@ -2,8 +2,8 @@ class Octant < Formula
   desc "Kubernetes introspection tool for developers"
   homepage "https://octant.dev"
   url "https://github.com/vmware-tanzu/octant.git",
-      tag:      "v0.17.0",
-      revision: "7fded9570239df80f75fa6cf9f4a6ec17945a7e3"
+      tag:      "v0.20.0",
+      revision: "b716185f5d9f85eeec5284a760d7f04dd0c03ab5"
   license "Apache-2.0"
   head "https://github.com/vmware-tanzu/octant.git"
 
@@ -13,11 +13,11 @@ class Octant < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "23b00a85b2e55227064438513170540974ad15e41ec61381eec81b34347c6fbe"
-    sha256 cellar: :any_skip_relocation, big_sur:       "7aaa68d4f40aa80157ebd742f8c2daa7e6669302adf2caed6574d28ef4e09ddf"
-    sha256 cellar: :any_skip_relocation, catalina:      "553b8b8dccc524c09141fea90a62c4c11a8dc26a5c7c9996e4adfe8be2041e85"
-    sha256 cellar: :any_skip_relocation, mojave:        "674f1f38df2d07bbd9f0aace72b5258b5f08ef604dd57c4a6ac2533298357a32"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2daef221895bfd383dcf537517ffb0e4ed6d0d6599e054d364dabfe38d1ba4a1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c435e4f142c85b926de9bfbf0d45da7b4331695d5a53f923389e6cbd72413f82"
+    sha256 cellar: :any_skip_relocation, big_sur:       "62c48472df47c455ce12db4064df940e340c037b2d1de4756db6eb377367ce9d"
+    sha256 cellar: :any_skip_relocation, catalina:      "e9cd027616d285b9c9225ef2ba61af398654a7417fbe1761266ad875756299bc"
+    sha256 cellar: :any_skip_relocation, mojave:        "6b5c2322f973325527b4b5a0035f445f7b46368d5a5ccb08b631b677e0bbb416"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9c3569087b2dc9514710aed4ca45d60c8f3e7309743dcf45997ddea055028a55"
   end
 
   depends_on "go" => :build
@@ -36,7 +36,6 @@ class Octant < Formula
       system "go", "run", "build.go", "go-install"
       ENV.prepend_path "PATH", buildpath/"bin"
 
-      system "go", "generate", "./pkg/plugin/plugin.go"
       system "go", "run", "build.go", "web-build"
 
       build_time = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -44,7 +43,7 @@ class Octant < Formula
                  "-X \"main.gitCommit=#{Utils.git_head}\"",
                  "-X \"main.buildTime=#{build_time}\""]
 
-      system "go", "build", "-o", bin/"octant", "-ldflags", ldflags.join(" "),
+      system "go", "build", "-tags", "embedded", "-o", bin/"octant", "-ldflags", ldflags.join(" "),
               "-v", "./cmd/octant"
     end
   end

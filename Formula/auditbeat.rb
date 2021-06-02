@@ -2,37 +2,33 @@ class Auditbeat < Formula
   desc "Lightweight Shipper for Audit Data"
   homepage "https://www.elastic.co/products/beats/auditbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.11.2",
-      revision: "1d9cced55410003f5d0b4594ff5471d15a4e2900"
+      tag:      "v7.13.0",
+      revision: "054e224d226b42a1dd7c72dcf48c3f18de452e22"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9870723f061237445a919c8247a0ce0094d7bea88fd51377fc710d7797e98433"
-    sha256 cellar: :any_skip_relocation, big_sur:       "cb67b5d882f1ee837951def344826ddd80876bd48fe7e285bdc5fc4a93485d7f"
-    sha256 cellar: :any_skip_relocation, catalina:      "113d7f2683c6b1562603a0f8573a08ba75f44d2059cc5ac87bcbd55f839d452b"
-    sha256 cellar: :any_skip_relocation, mojave:        "d39b684a038cf540578de2298c599109e838103030488f9411b279bdb448cb78"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c6c81630a256354f823dcfaf80c336db1dcbe4fc341c0a0c2abb3331d8d62c55"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "17fb2abaf8341d442777f1ea1a524e1931f88bbfc9deae0bb2a65191f45cac8f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "15d922a3077186815e07e642002813d5bedc449a178884e6ac1af4f3571fd9ad"
+    sha256 cellar: :any_skip_relocation, catalina:      "d32e3cd4e5643805df963380f96871d4680352f47d9a058f8118c708655fd118"
+    sha256 cellar: :any_skip_relocation, mojave:        "c6d20e6f13377ca43be6a4a512893adac6ad27b6371e6c4afef89dbe74089975"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b434dc793fc5a7916eec2ec8227e901da0b7f7d025ab5158cfdbf99e638393cc"
   end
 
   depends_on "go" => :build
+  depends_on "mage" => :build
   depends_on "python@3.9" => :build
 
   def install
     # remove non open source files
     rm_rf "x-pack"
 
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/elastic/beats").install buildpath.children
-    ENV.prepend_path "PATH", buildpath/"bin" # for mage (build tool)
-
-    cd "src/github.com/elastic/beats/auditbeat" do
+    cd "auditbeat" do
       # don't build docs because it would fail creating the combined OSS/x-pack
       # docs and we aren't installing them anyway
       inreplace "magefile.go", "devtools.GenerateModuleIncludeListGo, Docs)",
                                "devtools.GenerateModuleIncludeListGo)"
 
-      system "make", "mage"
       # prevent downloading binary wheels during python setup
       system "make", "PIP_INSTALL_PARAMS=--no-binary :all", "python-env"
       system "mage", "-v", "build"
@@ -42,8 +38,6 @@ class Auditbeat < Formula
       (libexec/"bin").install "auditbeat"
       prefix.install "build/kibana"
     end
-
-    prefix.install_metafiles buildpath/"src/github.com/elastic/beats"
 
     (bin/"auditbeat").write <<~EOS
       #!/bin/sh
@@ -61,24 +55,8 @@ class Auditbeat < Formula
     (var/"log/auditbeat").mkpath
   end
 
-  plist_options manual: "auditbeat"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-      "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>Program</key>
-          <string>#{opt_bin}/auditbeat</string>
-          <key>RunAtLoad</key>
-          <true/>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run opt_bin/"auditbeat"
   end
 
   test do
@@ -98,7 +76,7 @@ class Auditbeat < Formula
     sleep 5
     touch testpath/"files/touch"
     sleep 30
-    s = IO.readlines(testpath/"auditbeat/auditbeat").last(1)[0]
+    s = File.readlines(testpath/"auditbeat/auditbeat").last(1)[0]
     assert_match(/"action":\["(initial_scan|created)"\]/, s)
     realdirpath = File.realdirpath(testpath)
     assert_match "\"path\":\"#{realdirpath}/files/touch\"", s

@@ -1,26 +1,17 @@
 class Zabbix < Formula
   desc "Availability and monitoring solution"
   homepage "https://www.zabbix.com/"
-  url "https://cdn.zabbix.com/zabbix/sources/stable/5.0/zabbix-5.0.9.tar.gz"
-  sha256 "2985a710ac8d1273464345b5b3cf6c9eaff1abde019f361e4eb0760a03807c9b"
+  url "https://cdn.zabbix.com/zabbix/sources/stable/5.4/zabbix-5.4.0.tar.gz"
+  sha256 "501e148beef457a6a379ea4e318832d6c2c5a06176ea389d44581df8562dcb95"
   license "GPL-2.0-or-later"
-
-  # As of writing, the Zabbix SourceForge repository is missing the latest
-  # version (4.4.8), so we have to check for the newest version on the Zabbix
-  # CDN index page instead. Unfortunately, the versions are separated into
-  # folders for a given major/minor version, so this will quietly stop being
-  # a proper check sometime in the future and need to be updated.
-  livecheck do
-    url "https://cdn.zabbix.com/zabbix/sources/stable/5.0/"
-    regex(/href=.*?zabbix[._-](\d+(?:\.\d+)+)\.t/i)
-  end
+  head "https://github.com/zabbix/zabbix.git"
 
   bottle do
-    sha256 arm64_big_sur: "c30636310e36dca63d94e9be9427fe9272db86fb0dae74f74763281a953619e7"
-    sha256 big_sur:       "4cddb5bb01586c3d64fdd54f204890bf4b96aab385ca125b6954aa316e8de02d"
-    sha256 catalina:      "917ad3387981bcc85a891924688bad4f818d8a9967ad0d39590d37da78f65a64"
-    sha256 mojave:        "b9583dfd6e8ea3ee04ff21a9b73ff0b41bbea6eb0edb017dfe280c4c29d535d9"
-    sha256 x86_64_linux:  "5e8a1ecc0f4cbd6dac3280539cfb6a0782b78db981ffc6eb5f979a21c4bfb626"
+    sha256 arm64_big_sur: "03eb986ad075fa4939fc5464cfce99d34161bbc7c7e3e9312afa48cf42e1911c"
+    sha256 big_sur:       "50a6f1f6c51d331e78cdece8dd97735c4d57bc98ffa1865f808ed86f8febb5ab"
+    sha256 catalina:      "d426454e44ad465c08a1d145e07aedcb00434eddccc4c1c9cc89084d083bee65"
+    sha256 mojave:        "436199675147e85a4e769ccb7b5dee441ccdb07ecb51d8115613df6a21165e39"
+    sha256 x86_64_linux:  "5b6e8adae1303bc814927b2a0ef86dc1d214a273e70d9669fee19c10d0d191ca"
   end
 
   depends_on "openssl@1.1"

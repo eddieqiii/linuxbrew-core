@@ -2,17 +2,18 @@ class Minikube < Formula
   desc "Run a Kubernetes cluster locally"
   homepage "https://minikube.sigs.k8s.io/"
   url "https://github.com/kubernetes/minikube.git",
-      tag:      "v1.18.1",
-      revision: "09ee84d530de4a92f00f1c5dbc34cead092b95bc"
+      tag:      "v1.20.0",
+      revision: "c61663e942ec43b20e8e70839dcca52e44cd85ae"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/kubernetes/minikube.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "714a97e881e2daa8082569743a53a715f40634809f352c0cb8639182aa79b54c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "e6b1490bdfbf8f3dde31f8bdc3f8222b7ab11dc3842682c2770a5ba5aa5cfbfe"
-    sha256 cellar: :any_skip_relocation, catalina:      "ca09a0fb9854641e6352fc1a983529f21bcac35be52b39d0cf664033459af893"
-    sha256 cellar: :any_skip_relocation, mojave:        "12a604af770bc1d6cf2fafc709009b1f7b8bc791b04df68e05d09ee54be13aa1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2794ecaf78f1b3db002e3d0015bceeb63583694fdb980425cbdb01c0424918bf"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c891bcb7b481240bf1661b74baed90eda12ab2bc9ea671dfe5376879e112afe8"
+    sha256 cellar: :any_skip_relocation, big_sur:       "3e2c06536603de6f2c1cae599f94a40c2846b6b2aa2543147cea91b862c5c4b5"
+    sha256 cellar: :any_skip_relocation, catalina:      "2e42dc4ea7cdf2f4182738578c63870df81e12c6a90ebca87617ed6f2149c8b9"
+    sha256 cellar: :any_skip_relocation, mojave:        "eb87ba4bdc14ad363bb365175d7ac055b140f3e6cfefb127e232bcd2e36e99ae"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "585608173749ff4bd0580d6f418b82983ae6f53988ad85c57474c5ca14694c70"
   end
 
   depends_on "go" => :build
@@ -28,6 +29,9 @@ class Minikube < Formula
 
     output = Utils.safe_popen_read("#{bin}/minikube", "completion", "zsh")
     (zsh_completion/"_minikube").write output
+
+    output = Utils.safe_popen_read("#{bin}/minikube", "completion", "fish")
+    (fish_completion/"minikube.fish").write output
   end
 
   test do

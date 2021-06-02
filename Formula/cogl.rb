@@ -24,11 +24,8 @@ class Cogl < Formula
   depends_on "glib"
   depends_on "pango"
 
-  unless OS.mac?
-    depends_on "libxfixes"
-    depends_on "libxdamage"
+  on_linux do
     depends_on "libxcomposite"
-    depends_on "libxrandr"
     depends_on "mesa"
   end
 

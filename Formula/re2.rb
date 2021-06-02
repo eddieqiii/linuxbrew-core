@@ -1,9 +1,9 @@
 class Re2 < Formula
   desc "Alternative to backtracking PCRE-style regular expression engines"
   homepage "https://github.com/google/re2"
-  url "https://github.com/google/re2/archive/2021-02-02.tar.gz"
-  version "20210202"
-  sha256 "1396ab50c06c1a8885fb68bf49a5ecfd989163015fd96699a180d6414937f33f"
+  url "https://github.com/google/re2/archive/2021-04-01.tar.gz"
+  version "20210401"
+  sha256 "358aedf71dbf26506848905f5d4417b7adba5cf44d3bbcf70bf4ef68ccb0871e"
   license "BSD-3-Clause"
   head "https://github.com/google/re2.git"
 
@@ -19,11 +19,11 @@ class Re2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "d5d10c0775f70740b3c6500824d18e01f5b29c5ed98291ee52b53107db6f6a8d"
-    sha256 cellar: :any,                 big_sur:       "65a30882f68414d1a9d5b08f6f452a0091460bcc062962789e9585652de04164"
-    sha256 cellar: :any,                 catalina:      "de7bad8a1ea4cf5b8ab0b32463160321aed137e4864d0c81e7b298cf4f8a8164"
-    sha256 cellar: :any,                 mojave:        "7d98093a112270677f4f5a76cedfd2432af1464f3c69c4cf5f8d554997f49513"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bc839cacce05e83fa49254323ec8830023ec9022d6b931912e2812dd7a3d8521"
+    sha256 cellar: :any,                 arm64_big_sur: "738497c6fee23638e61ce8ccc4b42ca61dfce05d47fcecdcbd1488b567b59ce3"
+    sha256 cellar: :any,                 big_sur:       "aa7b6288f4e59f6fc9a9b7cab7bf20a48bf06ddd4247e14a70cf3dc6fe3bd5da"
+    sha256 cellar: :any,                 catalina:      "01071512713d4ff42a2158f00fce4d3ff6e614729afaa765c29f47980832a8cd"
+    sha256 cellar: :any,                 mojave:        "9fbf16117fa47ac6f0c3b247d13c34f4b1f986e0975cec141414452a6b504864"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "357145a8c8c420a8d647b9e9de80b431dd5c17f0f48226b4b83c7e8dce097d90"
   end
 
   depends_on "cmake" => :build

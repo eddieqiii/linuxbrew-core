@@ -1,17 +1,16 @@
 class Mockolo < Formula
   desc "Efficient Mock Generator for Swift"
   homepage "https://github.com/uber/mockolo"
-  url "https://github.com/uber/mockolo/archive/1.3.1.tar.gz"
-  sha256 "9afa5c6567f1d7e87b5c2050a5443cb6bcefcf987e6b5c1c71a55d20ebe29fa4"
+  url "https://github.com/uber/mockolo/archive/1.4.0.tar.gz"
+  sha256 "e40add783327a3684f22b16067c0d69aed695d9c5d3d4b08cc3a6e73b9788b9d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "47f35d16bdf3668a7edecae8f9e30ee1174b8156df4445d34eb7d3c29e8fbdbc"
-    sha256 cellar: :any_skip_relocation, big_sur:       "8a8a5729fab962a71e80ddac64068995afc5aad06a6b4092a55c68a0779f8f8a"
-    sha256 cellar: :any_skip_relocation, catalina:      "dfb579cf2d36c941b2192dcef4a652cec11a71ede37cb873084db860e6c68192"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2a4dd6209018834007ed19d331c10530f89311f3f4857e7f20eceb86847c4824"
+    sha256 cellar: :any_skip_relocation, big_sur:       "bb70522736fff22ed26734d0955ab1f40c12853687bf01a6c0f902ec2220e58d"
   end
 
-  depends_on xcode: ["12.0", :build]
+  depends_on xcode: ["12.5", :build]
 
   def install
     system "swift", "build", "-c", "release", "--disable-sandbox"

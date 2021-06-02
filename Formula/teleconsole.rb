@@ -16,6 +16,8 @@ class Teleconsole < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux: "755c2ad0d13fbb7f1c492fc726d0656b92d58a8195ff24b37ad809d4911cdeb2"
   end
 
+  deprecate! date: "2021-05-24", because: :repo_archived
+
   depends_on "go" => :build
 
   go_resource "github.com/Sirupsen/logrus" do

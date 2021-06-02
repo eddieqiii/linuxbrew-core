@@ -2,7 +2,6 @@ class PkgConfig < Formula
   desc "Manage compile and link flags for libraries"
   homepage "https://freedesktop.org/wiki/Software/pkg-config/"
   url "https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz"
-  mirror "https://dl.bintray.com/homebrew/mirror/pkg-config-0.29.2.tar.gz"
   sha256 "6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591"
   license "GPL-2.0-or-later"
   revision OS.mac? ? 3 : 4
@@ -19,12 +18,6 @@ class PkgConfig < Formula
     sha256 cellar: :any_skip_relocation, mojave:        "0d14b797dba0e0ab595c9afba8ab7ef9c901b60b4f806b36580ef95ebb370232"
     sha256 cellar: :any_skip_relocation, high_sierra:   "8c6160305abd948b8cf3e0d5c6bb0df192fa765bbb9535dda0b573cb60abbe52"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "bc8ac04f3d8e42a748f40544f8e1b7f2471f32608f33e666e903d6108eb4dab2"
-  end
-
-  pour_bottle? do
-    # The pc_path is baked into the binary and relocatable detection doesn't pick it up
-    reason "The bottle only works in the default #{Homebrew::DEFAULT_PREFIX} location."
-    satisfy { HOMEBREW_PREFIX.to_s == Homebrew::DEFAULT_PREFIX }
   end
 
   def install

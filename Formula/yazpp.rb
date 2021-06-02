@@ -11,7 +11,6 @@ class Yazpp < Formula
     sha256 cellar: :any, catalina:      "5136d27fa1e25ceccbd1a73dc1655fa039c99f3d99faaae07239865ea22ee777"
     sha256 cellar: :any, mojave:        "60a07217d07224b442d2810d99261b48f846df54dd06eb5e4a4688f0864d1939"
     sha256 cellar: :any, high_sierra:   "0d783b21b0cd116bef6b358866b2ac557e340c4e5dd6961c6bd843b6bcda68b7"
-    sha256 cellar: :any, x86_64_linux:  "972ee89574aaf85d838d02bff6dee2629a2d7e37ca8f3a352ce3b0ccccc8af6a"
   end
 
   depends_on "yaz"

@@ -26,9 +26,10 @@ class Bumpversion < Formula
 
   test do
     ENV["COLUMNS"] = "80"
-    if OS.mac?
+    on_macos do
       assert_includes shell_output("script -q /dev/null #{bin}/bumpversion --help"), "bumpversion: v#{version}"
-    else
+    end
+    on_linux do
       assert_includes shell_output("script -q /dev/null -c \"#{bin}/bumpversion --help\""), "bumpversion: v#{version}"
     end
     version_file = testpath/"VERSION"

@@ -1,17 +1,17 @@
 class Nnn < Formula
   desc "Tiny, lightning fast, feature-packed file manager"
   homepage "https://github.com/jarun/nnn"
-  url "https://github.com/jarun/nnn/archive/v3.6.tar.gz"
-  sha256 "875094caebcc22ecf53b3722d139b127d25e1d5563a954342f32ded8980978b5"
+  url "https://github.com/jarun/nnn/archive/v4.0.tar.gz"
+  sha256 "a219ec8fad3dd0512aadae5840176f3265188c4c22da3b17b133bac602b40754"
   license "BSD-2-Clause"
   head "https://github.com/jarun/nnn.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "5ca4709e5e36ba33a918fc97de5a59974e53063a1396a86a2c75ab60fe8d0fe0"
-    sha256 cellar: :any,                 big_sur:       "2c4b71eb676df77ab8da04b65ca8db6fcd0ba0f7eecb7ca92c877a230f226a4b"
-    sha256 cellar: :any,                 catalina:      "d9f73d203fc5ed3c0edff51d598f723c20994d4da282a842ad63895b3da0e5da"
-    sha256 cellar: :any,                 mojave:        "f7f88fa6e04a6ca1b41959ef4a4bc6d38351d0bf7be7784245a10e5508de1583"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "07cd961e755d1b14ff442b6c00bbf511f81a9e7b0d588709d5d9044838354be8"
+    sha256 cellar: :any,                 arm64_big_sur: "3121884b9703f5bc511499904d0cd65c941ce22cb80eeb0a0c650e75de0788e3"
+    sha256 cellar: :any,                 big_sur:       "e6ab60e20d2ec6e9ce86c7774843141e19ac3f71fdb1022b9e8a9206ee2a8f3a"
+    sha256 cellar: :any,                 catalina:      "abd54ea24cb7ed46303b925f22466592c0ceaffbe8b8a8ec67ac6421c05bf64a"
+    sha256 cellar: :any,                 mojave:        "16a859bc4fafbf733092be7c8b03a738f165b358f87b1738dee7b349e2e1c47a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0ed6ae2e98541bf612b612fdc0a881f926f831e0f47b2c2a1e3cb5bf4829f3b"
   end
 
   depends_on "gnu-sed"
@@ -28,16 +28,21 @@ class Nnn < Formula
   end
 
   test do
-    # Test fails on CI: Input/output error @ io_fread - /dev/pts/0
-    # Fixing it involves pty/ruby voodoo, which is not worth spending time on
-    return if !OS.mac? && ENV["HOMEBREW_GITHUB_ACTIONS"]
+    on_linux do
+      # Test fails on CI: Input/output error @ io_fread - /dev/pts/0
+      # Fixing it involves pty/ruby voodoo, which is not worth spending time on
+      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    end
 
     # Testing this curses app requires a pty
     require "pty"
 
-    PTY.spawn(bin/"nnn") do |r, w, _pid|
-      w.write "q"
-      assert_match testpath.realpath.to_s, r.read
+    (testpath/"testdir").mkdir
+    cd testpath/"testdir" do
+      PTY.spawn(bin/"nnn") do |r, w, _pid|
+        w.write "q"
+        assert_match "~/testdir", r.read
+      end
     end
   end
 end

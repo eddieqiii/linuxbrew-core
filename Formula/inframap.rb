@@ -1,17 +1,17 @@
 class Inframap < Formula
   desc "Read your tfstate or HCL to generate a graph"
   homepage "https://github.com/cycloidio/inframap"
-  url "https://github.com/cycloidio/inframap/archive/v0.6.1.tar.gz"
-  sha256 "4424f400b4cd9b18bd499e865640ef6626e1cf89c7465af2d6626551cb2bf192"
+  url "https://github.com/cycloidio/inframap/archive/v0.6.5.tar.gz"
+  sha256 "f34aef20f27fe9eadd6b3721c01862e1cb7c16229eb01316b65ad61f6ff14a33"
   license "MIT"
   head "https://github.com/cycloidio/inframap.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ef68bead60c689f98fcb8c069f1ecf77b18c3290013506a12f9af341f38e4b99"
-    sha256 cellar: :any_skip_relocation, big_sur:       "3bf02cb13a32fda783f0ff53e8c405792ba70f563bfef32e56b6b34847f73ee3"
-    sha256 cellar: :any_skip_relocation, catalina:      "256e4392c2d4d61912271926425d46fc7dc04578500a42cf715d810c02d91448"
-    sha256 cellar: :any_skip_relocation, mojave:        "7f6af2c6121c70104b8975c49a8c579e128186e899a1e83ec3b2ff5e55185bd4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91c8066ab8137b5c3a99eb4e2825884f034d52ac758f385ecb9db2889bfc8303"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b1c2d65f241fdd96b8f1ce1313d9b842fe3843beba660020d8ae0e67e449e25b"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e222c69e1d6d56dce622611002f4ebb32d36167159b100ec6b701decebe09a00"
+    sha256 cellar: :any_skip_relocation, catalina:      "9e1a83033b1d39d0dac35432bdbbaa025e74c056e997c7b2bd753bb595d88c8b"
+    sha256 cellar: :any_skip_relocation, mojave:        "0920f4f8dbc51759de6602275194546f811cbaf292d68f8be0ddb0737c136ddf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c67b5adaa201dc5d1259146a8ff481866216b1d010ac51321144cc0b855b2d9f"
   end
 
   depends_on "go" => :build
@@ -22,8 +22,7 @@ class Inframap < Formula
   end
 
   def install
-    ldflags = "-X github.com/cycloidio/inframap/cmd.Version=v#{version}"
-    system "go", "build", *std_go_args, "-ldflags", ldflags
+    system "go", "build", *std_go_args(ldflags: "-s -w -X github.com/cycloidio/inframap/cmd.Version=v#{version}")
   end
 
   test do

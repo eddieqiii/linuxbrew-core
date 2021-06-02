@@ -2,8 +2,8 @@ class Dotnet < Formula
   desc ".NET Core"
   homepage "https://dotnet.microsoft.com/"
   url "https://github.com/dotnet/source-build.git",
-      tag:      "v5.0.103-SDK",
-      revision: "ccff33e9e87656ab8349dba6779363b15d53d56a"
+      tag:      "v5.0.203-SDK",
+      revision: "a8f12771179965da9f48646ded87068d379563b9"
   license "MIT"
 
   livecheck do
@@ -12,9 +12,9 @@ class Dotnet < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:  "5c84f114b503fb06056fbb92ff9ef62a577200e24b9db5d38805527010d301e3"
-    sha256 cellar: :any, catalina: "dccd1ebb58287b14a845f9c6cde98f449bfd3bbc94ea532f03917e486efb1e3f"
-    sha256 cellar: :any, mojave:   "f9bd9adff1ec683b00f63d6349bd50a22a8cf51fed9c7dd0c5a55b9aa6ddfe62"
+    sha256 cellar: :any, big_sur:  "a526dc1985ead576cdd886495f2f39499610f7fa63144e84626e815563df44a3"
+    sha256 cellar: :any, catalina: "08c18d020007794eb07a2fa95c0c829684f7655b990d3b1a6eb60298931913aa"
+    sha256 cellar: :any, mojave:   "b0372ec3b2b175690238ddfbe6eade817be8487025dda344c294ec45b0f6c26c"
   end
 
   depends_on "cmake" => :build
@@ -24,7 +24,16 @@ class Dotnet < Formula
   depends_on "icu4c"
   depends_on "openssl@1.1"
 
+  # Fix build failure due to atoll definition leak. Remove in v6 release.
+  # Patch ref: https://github.com/dotnet/runtime/pull/45352
+  resource "runtime-atoll-patch" do
+    url "https://github.com/dotnet/runtime/commit/839ad29b16a8baf7b1470f13d7faa0ce941769b3.patch?full_index=1"
+    sha256 "70844513e20d09e77510f9ccf3769dacaf57c98f4dcc8054837da60111454c5b"
+  end
+
   def install
+    (buildpath/"patches/runtime").install resource("runtime-atoll-patch")
+
     # Arguments needed to not artificially time-limit downloads from Azure.
     # See the following GitHub issue comment for details:
     # https://github.com/dotnet/source-build/issues/1596#issuecomment-670995776

@@ -1,8 +1,8 @@
 class Nushell < Formula
   desc "Modern shell for the GitHub era"
   homepage "https://www.nushell.sh"
-  url "https://github.com/nushell/nushell/archive/0.28.0.tar.gz"
-  sha256 "aa6769f614a031ad33738064030d1c0d9ab500b2b0924adca71edacb1bd1d85d"
+  url "https://github.com/nushell/nushell/archive/0.31.0.tar.gz"
+  sha256 "4dcbe38b35902a98df3f213fef5f69dcd9870975a18e2a7feb002534e68d848b"
   license "MIT"
   head "https://github.com/nushell/nushell.git", branch: "main"
 
@@ -13,11 +13,11 @@ class Nushell < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1c915950ff584a2e41f15c579398bd4603bb35ff42154b7153d3fe6927d950d4"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b9ab2940958aa3574fa73e5b81efa021c4fdd68cc770d2e0dabaffa3fc10c5f5"
-    sha256 cellar: :any_skip_relocation, catalina:      "5531820e5c83e15223373ec9790229d0e61d1edf34073134222f531e964b096f"
-    sha256 cellar: :any_skip_relocation, mojave:        "d80c479e3cb2556a462cc740419849b9eb723b220a7bdcfd40c9d496e6a1434b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "40b334ed3e45a213bd31a2b270ceed554e6b603bcf1990d61befe4c2265dac89"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3b639153601db907dd1a19f16faf6c0f584fa23cb28617258376a19093095f03"
+    sha256 cellar: :any_skip_relocation, big_sur:       "1019482f62d50bf08a4b678cb799f7cfa250f0113bda561f592783541d38cb97"
+    sha256 cellar: :any_skip_relocation, catalina:      "6cdf4b8457bf4a52301ef997edb466051a08436f95754e58c5a66d445dd345ed"
+    sha256 cellar: :any_skip_relocation, mojave:        "37ae10efae623ad60bb1cc5931d6b1c7f73e7cfdc95ff649105ee78744664544"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8247dce86b028d593f23fdc96169c49f00af054ef6fbed1b1bd7149c76f6fe61"
   end
 
   depends_on "rust" => :build
@@ -32,7 +32,7 @@ class Nushell < Formula
   end
 
   def install
-    system "cargo", "install", "--features", "stable", *std_cargo_args
+    system "cargo", "install", "--features", "extra", *std_cargo_args
   end
 
   test do

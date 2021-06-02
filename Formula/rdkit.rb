@@ -1,16 +1,24 @@
 class Rdkit < Formula
   desc "Open-source chemoinformatics library"
   homepage "https://rdkit.org/"
-  url "https://github.com/rdkit/rdkit/archive/Release_2020_09_5.tar.gz"
-  sha256 "85cec9618e7ef6365b9b908ed674c073d898b6627521cc7fd8c2e05fea8a5def"
+  url "https://github.com/rdkit/rdkit/archive/Release_2021_03_2.tar.gz"
+  sha256 "9907a745405cc915c65504046e446199f8ad03d870714de57c27d3738f330fe4"
   license "BSD-3-Clause"
   head "https://github.com/rdkit/rdkit.git"
 
+  livecheck do
+    url :stable
+    regex(/^Release[._-](\d+(?:[._]\d+)+)$/i)
+    strategy :git do |tags|
+      tags.map { |tag| tag[regex, 1]&.gsub("_", ".") }.compact
+    end
+  end
+
   bottle do
-    sha256 arm64_big_sur: "15c4901321cbac4403a635b34951b561ac89dfbf042a938ecf34de9b0a88ed76"
-    sha256 big_sur:       "4f294a38e82fd6935e34afcd91cfea1866efd4c2da26cb5348edeb325a64b6f0"
-    sha256 catalina:      "a0b671abaead16cda99e30d9a490894c2ef3dd19a1233a18d40c04a34c6c0772"
-    sha256 mojave:        "f6bbf7d54231caa43b0161109fef2a62a5cad30da94932f04bd11450a44303fc"
+    sha256 cellar: :any, arm64_big_sur: "7bf204540f4719faee8d0b7990d31dbe2782a97fa1fc594c28acb59cd62a7e50"
+    sha256 cellar: :any, big_sur:       "474c5760de5ea852ba6676be8ac8c9a11625880e421573a936e1a9da35fec02f"
+    sha256 cellar: :any, catalina:      "fd662fb522631376d75938bba53583e7dd7ddb0b8bb5d86dc8a6180ec13c0918"
+    sha256 cellar: :any, mojave:        "bd43c11fdbe6cd9c16ba7c2e28bab55bd862abde2578eec931253816d0d7d31f"
   end
 
   depends_on "cmake" => :build
@@ -65,6 +73,9 @@ class Rdkit < Formula
     system "cmake", ".", *args
     system "make"
     system "make", "install"
+
+    site_packages = "lib/python#{py3ver}/site-packages"
+    (prefix/site_packages/"homebrew-rdkit.pth").write libexec/site_packages
   end
 
   def caveats
@@ -76,6 +87,7 @@ class Rdkit < Formula
   end
 
   test do
+    system Formula["python@3.9"].opt_bin/"python3", "-c", "import rdkit"
     (testpath/"test.py").write <<~EOS
       from rdkit import Chem ; print(Chem.MolToSmiles(Chem.MolFromSmiles('C1=CC=CN=C1')))
     EOS

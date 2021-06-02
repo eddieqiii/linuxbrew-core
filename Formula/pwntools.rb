@@ -3,18 +3,17 @@ class Pwntools < Formula
 
   desc "CTF framework used by Gallopsled in every CTF"
   homepage "https://github.com/Gallopsled/pwntools"
-  url "https://files.pythonhosted.org/packages/34/ea/4f18059a859d5b0fe28a95bf1fc973ee82408731652916296cc6cde3b272/pwntools-4.3.1.tar.gz"
-  sha256 "c46188e713c47617b2dbf3e32d1867f948d35d82fddf9a9d2294a33f47484a8a"
+  url "https://files.pythonhosted.org/packages/b0/3a/00f6dfcb5647acef99ce4dd9f16e557390d2507e60263f16cbfea8873c0a/pwntools-4.4.0.tar.gz"
+  sha256 "c51605b538c6394c6c31bc90bb3436224b497be1fe21a0a2420785ca399087e3"
   license "MIT"
-  revision 1
   head "https://github.com/Gallopsled/pwntools.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "33b3cda9b3033d9d909c1e48de13304b4a08930ef7370e071635d2a8b69f41b3"
-    sha256 cellar: :any,                 big_sur:       "79045cd4ec44b119ee7199d3e4329d1bb3b73729b84e9a5e1dc096985f2011ad"
-    sha256 cellar: :any,                 catalina:      "2b974c7adfbf4231b55b42e60ba6d65de1f581b75e1e3965a8dfc1787967701a"
-    sha256 cellar: :any,                 mojave:        "e47791e35c8168da1a982b8a294362fca834ec532faffc8ad38093f8ab05ce57"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "373f6aad6566a0c7894fcbd564d286866a1fe49b280c129a462b5823138201f2"
+    sha256 cellar: :any,                 arm64_big_sur: "d566cf6c12e2e701156f274d1763c9a8a546d8612eaefc36741a438d0db8e2e5"
+    sha256 cellar: :any,                 big_sur:       "ca733b7b565a8b6d8ddad9bac0e57fded9f03e188133bc0242588edf65f5ce16"
+    sha256 cellar: :any,                 catalina:      "40e9f6fe7738cfa1416ea16bd4c32d7e40524146fdef56d1fa3ccb0ef9e99405"
+    sha256 cellar: :any,                 mojave:        "f05d214c9a26ba08726a9aee130b967c00b3c0fb0604b539639e75f12dff2858"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d9a81dfe30e00dc52db21ec851fe82fbd326faa3d6f45cb7ad5ecbcd339f47e2"
   end
 
   depends_on "rust" => :build
@@ -55,8 +54,8 @@ class Pwntools < Formula
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/fa/2d/2154d8cb773064570f48ec0b60258a4522490fcb115a6c7c9423482ca993/cryptography-3.4.6.tar.gz"
-    sha256 "2d32223e5b0ee02943f32b19245b61a62db83a882f0e76cc564e1cec60d48f87"
+    url "https://files.pythonhosted.org/packages/9b/77/461087a514d2e8ece1c975d8216bc03f7048e6090c5166bc34115afdaa53/cryptography-3.4.7.tar.gz"
+    sha256 "3d10de8116d25649631977cb37da6cbdd2d6fa0e0281d014a5b7d337255ca713"
   end
 
   resource "idna" do
@@ -160,8 +159,8 @@ class Pwntools < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/d7/8d/7ee68c6b48e1ec8d41198f694ecdc15f7596356f2ff8e6b1420300cf5db3/urllib3-1.26.3.tar.gz"
-    sha256 "de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"
+    url "https://files.pythonhosted.org/packages/cb/cf/871177f1fc795c6c10787bc0e1f27bb6cf7b81dbde399fd35860472cecbc/urllib3-1.26.4.tar.gz"
+    sha256 "e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
   end
 
   def install

@@ -10,7 +10,6 @@ class MariadbAT101 < Formula
     sha256 big_sur:      "589a7ef3e92f6dc2d4c5e5db501286a839b747a37b454bdd81231a4ed7531a43"
     sha256 catalina:     "fcc29400068999b2b5126af489d88dcc4af98169b9132d6aeb99876247b1a412"
     sha256 mojave:       "f568cbdbc7a6f86d08251456e6eb4d22e16c065a68865ce83b7c2c1f0d2b61f6"
-    sha256 x86_64_linux: "7ec8ff1a784722ff64ed95ecbe6def6c6d87de2ed7451ec43834b2dc8488bdf5"
   end
 
   keg_only :versioned_formula
@@ -29,14 +28,17 @@ class MariadbAT101 < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "gcc@7" => :build
-    depends_on "libcsv"
     depends_on "linux-pam"
   end
 
   fails_with gcc: "4"
   fails_with gcc: "5"
   fails_with gcc: "6"
+
+  unless OS.mac?
+    depends_on "gcc@7" => :build
+    depends_on "libcsv"
+  end
 
   def install
     # Set basedir and ldata so that mysql_install_db can find the server

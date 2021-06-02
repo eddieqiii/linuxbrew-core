@@ -37,9 +37,7 @@ class Googletest < Formula
         ASSERT_TRUE(true);
       }
     EOS
-    cxx_args = %W[-std=c++11 -L#{lib} -lgtest -lgtest_main]
-    cxx_args << "-pthread" unless OS.mac?
-    system ENV.cxx, "test.cpp", *cxx_args, "-o", "test"
+    system ENV.cxx, "test.cpp", "-std=c++11", "-L#{lib}", "-lgtest", "-lgtest_main", "-pthread", "-o", "test"
     system "./test"
   end
 end

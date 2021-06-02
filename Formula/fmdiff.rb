@@ -20,6 +20,7 @@ class Fmdiff < Formula
 
   depends_on :macos
   # Needs FileMerge.app, which is part of Xcode.
+  depends_on :macos
   depends_on :xcode
 
   def install

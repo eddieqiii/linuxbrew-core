@@ -1,17 +1,17 @@
 class Stern < Formula
   desc "Tail multiple Kubernetes pods & their containers"
   homepage "https://github.com/stern/stern"
-  url "https://github.com/stern/stern/archive/v1.14.0.tar.gz"
-  sha256 "f166462dd2b0fb8227dfd1d15c4e718b0917a5d5bb33aeb609affa8e7ac41b4f"
+  url "https://github.com/stern/stern/archive/v1.18.0.tar.gz"
+  sha256 "86cb6458c2136936e787363587cfe3dd81fb96251ea961e7801824c3db0b4441"
   license "Apache-2.0"
   head "https://github.com/stern/stern.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ad7f54e3f5c49ba3c5eab05551f842e290b96e4676419c7acbab58d95aaa3568"
-    sha256 cellar: :any_skip_relocation, big_sur:       "0225880bdaa1f3630b3fb831d475ebc482e3514d754443fe38af617b270045e9"
-    sha256 cellar: :any_skip_relocation, catalina:      "73be86e5bc19770e69ee6da080e4f8d3958befcb5be8453959a00c32bf59ca47"
-    sha256 cellar: :any_skip_relocation, mojave:        "206c253d4adb59390f4fa21d112b85839c0ef3a4b72672d9c440ffb4a08e1d44"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "40ed48f04814d2b51e5d1b5ed29acba6b2964ea9f872435219ba812dd87e4126"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2d4eb663c230a5531461272845ebe49b682126aeb271d048a39e336c2a7ecd4f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "1cdc09acfdb8ddb9dc2f3865bd330e2dce44743ee9979e8cacc7a89e804e34d3"
+    sha256 cellar: :any_skip_relocation, catalina:      "d693aab66a01eef79db5962b1dad628ce53d3061732cd86c06faa76b3000144d"
+    sha256 cellar: :any_skip_relocation, mojave:        "e0d9f83aa8ed11f4e1136f37ce1b6671d4ef29b98dee49634a1d50f22a962069"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4c6dd887d63f188e4e12826e1e0da4ebd3030bbb1d68dc060e44cbf76997475"
   end
 
   depends_on "go" => :build

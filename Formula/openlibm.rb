@@ -3,6 +3,7 @@ class Openlibm < Formula
   homepage "https://openlibm.org"
   url "https://github.com/JuliaMath/openlibm/archive/v0.7.5.tar.gz"
   sha256 "be983b9e1e40e696e8bbb7eb8f6376d3ca0ae675ae6d82936540385b0eeec15b"
+  license all_of: ["MIT", "ISC", "BSD-2-Clause"]
 
   bottle do
     sha256 cellar: :any,                 arm64_big_sur: "9f5a7236623f95551f78125570bf0cfddc1e790df87f22d10fe8c65f436c0968"
@@ -11,8 +12,6 @@ class Openlibm < Formula
     sha256 cellar: :any,                 mojave:        "ab439cf5a655dc9db2ed8f05b4059f85b7ec0414d7123c2f683ab1d90dd24d55"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "8cc149767b9f805bea7e28373d5fedd7a14f72241f8d59af64cbe32a70fa446e"
   end
-
-  keg_only :provided_by_macos
 
   def install
     lib.mkpath

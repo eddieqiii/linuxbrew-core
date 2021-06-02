@@ -4,14 +4,14 @@ class VtkAT82 < Formula
   url "https://www.vtk.org/files/release/8.2/VTK-8.2.0.tar.gz"
   sha256 "34c3dc775261be5e45a8049155f7228b6bd668106c72a3c435d95730d17d57bb"
   license "BSD-3-Clause"
-  revision 4
+  revision 6
 
   bottle do
-    sha256                               arm64_big_sur: "d95b405c4883226bd780c37568934f4ca3f0a4f06d631fec18674ce6dc7bfbca"
-    sha256                               big_sur:       "3656f39b182eb289039de5d0a0de7b69271eee8a835acc1993a24df81fa9a7b2"
-    sha256                               catalina:      "3255f3051080ea973ae7558ed11cebf5defd107128ce3e8d95cda80f6678e312"
-    sha256                               mojave:        "45ef73f0480f7efa959c93e980088f5558c0b0f0fa1fb764db3d91dd04a1e9b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d8354d458fa7297564e34173e504e68de1db70066297b105ad6d517a048195fe"
+    sha256                               arm64_big_sur: "81fc6d19a33fa38e234b7d18bbbbc81fbd0b2996e402ba774c69193b53c358ba"
+    sha256                               big_sur:       "8bc79eb0816f3fcbe54ffd10f6db58094aa8814e15e7fb6a7402ea65a1885be4"
+    sha256                               catalina:      "b8b797c6faf44ded4565bfb887c14d915f3997fc646aef250c273d2cfbc5d7d8"
+    sha256                               mojave:        "228d62e2e0f9933c9a967aa71394d062a23611e7fea37e430daeb49a70df4250"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "706068dc28e32e3751a479034b414ca56b8a004f854d04371bf63af06ae98c44"
   end
 
   keg_only :versioned_formula
@@ -45,20 +45,20 @@ class VtkAT82 < Formula
 
   # Fix compile issues on Mojave and later
   patch do
-    url "https://gitlab.kitware.com/vtk/vtk/commit/ca3b5a50d945b6e65f0e764b3138cad17bd7eb8d.patch"
-    sha256 "49574bb914e2564b21ab0fb23cadcccd7dd323ae7f0f26f64fd6346c3db14cd7"
+    url "https://gitlab.kitware.com/vtk/vtk/commit/ca3b5a50d945b6e65f0e764b3138cad17bd7eb8d.diff"
+    sha256 "b9f7a3ebf3c29f3cad4327eb15844ac0ee849755b148b60fef006314de8e822e"
   end
 
   # Python 3.8 compatibility
   patch do
-    url "https://gitlab.kitware.com/vtk/vtk/commit/257b9d7b18d5f3db3fe099dc18f230e23f7dfbab.patch"
-    sha256 "41914057adc511527167b812f9604f1ff0aed74e12dc20c98bbc5c52ccab9cda"
+    url "https://gitlab.kitware.com/vtk/vtk/commit/257b9d7b18d5f3db3fe099dc18f230e23f7dfbab.diff"
+    sha256 "572c06a4ba279a133bfdcf0190fec2eff5f330fa85ad6a2a0b0f6dfdea01ca69"
   end
 
   # Qt 5.15 support
   patch do
-    url "https://gitlab.kitware.com/vtk/vtk/-/commit/797f28697d5ba50c1fa2bc5596af626a3c277826.patch"
-    sha256 "01e870a943edea2a096c7bc9e43d2a70e10a5a80d1cd89b08868ab0f746c1c1c"
+    url "https://gitlab.kitware.com/vtk/vtk/-/commit/797f28697d5ba50c1fa2bc5596af626a3c277826.diff"
+    sha256 "cb3b3a0e6978889a9cb95be35f3d4a6928397d3b843ab72ecaaf96554c6d4fc7"
   end
 
   def install
@@ -92,7 +92,10 @@ class VtkAT82 < Formula
       -DVTK_WRAP_PYTHON_SIP=ON
       -DSIP_PYQT_DIR='#{Formula["pyqt5"].opt_share}/sip'
     ]
-    args << "-DVTK_USE_COCOA=" + (OS.mac? ? "ON" : "OFF")
+
+    on_macos do
+      args << "-DVTK_USE_COCOA=ON"
+    end
 
     mkdir "build" do
       system "cmake", "..", *args

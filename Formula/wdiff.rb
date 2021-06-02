@@ -4,6 +4,7 @@ class Wdiff < Formula
   url "https://ftp.gnu.org/gnu/wdiff/wdiff-1.2.2.tar.gz"
   mirror "https://ftpmirror.gnu.org/wdiff/wdiff-1.2.2.tar.gz"
   sha256 "34ff698c870c87e6e47a838eeaaae729fa73349139fc8db12211d2a22b78af6b"
+  license "GPL-3.0-or-later"
   revision 2
 
   bottle do

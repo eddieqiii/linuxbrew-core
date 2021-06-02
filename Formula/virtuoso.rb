@@ -6,6 +6,7 @@ class Virtuoso < Formula
   # This explicit version should be safe to remove next release.
   version "7.2.5.1"
   sha256 "826477d25a8493a68064919873fb4da4823ebe09537c04ff4d26ba49d9543d64"
+  license "GPL-2.0-only"
   revision 1
   # HEAD is disabled as the below, required patches are not compatible.
 
@@ -23,14 +24,14 @@ class Virtuoso < Formula
   depends_on "gawk" => :build
   depends_on "libtool" => :build
   depends_on "openssl@1.1"
-  unless OS.mac?
-    depends_on "gperf" => :build
-    depends_on "net-tools" => :build
-  end
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "gperf" => :build
+
+  on_linux do
+    depends_on "net-tools" => :build
+  end
 
   conflicts_with "unixodbc", because: "both install `isql` binaries"
 
@@ -38,7 +39,7 @@ class Virtuoso < Formula
 
   # Support OpenSSL 1.1
   patch do
-    url "https://sources.debian.org/data/main/v/virtuoso-opensource/7.2.5.1+dfsg-2/debian/patches/ssl1.1.patch"
+    url "https://sources.debian.org/data/main/v/virtuoso-opensource/7.2.5.1+dfsg-3/debian/patches/ssl1.1.patch"
     sha256 "9fcaaff5394706fcc448e35e30f89c20fe83f5eb0fbe1411d4b2550d1ec37bf3"
   end
 

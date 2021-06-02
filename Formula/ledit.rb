@@ -18,7 +18,6 @@ class Ledit < Formula
     sha256 cellar: :any_skip_relocation, big_sur:      "2d404ace597c8a7062fbe96e15e9e7d1226ec5ca97e0c8981062c77fef10b4eb"
     sha256 cellar: :any_skip_relocation, catalina:     "158141ebf4edc253de428b8789d77eae0b19fdd4d8002e9910cf4c2486a12bb6"
     sha256 cellar: :any_skip_relocation, mojave:       "463dd47cebd8510a630e39008b001e52659f64f1bcda7503bdc8a0f28e55adfc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "61348dd368939356df214df67e8bd80791b9e24721058ac134e7f38106e2e168"
   end
 
   depends_on "camlp5"

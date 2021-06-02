@@ -20,16 +20,15 @@ class Libzip < Formula
   end
 
   depends_on "cmake" => :build
-  unless OS.mac?
-    depends_on "openssl@1.1"
-    depends_on "xz" # For LZMA
-  end
 
+  uses_from_macos "zip" => :test
   uses_from_macos "bzip2"
+  uses_from_macos "openssl@1.1"
+  uses_from_macos "xz"
   uses_from_macos "zlib"
 
-  conflicts_with "libtcod", "minizip2",
-    because: "libtcod, libzip and minizip2 install a `zip.h` header"
+  conflicts_with "libtcod", "minizip-ng",
+    because: "libtcod, libzip and minizip-ng install a `zip.h` header"
 
   def install
     system "cmake", ".", *std_cmake_args
@@ -37,12 +36,6 @@ class Libzip < Formula
   end
 
   test do
-    zip = OS.mac? ? "/usr/bin/zip" : which("zip")
-    if zip.nil?
-      opoo "Not testing unzip, because it requires zip, which is unavailable."
-      return
-    end
-
     touch "file1"
     system "zip", "file1.zip", "file1"
     touch "file2"

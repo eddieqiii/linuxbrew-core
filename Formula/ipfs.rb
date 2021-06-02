@@ -16,21 +16,21 @@ class Ipfs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "26b96618554fa924bf04a04b0f3c68714b92b1493f9391c973b7eb7b3409a744"
-    sha256 cellar: :any_skip_relocation, catalina:     "f75c5837fecebbeeb36be86091e719d85b0922654d406753bfe3c4f7f4a2e1a9"
-    sha256 cellar: :any_skip_relocation, mojave:       "868371961578f442159865ff5111d778dbc730cda71058f942cbb354e6a46029"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "d0e0787ea04badd41ee9f03e96386847f168a9df73ba343056b0074650a0eaff"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4c9d2c33c2a753caf23f20358fc172d3fef31bcdf137153ef8ae49c8531879d5"
+    sha256 cellar: :any_skip_relocation, big_sur:       "3a2bfd272e46d38caebdb996416aff031c885b1c9067105f0f443d44dc2bf651"
+    sha256 cellar: :any_skip_relocation, catalina:      "e2377e7a1265d2f7b8d7adec54d8d92abcb0dcaefcdba25522fb533ba11cdb1a"
+    sha256 cellar: :any_skip_relocation, mojave:        "282281d17760d795f8acb0371036c8d6c1d7539e1a802cb99772375200e0d9ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "af4314ab3a5e40b5d9607ccc2267cd7b3780de5b68b634d69957f7db07542b3a"
   end
 
-  depends_on "go@1.14" => :build
+  depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/ipfs/go-ipfs").install buildpath.children
-    cd("src/github.com/ipfs/go-ipfs") { system "make", "install" }
-    bin.install "bin/ipfs"
+    system "make", "build"
+    bin.install "cmd/ipfs/ipfs"
 
-    cd("src/github.com/ipfs/go-ipfs") { bash_completion.install "misc/completion/ipfs-completion.bash" }
+    bash_completion.install "misc/completion/ipfs-completion.bash"
   end
 
   plist_options manual: "ipfs daemon"

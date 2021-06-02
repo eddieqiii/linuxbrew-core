@@ -38,6 +38,6 @@ class Svgcleaner < Formula
            style="fill:#0000ff;fill-opacity:0.75;stroke:#000000"/>
       </svg>
     EOS
-    system "#{bin}/svgcleaner", "in.svg", "out.svg"
+    system bin/"svgcleaner", "in.svg", "out.svg"
   end
 end

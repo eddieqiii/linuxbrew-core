@@ -3,23 +3,23 @@ class Bear < Formula
 
   desc "Generate compilation database for clang tooling"
   homepage "https://github.com/rizsotto/Bear"
-  url "https://github.com/rizsotto/Bear/archive/3.0.9.tar.gz"
-  sha256 "bfe63d7b2847560a54060c76b4827f955b8440a8dc8ecfe88928f4e477ab5d2f"
+  url "https://github.com/rizsotto/Bear/archive/3.0.11.tar.gz"
+  sha256 "3f426b5b22cab1ed6146aaba1dd612cd387b7298915ca58a72386bc8c1c9d9da"
   license "GPL-3.0-or-later"
+  revision 4
   head "https://github.com/rizsotto/Bear.git"
 
   bottle do
-    sha256 arm64_big_sur: "18abc76e49ec4d6021a0ccd7d24bf17beea6443f9946cf219f1e668cdb83c8ab"
-    sha256 big_sur:       "9ce43d35accad7eff6e37d8771e7f1be9283142b26915b035a770ad3817311ff"
-    sha256 catalina:      "8c036551bc9a7cedb76360a408ab07434b99e4c4f2d49932c9c2c65d927ecd39"
-    sha256 x86_64_linux:  "4f12dc9d19466b1f6d51ca25e7ab2c956537a71ce3494676d94d8a70e7dda4f6"
+    sha256 arm64_big_sur: "9a7e6d3bb1f8fed6384eafbeda5cf7fb7b31e831e15175e2bf58a338bb11d2d8"
+    sha256 big_sur:       "c1d9a8f941a55c6722a76340f5be73829441755be5b0d18fa67ccdf840ce58f9"
+    sha256 catalina:      "77a6b3c6f89da6ed600b59086ce9aef52a1ce680e1a517591b5061336dbdc2f7"
+    sha256 mojave:        "28966dcb02c8ffc75c0eba1ab4a226080a29b53f4943efb61b98dd6078fe08c0"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "fmt"
   depends_on "grpc"
-  depends_on macos: :catalina
   depends_on "nlohmann-json"
   depends_on "python@3.9"
   depends_on "spdlog"
@@ -27,13 +27,29 @@ class Bear < Formula
 
   uses_from_macos "llvm" => :test
 
+  on_macos do
+    depends_on "llvm" if DevelopmentTools.clang_build_version <= 1100
+  end
+
   on_linux do
     depends_on "gcc"
   end
 
   fails_with gcc: "5" # needs C++17
 
+  fails_with :clang do
+    build 1100
+    cause <<-EOS
+      Undefined symbols for architecture x86_64:
+        "std::__1::__fs::filesystem::__current_path(std::__1::error_code*)"
+    EOS
+  end
+
   def install
+    on_macos do
+      ENV.llvm_clang if DevelopmentTools.clang_build_version <= 1100
+    end
+
     args = std_cmake_args + %w[
       -DENABLE_UNIT_TESTS=OFF
       -DENABLE_FUNC_TESTS=OFF

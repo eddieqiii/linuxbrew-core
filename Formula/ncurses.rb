@@ -32,7 +32,7 @@ class Ncurses < Formula
                           "--enable-widec",
                           "--with-shared",
                           "--with-gpm=no",
-                          *("--without-ada" unless OS.mac?)
+                          "--without-ada"
     system "make", "install"
     make_libncurses_symlinks
 

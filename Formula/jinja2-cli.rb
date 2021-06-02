@@ -34,9 +34,10 @@ class Jinja2Cli < Formula
   end
 
   test do
-    if OS.mac?
+    on_macos do
       assert_match version.to_s, shell_output("script -q /dev/null #{bin}/jinja2 --version")
-    else
+    end
+    on_linux do
       assert_match version.to_s, shell_output("script -q /dev/null -e -c \"#{bin}/jinja2 --version\"")
     end
     expected_result = <<~EOS

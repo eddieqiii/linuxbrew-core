@@ -16,6 +16,8 @@ class CashCli < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "ac658974304a186ac419096566ef7e36d16b491c1d4eab90d2c9eb0394a6704e"
   end
 
+  deprecate! date: "2021-04-23", because: :unmaintained
+
   depends_on "node"
 
   def install
@@ -23,7 +25,8 @@ class CashCli < Formula
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
+  # Test is no longer fully accurate
   test do
-    assert_match "Conversion of USD 100", shell_output("#{bin}/cash 100 USD PLN CHF")
+    assert_match "Something went wrong :(", shell_output("#{bin}/cash 100 USD PLN CHF 2>&1", 1)
   end
 end

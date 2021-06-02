@@ -1,24 +1,23 @@
 class Tinyxml2 < Formula
   desc "Improved tinyxml (in memory efficiency and size)"
   homepage "http://grinninglizard.com/tinyxml2"
-  url "https://github.com/leethomason/tinyxml2/archive/8.0.0.tar.gz"
-  sha256 "6ce574fbb46751842d23089485ae73d3db12c1b6639cda7721bf3a7ee862012c"
+  url "https://github.com/leethomason/tinyxml2/archive/8.1.0.tar.gz"
+  sha256 "23c95af3b981cf9a56c7f669505832c93427cb684811bcb6c9311bd18fa9bc30"
   license "Zlib"
   head "https://github.com/leethomason/tinyxml2.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "dbe26d21724cc71aa66091a73c1d9f6a54e952f7a38877749062a8c5cd4dd4e8"
-    sha256 cellar: :any_skip_relocation, big_sur:       "dc187de7b8ecdaae5ca53fb68c940d01dd30d13d635a57dda778f5577ffaaefa"
-    sha256 cellar: :any_skip_relocation, catalina:      "de43d8d170826747b593e29cff70f84fba2e35aef5c25bec5c02c406c29bbf84"
-    sha256 cellar: :any_skip_relocation, mojave:        "65527a3b8385c01fabbaeef1ff1dc3cc301dcf5f49e0875d210d80fc5181379d"
-    sha256 cellar: :any_skip_relocation, high_sierra:   "eaacca900292a86dc5d4e95e2a71042a6e2fe7e766341d0b5078cf99cd25c0da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8444b2056b5eaeb4f758c80b3c383d26fe1119b6f5d89b0385477049939d471e"
+    sha256 cellar: :any,                 arm64_big_sur: "9155cc428f70afb7d2a321af7abf6cc359ce5093eef63cbcaef70672b6644ae7"
+    sha256 cellar: :any,                 big_sur:       "da38adaa7c2a3e6386aea80bec19886d02da078fa3c0f7ffe57d1bad2a779727"
+    sha256 cellar: :any,                 catalina:      "73a91f44b713518ae8080170a2880f095da2e668bd90a89a1ae9c44895ce2a46"
+    sha256 cellar: :any,                 mojave:        "f6c19f6a994e401fc15d467f2f3c56366a9b0671cd73fc0ecbe872e1c26ce011"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4fdebdeaa89935e61eb280ed64126439548d66161a73657a912498c8135f219d"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", *std_cmake_args, "-Dtinyxml2_SHARED_LIBS=ON"
     system "make", "install"
   end
 

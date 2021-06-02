@@ -56,14 +56,14 @@ class Wxpython < Formula
 
     resource("Pillow").stage do
       inreplace "setup.py" do |s|
-        if OS.mac?
-          sdkprefix = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
-        end
         s.gsub! "openjpeg.h", "probably_not_a_header_called_this_eh.h"
-        if OS.mac?
+        s.gsub! "xcb.h", "probably_not_a_header_called_this_eh.h"
+        on_macos do
+          sdkprefix = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
           s.gsub! "ZLIB_ROOT = None",
                   "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
-        else
+        end
+        on_linux do
           s.gsub! "ZLIB_ROOT = None",
                   "ZLIB_ROOT = ('#{Formula["zlib"].opt_prefix}/lib', '#{Formula["zlib"].opt_prefix}/include')"
         end

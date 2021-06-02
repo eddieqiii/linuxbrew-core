@@ -14,8 +14,7 @@ class Globe < Formula
     sha256 cellar: :any_skip_relocation, sierra:        "20488fcd0137e0d2a05ea3bfa91adc2f45460f05bb01f26e41005ccafc3e8c54"
     sha256 cellar: :any_skip_relocation, el_capitan:    "11acded7be5d1ba22260d039e3daf4fdc4cac49ebcd234c879da655a1532c22f"
     sha256 cellar: :any_skip_relocation, yosemite:      "a3ccdf74813e704ab1c8d50bb32f3f9b3f62110c8a6a143e3df85eb6ab7ecd7d"
-    sha256 cellar: :any_skip_relocation, mavericks:     "8ff4dd96c5ab3c846ac61ff66c866e3d4969560611405db6e20436ff75494715"
-    sha256 cellar: :any_skip_relocation, mountain_lion: "c37aa4067f2d9ce7b5fbed7246e67164d04e500bfbc193a4a1e19fdba741be85"
+    sha256                               x86_64_linux:  "5f82736255bd84015795c9a626ac0c7bf656c288d1deb2732f9808fb914878c0"
   end
 
   def install

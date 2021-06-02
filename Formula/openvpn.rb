@@ -1,9 +1,9 @@
 class Openvpn < Formula
   desc "SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension"
   homepage "https://openvpn.net/community/"
-  url "https://swupdate.openvpn.org/community/releases/openvpn-2.5.1.tar.xz"
-  mirror "https://build.openvpn.net/downloads/releases/openvpn-2.5.1.tar.xz"
-  sha256 "40930489c837c05f6153f38e1ebaec244431ef1a034e4846ff732d71d59ff194"
+  url "https://swupdate.openvpn.org/community/releases/openvpn-2.5.2.tar.xz"
+  mirror "https://build.openvpn.net/downloads/releases/openvpn-2.5.2.tar.xz"
+  sha256 "b12743836901f365efaf82ab2493967e1b21c21eb43ce9a8da1002a17c9c1dc8"
   license "GPL-2.0-only" => { with: "openvpn-openssl-exception" }
 
   livecheck do
@@ -12,11 +12,11 @@ class Openvpn < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "9a740d80d18d2999f2cd1842bd5abfc968728b7fb9b0dc57000eb9a03dcca450"
-    sha256 big_sur:       "fd6e1e6ba3af7d36b07c57d7f9d81ef6a349d3127a1191775b23f2e9b87b38ce"
-    sha256 catalina:      "f6210b51996581a5fe4e4264c4e57c47fea91456b2bf33982c159189c58f50bd"
-    sha256 mojave:        "20f274f259542da33069a9436e68048b0a377900ebac72aaac13d13845a701e1"
-    sha256 x86_64_linux:  "51eb20d94f2aa8f5a87a97b897d0cb4cf9e7284616f4ccfbfe3adfd2c2c3fda2"
+    sha256 arm64_big_sur: "5e6986332d574ba7bdc3144396db4f709ab9a63dcdfb6017dcb422dd7497c7b5"
+    sha256 big_sur:       "8d7ea075eed8132ff0032e63db26afcae982f1348a524de87290551d1b90f3f0"
+    sha256 catalina:      "b44a899e4774a47fd25522cfddd4a28e46df11e796745c5c1bdeffe6e7e2f54c"
+    sha256 mojave:        "4b5ea16d5633f96a6009eb964a56d36fd0cc4f84d420a4cae21e13adc55f405d"
+    sha256 x86_64_linux:  "ebca6702c2ce03f256b4504321cfc47e93982b3b41ec690190a546f1a9db4894"
   end
 
   depends_on "pkg-config" => :build
@@ -25,7 +25,8 @@ class Openvpn < Formula
 
   depends_on "openssl@1.1"
   depends_on "pkcs11-helper"
-  unless OS.mac?
+
+  on_linux do
     depends_on "linux-pam"
     depends_on "net-tools"
   end
@@ -38,12 +39,9 @@ class Openvpn < Formula
                           "--enable-pkcs11",
                           "--prefix=#{prefix}"
     if OS.mac?
-      inreplace "sample/sample-plugins/Makefile" do |s|
-        s.gsub! HOMEBREW_LIBRARY/"Homebrew/shims/mac/super/pkg-config",
+      inreplace "sample/sample-plugins/Makefile",
+                HOMEBREW_SHIMS_PATH/"mac/super/pkg-config",
                 Formula["pkg-config"].opt_bin/"pkg-config"
-        s.gsub! HOMEBREW_LIBRARY/"Homebrew/shims/mac/super/sed",
-                "/usr/bin/sed"
-      end
     end
     unless OS.mac?
       inreplace "sample/sample-plugins/Makefile" do |s|

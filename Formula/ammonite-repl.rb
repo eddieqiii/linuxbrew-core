@@ -5,7 +5,9 @@ class AmmoniteRepl < Formula
   sha256 "e7af76416202ff02b8faece785740d957e3ca6351f8d56cf69a749ec4d25484b"
   license "MIT"
 
-  bottle :unneeded
+  bottle do
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "376399e1a06d675716e8ddf899e7160be48e7ce23aedbf0d7529ae8351152b63"
+  end
 
   depends_on "openjdk"
 

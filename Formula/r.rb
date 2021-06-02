@@ -1,10 +1,9 @@
 class R < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.0.4.tar.gz"
-  sha256 "523f27d69744a08c8f0bd5e1e6c3d89a4db29ed983388ba70963a3cd3a4a802e"
+  url "https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz"
+  sha256 "e8e68959d7282ca147360fc9644ada9bd161bab781bab14d33b8999a95182781"
   license "GPL-2.0-or-later"
-  revision OS.mac? ? 1 : 2
 
   livecheck do
     url "https://cran.rstudio.com/banner.shtml"
@@ -12,11 +11,11 @@ class R < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "0f8cacca9775b00c37c4dee0f9626aa7b922a42df2f1b498dfcbcddb0dbf3107"
-    sha256 big_sur:       "d38786d5b6073873d31f5633dc185b513d143b2e52760c8ebe1dd4b0add3a337"
-    sha256 catalina:      "5d71ef98748a84ef45e27cf08cca5bd908e0551f61a1120703c1e1c406d4fc1b"
-    sha256 mojave:        "327f9840ab1fe7793f87d598b5908d0ecb8cb573975af037de592a77c1fd8aac"
-    sha256 x86_64_linux:  "87116116901f1dfb6eec22b84af2e22bde5fbdb2e80bb3cd1d0645d5ae6f110f"
+    sha256 arm64_big_sur: "bb731e6ec573c08d37da048a4a69411177b58f9d7ad4f340728fcef2e4c3c06e"
+    sha256 big_sur:       "4803c5d4e8888494d62c078b658174a23815efbef798c307f565431fe52eed12"
+    sha256 catalina:      "452a71839e33b5f1868845f54953ddcecfaca5c1cb61e58290130d9b3d9abda1"
+    sha256 mojave:        "cf4d202d1bfd57554ab37830308517045f7841d7061957cf7555600b57917928"
+    sha256 x86_64_linux:  "b5f3d037220dfd7b0bb7166b4bbfca3ee119334925b719a312e0307bd87b70ed"
   end
 
   depends_on "pkg-config" => :build
@@ -88,11 +87,6 @@ class R < Formula
     unless OS.mac?
       ENV.append "CPPFLAGS", "-I#{Formula["libtirpc"].opt_include}/tirpc"
       ENV.append "LDFLAGS", "-L#{Formula["libtirpc"].opt_lib}"
-    end
-
-    on_macos do
-      # Enable binaries on macos
-      ENV.append "CPPFLAGS", "-DPLATFORM_PKGTYPE='\"mac.binary\"'" unless Hardware::CPU.arm?
     end
 
     system "./configure", *args

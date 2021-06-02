@@ -27,7 +27,7 @@ class Mednafen < Formula
 
   uses_from_macos "zlib"
 
-  unless OS.mac?
+  on_linux do
     depends_on "mesa"
     depends_on "mesa-glu"
   end
@@ -39,7 +39,9 @@ class Mednafen < Formula
 
   test do
     # Test fails on headless CI: Could not initialize SDL: No available video device
-    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    on_linux do
+      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    end
 
     cmd = "#{bin}/mednafen | head -n1 | grep -o '[0-9].*'"
     assert_equal version.to_s, shell_output(cmd).chomp

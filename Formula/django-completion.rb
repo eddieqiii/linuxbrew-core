@@ -1,8 +1,8 @@
 class DjangoCompletion < Formula
   desc "Bash completion for Django"
   homepage "https://www.djangoproject.com/"
-  url "https://github.com/django/django/archive/3.1.7.tar.gz"
-  sha256 "64032293737c5bb00b77d8e1b9e4010919f35fd4627927f964c2db98f40f8330"
+  url "https://github.com/django/django/archive/3.2.3.tar.gz"
+  sha256 "854da43b18bade10f5d0c3a01919fa396037f4630b142ad81aa365295b3bb733"
   license "BSD-3-Clause"
   head "https://github.com/django/django.git"
 
@@ -10,8 +10,6 @@ class DjangoCompletion < Formula
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
-
-  bottle :unneeded
 
   def install
     bash_completion.install "extras/django_bash_completion" => "django"

@@ -6,8 +6,6 @@ class ObjcRun < Formula
   license "MIT"
   head "https://github.com/iljaiwas/objc-run.git"
 
-  bottle :unneeded
-
   def install
     bin.install "objc-run"
     pkgshare.install "examples", "test.bash"

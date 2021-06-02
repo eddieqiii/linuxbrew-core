@@ -1,23 +1,31 @@
 class Zig < Formula
   desc "Programming language designed for robustness, optimality, and clarity"
   homepage "https://ziglang.org/"
-  url "https://ziglang.org/download/0.7.1/zig-0.7.1.tar.xz"
-  sha256 "2db3b944ab368d955b48743d9f7c963b8f96de1a441ba5a35e197237cc6dae44"
   license "MIT"
-  head "https://github.com/ziglang/zig.git"
+  revision 1
+
+  stable do
+    url "https://ziglang.org/download/0.7.1/zig-0.7.1.tar.xz"
+    sha256 "2db3b944ab368d955b48743d9f7c963b8f96de1a441ba5a35e197237cc6dae44"
+    depends_on "llvm@11"
+  end
 
   bottle do
-    sha256 cellar: :any, big_sur:      "f088607533abf8e77c38ad57b5c068b7c975d31d3558eda5ff9ef23221278650"
-    sha256 cellar: :any, catalina:     "f1168c13a73d6677a8d6eb04ecd0d67e93038bd33218bafadd9aac9a23045e7d"
-    sha256 cellar: :any, mojave:       "eb2e0de16f666b740fb67529910712c517fed8ae3fd6e14d27acbbf19a41018a"
-    sha256 cellar: :any, x86_64_linux: "e091c662da725242839bc6aa2e8e22189e359482d0e2ea7ad55877c8c847e066"
+    sha256 cellar: :any,                 big_sur:      "36024d6e9270699221abc2fe0d49b9f16e9bfc62636b33750f94d89a07e0e308"
+    sha256 cellar: :any,                 catalina:     "167c21243552b1b309c4cf83bfb8e678a14b5a3e3adf66e7f2501b36d027d693"
+    sha256 cellar: :any,                 mojave:       "63643cea7d45ce511f4cd0a4e7089a64e2dedecc9cd900eaff805c011b299cda"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "8fd5b6eeaff9e360a2ad5234c2245a1f12e2045d81284a7762cf4724ad846d41"
+  end
+
+  head do
+    url "https://github.com/ziglang/zig.git"
+    depends_on "llvm"
   end
 
   depends_on "cmake" => :build
-  depends_on "llvm"
 
   def install
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", *std_cmake_args, "-DZIG_STATIC_LLVM=ON"
     system "make", "install"
   end
 
@@ -25,11 +33,21 @@ class Zig < Formula
     (testpath/"hello.zig").write <<~EOS
       const std = @import("std");
       pub fn main() !void {
-          var stdout_file: std.fs.File = std.io.getStdOut();
-          _ = try stdout_file.write("Hello, world!");
+          const stdout = std.io.getStdOut().writer();
+          try stdout.print("Hello, world!", .{});
       }
     EOS
     system "#{bin}/zig", "build-exe", "hello.zig"
+    assert_equal "Hello, world!", shell_output("./hello")
+
+    (testpath/"hello.c").write <<~EOS
+      #include <stdio.h>
+      int main() {
+        fprintf(stdout, "Hello, world!");
+        return 0;
+      }
+    EOS
+    system "#{bin}/zig", "cc", "hello.c", "-o", "hello"
     assert_equal "Hello, world!", shell_output("./hello")
   end
 end

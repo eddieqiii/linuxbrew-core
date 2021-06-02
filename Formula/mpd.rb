@@ -1,18 +1,17 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "https://www.musicpd.org/"
-  url "https://www.musicpd.org/download/mpd/0.22/mpd-0.22.6.tar.xz"
-  sha256 "2be149a4895c3cb613477f8cf1193593e3d8a1d38a75ffa7d32da8c8316a4d5e"
+  url "https://www.musicpd.org/download/mpd/0.22/mpd-0.22.8.tar.xz"
+  sha256 "9617ed08c9ffafcf5f925819251f6b90df3f4f73cf2838c41033e1962104286d"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/MusicPlayerDaemon/MPD.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "17788f621266bae943e912f8ec02c09e4a82fee90b071868dbf47279012892c5"
-    sha256 cellar: :any,                 big_sur:       "6ad7522c6793e94000346e9ebfeffb16be3cf5e7b6137d980727bfd0709f7335"
-    sha256 cellar: :any,                 catalina:      "ec2f59889ddd17efe2b15029ab61878798bd3fcd302229edf029891b08245b75"
-    sha256 cellar: :any,                 mojave:        "d3aac34e250c84974268cae2fd7aeda94dba391768f5df9a246cc63899a0a002"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fc99c9d6d154e003771a8adb41f82952e83bd04f88a9d348fca2317b7228fd6e"
+    sha256 cellar: :any, arm64_big_sur: "246e858d3140b39ef7c628ea4ec26da926519e7f933dc59298797a67ee8f9d8e"
+    sha256 cellar: :any, big_sur:       "7c8bbe79789bc8c2b870cd1adc36364f01fbb240465c976e6f7049b4740439e4"
+    sha256 cellar: :any, catalina:      "294a0ac898cbb3a3885e923b6bf618d52c9735585f93a22f766d4e709f090a14"
+    sha256 cellar: :any, mojave:        "0e0291c0e5a514f57d079e704d83f1fb975cd142b2d2ad151e91bca764a1fddd"
+    sha256               x86_64_linux:  "3a4937ab0faa5ab75b53ef2ef355d763839db67fa0c87c1cb3ab02af3d5e957a"
   end
 
   depends_on "boost" => :build
@@ -40,18 +39,19 @@ class Mpd < Formula
   depends_on "opus"
   depends_on "sqlite"
 
-  unless OS.mac?
-    fails_with gcc: "5"
-    depends_on "gcc@6" => :build
-    depends_on "curl"
+  uses_from_macos "curl"
+
+  on_linux do
+    depends_on "gcc"
   end
+
+  fails_with gcc: "5"
 
   def install
     # mpd specifies -std=gnu++0x, but clang appears to try to build
     # that against libstdc++ anyway, which won't work.
     # The build is fine with G++.
-    ENV.libcxx if OS.mac?
-    ENV.cxx11 unless OS.mac?
+    ENV.libcxx
 
     args = std_meson_args + %W[
       --sysconfdir=#{etc}
@@ -117,9 +117,11 @@ class Mpd < Formula
   end
 
   test do
-    # oss_output: Error opening OSS device "/dev/dsp": No such file or directory
-    # oss_output: Error opening OSS device "/dev/sound/dsp": No such file or directory
-    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    on_linux do
+      # oss_output: Error opening OSS device "/dev/dsp": No such file or directory
+      # oss_output: Error opening OSS device "/dev/sound/dsp": No such file or directory
+      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    end
 
     require "expect"
 

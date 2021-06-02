@@ -1,17 +1,17 @@
 class Broot < Formula
   desc "New way to see and navigate directory trees"
   homepage "https://dystroy.org/broot/"
-  url "https://github.com/Canop/broot/archive/v1.2.8.tar.gz"
-  sha256 "2951e0970fdae20dbbedaa9fdf666dd73bd64c0060a40884a21d7e1ecfb95f80"
+  url "https://github.com/Canop/broot/archive/v1.4.0.tar.gz"
+  sha256 "410c948b5a45796238efacac857a74594511e24615399e604795d17efbda0461"
   license "MIT"
   head "https://github.com/Canop/broot.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ad0aaa0691b03bc2847d1644b2e539ee40a409cf22800911320f7a0d5755bb4d"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6c937251652a7147cfe2aa4424a72160bc88f7df631457d6513d0c8171a0b321"
-    sha256 cellar: :any_skip_relocation, catalina:      "4e75e73c1e6aa891091a19b5596a3566605056cf0d78d86ff58842158412aa93"
-    sha256 cellar: :any_skip_relocation, mojave:        "6f50a4e32437728748b394df3e5362e300f8e3fade8cb83a69a635a424cb9492"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "83988abc2bce387477277190773566acad50386382dd3ba27770a2a1920dd853"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ea02f6ccb6e1680d24003fbea5c701f600c161dd726f7c0b9f4f75e1e9e4ceb1"
+    sha256 cellar: :any_skip_relocation, big_sur:       "723b5d1d13a005de6e45a9753541a3da10f6e068261274ac917d7bc1353fd399"
+    sha256 cellar: :any_skip_relocation, catalina:      "3baf8b2baa2fea41638564bf9c3c0f3bc710ca696af5d7b7c0274898d10a1897"
+    sha256 cellar: :any_skip_relocation, mojave:        "e819f775427920dc03495990a1c052ef600ef498d9e72edba9b777e7f084dbbe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "873b6d08f63590ab3f5a3b1afec849e3838ebd9a93dda134c2a8b8effa9dc6ba"
   end
 
   depends_on "rust" => :build
@@ -40,9 +40,11 @@ class Broot < Formula
   end
 
   test do
-    assert_match "A tree explorer and a customizable launcher", shell_output("#{bin}/broot --help 2>&1")
+    on_linux do
+      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    end
 
-    return if !OS.mac? && ENV["HOMEBREW_GITHUB_ACTIONS"]
+    assert_match "A tree explorer and a customizable launcher", shell_output("#{bin}/broot --help 2>&1")
 
     require "pty"
     require "io/console"

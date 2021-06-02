@@ -2,15 +2,15 @@ class Rakudo < Formula
   desc "Perl 6 compiler targeting MoarVM"
   homepage "https://rakudo.org"
   # NOTE: Please keep these values in sync with moarvm & nqp when updating.
-  url "https://github.com/rakudo/rakudo/releases/download/2021.02.1/rakudo-2021.02.1.tar.gz"
-  sha256 "c8ea8d8bff3c3c983d1f7967321bcb5b72043b2fb5f3da6e8187af5306e998f7"
+  url "https://github.com/rakudo/rakudo/releases/download/2021.05/rakudo-2021.05.tar.gz"
+  sha256 "538633ed2eb742d15972742ffb5e9ccae1b238fca053565da48ee9bdc96a3341"
   license "Artistic-2.0"
 
   bottle do
-    sha256 arm64_big_sur: "ed6db66da0fa94a210c9db1a8a4486b7813419b63a20e2c2e5eeceb013f1cbfc"
-    sha256 big_sur:       "22d5bc5afa03f09243ac994161429056caf3b07309c215bbf397c4a4f0f85516"
-    sha256 catalina:      "7c8cc982aad9bc797f20cbae03bff9ec742d4bf77d327e10718b4073a6508f42"
-    sha256 mojave:        "0a466256adacb7707e5c687ed4ce9f840dfd18eda78bd93847a4cddb26b5c404"
+    sha256 arm64_big_sur: "d0a8addc79c688704afeb06c5452457d1f0dc898d50920d4e4a0b8bd1efd9e0b"
+    sha256 big_sur:       "c1648e9fea3bb544db8e3b11a74b21565c9384e4bcaabb09669e95b84791abd1"
+    sha256 catalina:      "5b467dd6574efa7cedbdfc5932495e6d9ed71274c9b867c384b826b953949808"
+    sha256 mojave:        "e081300247c47462beaa31438cb07128731713cc4d41428a2ba3274ddef29377"
   end
 
   depends_on "nqp"

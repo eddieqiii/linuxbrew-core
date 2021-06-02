@@ -3,17 +3,17 @@ class Sip < Formula
 
   desc "Tool to create Python bindings for C and C++ libraries"
   homepage "https://www.riverbankcomputing.com/software/sip/intro"
-  url "https://files.pythonhosted.org/packages/76/d9/5e1048d2f2fa6714e0d76382810b0fa81400c40e25b1f4f46c1a82e48364/sip-6.0.3.tar.gz"
-  sha256 "929e3515428ea962003ccf6795244a5fe4fa6e2c94dc9ab8cb2c58fcd368c34c"
+  url "https://files.pythonhosted.org/packages/44/76/d9722bb934c7ca31f4bcf471d5f781b7ffed3a60f10c858a676d3a9aa1a0/sip-6.1.0.tar.gz"
+  sha256 "f069d550dd819609e019e5dc58fc5193e081c7f3fb4f7dc8f9be734e34d4e56e"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
   head "https://www.riverbankcomputing.com/hg/sip", using: :hg
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "128a69e2ff44621829a057172e11ef461f0f2f8dc1aba8df83e7d6ab395c78fd"
-    sha256 cellar: :any_skip_relocation, big_sur:       "18d190cbeb993b540375051525a6e0dee8e1bdd835b6eff6222a29543b1e6407"
-    sha256 cellar: :any_skip_relocation, catalina:      "03fe5d7975493dbbcda97fe6b9ab809701685ff5f7cc911d03d3bebb67ed5b08"
-    sha256 cellar: :any_skip_relocation, mojave:        "c951ba79d94171362eb346f70847e36c97876ffede598b253ca70f357e39b27b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d23d2ce2769a110c5f7ef2ff67850e6718f0fcb0724c7f503f009d249fbed065"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "6bcc4bde69def2e795e6a7e5b401071b922f7b2a8897beede724d4127feff8e3"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a7976cf7293d2cf6d791099052307485f614937cc01cca67972d49ee73d9380e"
+    sha256 cellar: :any_skip_relocation, catalina:      "abe9be642f3380fe56aa8647d314cff964fadde180be5e8556fcdaa3fd9e5abb"
+    sha256 cellar: :any_skip_relocation, mojave:        "7b5c3b19640a10879a1c62b7be2be271fe55dd0139d0af9a7deed5ffe18fdf0f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fd5ddd6b9ebb619bc0ce1834a1e928861b6d968396b6a52cb9378373f14aa18c"
   end
 
   depends_on "python@3.9"
@@ -34,17 +34,17 @@ class Sip < Formula
   end
 
   def install
-    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    venv = virtualenv_create(libexec, Formula["python@3.9"].opt_bin/"python3")
-    %w[packaging pyparsing toml].each do |r|
-      venv.pip_install resource(r)
+    python = Formula["python@3.9"]
+    venv = virtualenv_create(libexec, python.bin/"python3")
+    resources.each do |r|
+      venv.pip_install r
     end
 
-    system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
+    system python.bin/"python3", *Language::Python.setup_install_args(prefix)
 
-    site_packages = libexec/"lib/python#{xy}/site-packages"
-    pth_contents = "import site; site.addsitedir('#{site_packages}')\n"
-    (lib/"python#{xy}/site-packages/homebrew-sip.pth").write pth_contents
+    site_packages = Language::Python.site_packages(python)
+    pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
+    (prefix/site_packages/"homebrew-sip.pth").write pth_contents
   end
 
   test do

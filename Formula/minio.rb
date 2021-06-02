@@ -2,10 +2,10 @@ class Minio < Formula
   desc "High Performance, Kubernetes Native Object Storage"
   homepage "https://min.io"
   url "https://github.com/minio/minio.git",
-      tag:      "RELEASE.2021-02-24T18-44-45Z",
-      revision: "c1a49be639e6e0e297e39b4001672eb08f4c8b92"
-  version "20210224184445"
-  license "Apache-2.0"
+      tag:      "RELEASE.2021-05-27T22-06-31Z",
+      revision: "89bb9f17d73882127203e07c63d288d77525f1c6"
+  version "20210527220631"
+  license "AGPL-3.0-or-later"
   head "https://github.com/minio/minio.git"
 
   livecheck do
@@ -17,11 +17,11 @@ class Minio < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3cb06f1245819f6622a26dc7b0c618e40d88c6cb6c80ac47d5dfa7465c64976a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5ca9f975f6e12c5ebb751d94b4149c5686ed47eaaab8ce0a04bc3b9dcd37ce05"
-    sha256 cellar: :any_skip_relocation, catalina:      "d116e20ebf0aee3804a351235298115ad03c4d9bb48128870d834a60535ba806"
-    sha256 cellar: :any_skip_relocation, mojave:        "e704ee0a811c0ca8eb35d35e92f70615956b074d6e1e956c93d47744adbcfa5c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7365f0b446f63986bf8222042667722636b937b2fdcb157e5a6cd4238276c71"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2f6a5af4c203a1bda5e82d13a749519ebd4fa4ccecfef9f53a8c1297356102a2"
+    sha256 cellar: :any_skip_relocation, big_sur:       "447e5e0c0200c1bb8de2c9321e3020bb7fd7ccc642f8efc60b707aa937a58888"
+    sha256 cellar: :any_skip_relocation, catalina:      "e15f7d1123c906457c8fbf889c57bfc8906755310e29bb124e9ef369bce72f01"
+    sha256 cellar: :any_skip_relocation, mojave:        "6585e3c14d939f7c351b0647ae0c91d647d9990e6b9ad66a9ecd30f739c28434"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "36e0e45ced0fcd35ccdbea65a155f4b3fac2f0a1032da5141cfab7ea9fb636a0"
   end
 
   depends_on "go" => :build
@@ -32,13 +32,15 @@ class Minio < Formula
     else
       release = `git tag --points-at HEAD`.chomp
       version = release.gsub(/RELEASE\./, "").chomp.gsub(/T(\d+)-(\d+)-(\d+)Z/, 'T\1:\2:\3Z')
-      proj = "github.com/minio/minio"
 
-      system "go", "build", *std_go_args, "-ldflags", <<~EOS
-        -X #{proj}/cmd.Version=#{version}
-        -X #{proj}/cmd.ReleaseTag=#{release}
-        -X #{proj}/cmd.CommitID=#{Utils.git_head}
-      EOS
+      ldflags = %W[
+        -s -w
+        -X github.com/minio/minio/cmd.Version=#{version}
+        -X github.com/minio/minio/cmd.ReleaseTag=#{release}
+        -X github.com/minio/minio/cmd.CommitID=#{Utils.git_head}
+      ]
+
+      system "go", "build", *std_go_args(ldflags: ldflags.join(" "))
     end
   end
 

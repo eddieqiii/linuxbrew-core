@@ -6,7 +6,7 @@ class GccAT5 < Formula
   url "https://ftp.gnu.org/gnu/gcc/gcc-5.5.0/gcc-5.5.0.tar.xz"
   mirror "https://ftpmirror.gnu.org/gcc/gcc-5.5.0/gcc-5.5.0.tar.xz"
   sha256 "530cea139d82fe542b358961130c69cfde8b3d14556370b65823d2f91f0ced87"
-  revision 6
+  revision OS.mac? ? 6 : 7
 
   livecheck do
     url :stable
@@ -16,18 +16,16 @@ class GccAT5 < Formula
   # gcc is designed to be portable.
   bottle do
     sha256 cellar: :any, high_sierra:  "dcc9059b725fd7c87842287bbedf60a28745417652d42a300dcd944e15986f36"
-    sha256 cellar: :any, x86_64_linux: "42f8f7e567c1baababdb35095b536610503d39511916f8854e70188e842b664b"
+    sha256               x86_64_linux: "cd94b6bc2189df7861c2c32c480f777984865dbab4107f493188feda5a05b80d"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
   # out of the box on Xcode-only systems due to an incorrect sysroot.
-  pour_bottle? do
-    reason "The bottle needs the Xcode CLT to be installed."
-    satisfy { !OS.mac? || MacOS::CLT.installed? }
-  end
+  pour_bottle? only_if: :clt_installed
 
   depends_on maximum_macos: [:high_sierra, :build]
 
+  depends_on "glibc" if !OS.mac? && (OS::Linux::Glibc.system_version < Formula["glibc"].version)
   depends_on "gmp"
   depends_on "isl@0.18"
   depends_on "libmpc"
@@ -37,7 +35,6 @@ class GccAT5 < Formula
 
   on_linux do
     depends_on "binutils"
-    depends_on "glibc" if OS::Linux::Glibc.system_version < Formula["glibc"].version
   end
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
@@ -125,10 +122,6 @@ class GccAT5 < Formula
       mkdir_p lib
       ln_s Utils.safe_popen_read(ENV.cc, "-print-file-name=libstdc++.so.6").strip, lib
       ln_s Utils.safe_popen_read(ENV.cc, "-print-file-name=libgcc_s.so.1").strip, lib
-
-      # Set the search path for glibc libraries and objects, using the system's glibc
-      # Fix the error: ld: cannot find crti.o: No such file or directory
-      ENV.prepend_path "LIBRARY_PATH", Pathname.new(Utils.safe_popen_read(ENV.cc, "-print-file-name=crti.o")).parent
     end
 
     # Fix Linux error: gnu/stubs-32.h: No such file or directory.
@@ -158,6 +151,23 @@ class GccAT5 < Formula
       # At this point `make check` could be invoked to run the testsuite. The
       # deja-gnu and autogen formulae must be installed in order to do this.
       system "make", OS.mac? ? "install" : "install-strip"
+
+      # Add symlinks for libgcc, libgomp, libquadmath and libstdc++ so that bottles
+      # built in CI can find these libraries when using brewed gcc@5
+      unless OS.mac?
+        lib.install_symlink lib/"gcc/#{version_suffix}/libgcc_s.so"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libgcc_s.a"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libgcc_s.so.1"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libgomp.so"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libgomp.a"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libgomp.so.1"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libquadmath.so"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libquadmath.a"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libquadmath.so.0"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libstdc++.so"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libstdc++.a"
+        lib.install_symlink lib/"gcc/#{version_suffix}/libstdc++.so.6"
+      end
     end
 
     # Handle conflicts between GCC formulae.

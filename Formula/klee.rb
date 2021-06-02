@@ -4,17 +4,18 @@ class Klee < Formula
   url "https://github.com/klee/klee/archive/v2.2.tar.gz"
   sha256 "1ff2e37ed3128e005b89920fad7bcf98c7792a11a589dd443186658f5eb91362"
   license "NCSA"
+  revision 1
   head "https://github.com/klee/klee.git"
 
   bottle do
-    sha256 big_sur:  "e618dbf37e6a3abfb015f6c9facdf15d5738b68e0d94e538a9b447321029bf92"
-    sha256 catalina: "924b00351eea9e380418b244de739f5660fbf9b9e1f401e5d9ff2d38af404047"
-    sha256 mojave:   "28f00222252796f611e346418e1041466a525c4acaef392a0f065be26b239e00"
+    sha256 big_sur:  "68926d21ba91e49e600c58329c81ffbe552ceac655b9c57ae6043e0df4ca926a"
+    sha256 catalina: "d601b6ef40172702659f7efe267d766fe1c82a627afed9017467c4714e3aac52"
+    sha256 mojave:   "30147bcef9d3993cb28f0e4235d0e0cb061b1f03dbfd6d698d7fd3ab214dc712"
   end
 
   depends_on "cmake" => :build
   depends_on "gperftools"
-  depends_on "llvm"
+  depends_on "llvm@11"
   depends_on "python-tabulate"
   depends_on "python@3.9"
   depends_on "sqlite"
@@ -30,6 +31,8 @@ class Klee < Formula
   end
 
   def install
+    llvm = Formula["llvm@11"]
+
     libcxx_install_dir = libexec/"libcxx"
     libcxx_src_dir = buildpath/"libcxx"
     resource("libcxx").stage libcxx_src_dir
@@ -59,7 +62,7 @@ class Klee < Formula
       mkdir "llvm/build" do
         with_env(
           LLVM_COMPILER:      "clang",
-          LLVM_COMPILER_PATH: Formula["llvm"].opt_bin,
+          LLVM_COMPILER_PATH: llvm.opt_bin,
         ) do
           system "cmake", "..", *libcxx_args
           system "make", "cxx"
@@ -78,7 +81,7 @@ class Klee < Formula
     # https://github.com/klee/klee/blob/v#{version}/README-CMake.md
     args = std_cmake_args + %W[
       -DKLEE_RUNTIME_BUILD_TYPE=Release
-      -DLLVM_CONFIG_BINARY=#{Formula["llvm"].opt_bin}/llvm-config
+      -DLLVM_CONFIG_BINARY=#{llvm.opt_bin}/llvm-config
       -DENABLE_DOCS=OFF
       -DENABLE_SYSTEM_TESTS=OFF
       -DENABLE_KLEE_ASSERTS=ON
@@ -107,6 +110,8 @@ class Klee < Formula
   # Test adapted from
   # http://klee.github.io/tutorials/testing-function/
   test do
+    llvm = Formula["llvm@11"]
+
     (testpath/"get_sign.c").write <<~EOS
       #include "klee/klee.h"
 
@@ -126,7 +131,7 @@ class Klee < Formula
       }
     EOS
 
-    ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+    ENV["CC"] = llvm.opt_bin/"clang"
 
     system ENV.cc, "-I#{opt_include}", "-emit-llvm",
                     "-c", "-g", "-O0", "-disable-O0-optnone",

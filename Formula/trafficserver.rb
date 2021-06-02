@@ -1,14 +1,14 @@
 class Trafficserver < Formula
   desc "HTTP/1.1 compliant caching proxy server"
   homepage "https://trafficserver.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=trafficserver/trafficserver-8.1.0.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-8.1.0.tar.bz2"
-  sha256 "01bcc5d5cc58d5368366e193b6091e2d6af000badc19be3c49db7aa96955bbe2"
+  url "https://downloads.apache.org/trafficserver/trafficserver-9.0.1.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-9.0.1.tar.bz2"
+  sha256 "bf00d0399e359f2b52bb0664743e5ccd81c6a9491eafe1ff1b10afeaf62526e0"
   license "Apache-2.0"
 
   bottle do
-    sha256 catalina: "d490c5c8fae027a4a6ffcd205b375625e37d3a2f99bb060a5989b33499145a72"
-    sha256 mojave:   "cc6df9c477581b56ce70bb909456a48041f6230b7a432ae1365ed60dd2019904"
+    sha256 catalina: "c68d31b293dd4783bd83d58b24e8024530b5a3193923a56bbbc48d4c989898fb"
+    sha256 mojave:   "a0625221974ecad4596fc1b5c2cc6f069e367ca9f213ef92f9a0f4600dcc6095"
   end
 
   head do
@@ -24,13 +24,14 @@ class Trafficserver < Formula
     end
   end
 
+  depends_on "pkg-config" => :build
+  depends_on "hwloc"
   depends_on macos: :mojave # `error: call to unavailable member function 'value': introduced in macOS 10.14`
   depends_on "openssl@1.1"
   depends_on "pcre"
+  depends_on "yaml-cpp"
 
   def install
-    ENV.cxx11 if build.stable?
-
     # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
     # is not set then it's forced to 10.4, which breaks compile on Mojave.
     ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
@@ -41,7 +42,7 @@ class Trafficserver < Formula
       --localstatedir=#{var}
       --sysconfdir=#{etc}/trafficserver
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
-      --with-tcl=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework
+      --with-yaml-cpp=#{Formula["yaml-cpp"].opt_prefix}
       --with-group=admin
       --disable-silent-rules
       --enable-experimental-plugins

@@ -1,46 +1,35 @@
 class Sshfs < Formula
   desc "File system client based on SSH File Transfer Protocol"
-  homepage "https://osxfuse.github.io/"
-  url "https://github.com/libfuse/sshfs/releases/download/sshfs-2.10/sshfs-2.10.tar.gz"
-  sha256 "70845dde2d70606aa207db5edfe878e266f9c193f1956dd10ba1b7e9a3c8d101"
-  license "GPL-2.0"
-  revision OS.mac? ? 2 : 3
+  homepage "https://github.com/libfuse/sshfs"
+  url "https://github.com/libfuse/sshfs/archive/refs/tags/sshfs-3.7.1.tar.gz"
+  sha256 "0f0f8f239555effd675d03a3cabfb35ef691a3054c98b62bc28e85620ad9e30d"
+  license any_of: ["LGPL-2.1-only", "GPL-2.0-only"]
 
   bottle do
     sha256 cellar: :any, catalina:     "aceff3131dd0b098bdef8b5dda54d117b5dd5269ca146f7a5032ecde3c99b6d2"
     sha256 cellar: :any, mojave:       "5f69267c0f1f2489989e108919d66210e058423d0d1f1661812c0194b164619c"
     sha256 cellar: :any, high_sierra:  "58d222f37622b399352f16eaf823d3e564445d9e951629e965281ac31de5ef4a"
     sha256 cellar: :any, sierra:       "dc4a7f24c2cbebd7c35891200b043d737ba6586a28992708ef849ffedff7bb01"
+    sha256               x86_64_linux: "adbef91244bb2888824afce89666060acf8e833ed78f5563ba64053055d688fb"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "glib"
+  depends_on "libfuse"
 
   on_macos do
-    deprecate! date: "2020-11-10", because: "requires FUSE"
-    depends_on :osxfuse
-  end
-
-  on_linux do
-    depends_on "libfuse"
-  end
-
-  # Apply patch that clears one remaining roadblock that prevented setting
-  # a custom I/O buffer size on macOS. With this patch in place, it's
-  # recommended to use e.g. `-o iosize=1048576` (or other, reasonable value)
-  # when launching `sshfs`, for improved performance.
-  # See also: https://github.com/libfuse/sshfs/issues/11
-  patch do
-    url "https://github.com/libfuse/sshfs/commit/667cf34622e2e873db776791df275c7a582d6295.patch?full_index=1"
-    sha256 "ab2aa697d66457bf8a3f469e89572165b58edb0771aa1e9c2070f54071fad5f6"
+    disable! date: "2021-04-08", because: "requires FUSE"
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", ".."
+      system "meson", "configure", "--prefix", prefix
+      system "ninja", "--verbose"
+      system "ninja", "install", "--verbose"
+    end
   end
 
   test do

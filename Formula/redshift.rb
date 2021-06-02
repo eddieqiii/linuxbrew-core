@@ -3,7 +3,7 @@ class Redshift < Formula
   homepage "http://jonls.dk/redshift/"
   url "https://github.com/jonls/redshift/releases/download/v1.12/redshift-1.12.tar.xz"
   sha256 "d2f8c5300e3ce2a84fe6584d2f1483aa9eadc668ab1951b2c2b8a03ece3a22ba"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
   revision 1
 
   bottle do
@@ -30,20 +30,20 @@ class Redshift < Formula
   depends_on "glib"
 
   def install
-    # Needed by intltool (xml::parser)
-    ENV.prepend_path "PERL5LIB", "#{Formula["intltool"].libexec}/lib/perl5" unless OS.mac?
-
     args = %W[
       --prefix=#{prefix}
-      --#{OS.mac? ? "enable" : "disable"}-corelocation
       --disable-silent-rules
       --disable-dependency-tracking
       --disable-geoclue
       --disable-geoclue2
-      --#{OS.mac? ? "enable" : "disable"}-quartz
       --with-systemduserunitdir=no
       --disable-gui
     ]
+
+    on_macos do
+      args << "--enable-corelocation"
+      args << "--enable-quartz"
+    end
 
     system "./bootstrap" if build.head?
     system "./configure", *args

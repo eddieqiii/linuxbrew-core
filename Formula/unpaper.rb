@@ -3,6 +3,7 @@ class Unpaper < Formula
   homepage "https://www.flameeyes.com/projects/unpaper"
   url "https://www.flameeyes.com/files/unpaper-6.1.tar.xz"
   sha256 "237c84f5da544b3f7709827f9f12c37c346cdf029b1128fb4633f9bafa5cb930"
+  license "GPL-2.0-or-later"
   revision 7
 
   bottle do
@@ -30,7 +31,12 @@ class Unpaper < Formula
   end
 
   def install
-    system "autoreconf", "-i" if build.head? || !OS.mac?
+    system "autoreconf", "-i" if build.head?
+
+    on_linux do
+      system "autoreconf", "-i"
+    end
+
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
