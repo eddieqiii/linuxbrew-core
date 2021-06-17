@@ -14,12 +14,18 @@ class Spin < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "e1301a7a73b5dce1a61afc251890ed77fc5b53fa5e8d7a9cea51611c95248ce1"
   end
 
+  depends_on "tcl-tk"
+
   uses_from_macos "bison" => :build
 
   def install
     cd "Src" do
       system "make"
       bin.install "spin"
+    end
+
+    cd "optional_gui" do
+      bin.install "ispin.tcl" => "ispin"
     end
 
     man1.install "Man/spin.1"
